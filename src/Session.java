@@ -22,14 +22,16 @@ public class Session {
 	
 	public void init() {
 		Cookie[] cookies = request.getCookies();
-		for(int i=0; i<cookies.length; i++){
-			Cookie cookie = cookies[i];
-			
-			String cookie_name = cookie.getName();
-			
-			if (cookie_name.equals("_session")) {
+		if (cookies != null) {
+			for(int i=0; i<cookies.length; i++){
+				Cookie cookie = cookies[i];
 				
-				id = Integer.parseInt(cookie.getValue());
+				String cookie_name = cookie.getName();
+				
+				if (cookie_name.equals("_session")) {
+					
+					id = Integer.parseInt(cookie.getValue());
+				}
 			}
 		}
 

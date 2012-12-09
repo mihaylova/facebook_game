@@ -47,6 +47,7 @@ public class facebook extends HttpServlet {
 				String user_name = sessions.getString("name");
 				
 				if (user_uid != null && user_name != null) {
+
 					String[] user = {user_uid, user_name};
 	
 					users.add(user);
@@ -66,6 +67,7 @@ public class facebook extends HttpServlet {
 		//sess.flush();
 
 		render.render(response, "facebook.html");
+		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

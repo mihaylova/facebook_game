@@ -45,6 +45,8 @@ public class Render {
 			e.printStackTrace();
 		}
 		
+		response.setContentType("text/html; charset=utf-8");
+
 		Writer out = null;
 		try {
 			out = response.getWriter();
@@ -52,8 +54,6 @@ public class Render {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
-		response.setContentType("text/html; charset=" + tmpl.getEncoding());
 		
 		try {
 			tmpl.process(root, out);

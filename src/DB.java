@@ -4,7 +4,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
 public class DB {
 	private Connection connection = null;
     Statement statement;
@@ -16,7 +15,7 @@ public class DB {
 	         Class.forName("com.mysql.jdbc.Driver");
 	        	
 	         connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/facebook?useUnicode=true&"
-	        		 + "characterEncoding=UTF8&user=root&password=123");
+	        		 + "characterEncoding=UTF-8&user=root&password=123");
 		} catch (Exception e) {
 			e.printStackTrace();
         }
