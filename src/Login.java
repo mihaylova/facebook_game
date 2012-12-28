@@ -10,7 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
 
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
@@ -21,17 +21,21 @@ public class Login extends HttpServlet {
        
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		
+		
+		
 		response.setContentType("text/html; charset=utf-8");
 		DB db = new DB();
 		Session sess = new Session(request, response, db);
-		HttpSession session = request.getSession(true);
+		
 		String uid = sess.getUID();
 		if (uid == null || uid.isEmpty()) {
 			
-			session.setAttribute("logged", false);
+			request.setAttribute("logged", false);
 		} else {
-			session.setAttribute("logged", true);
-			session.setAttribute("name", sess.getName());
+			request.setAttribute("logged", true);
+			request.setAttribute("name", sess.getName());
 		}
 		
 ResultSet sessions = db.Get("SELECT * FROM sessions");
@@ -55,12 +59,12 @@ ResultSet sessions = db.Get("SELECT * FROM sessions");
 		}
 		
 		if (users.size() > 0) {
-			session.setAttribute("has_users", true);
+			request.setAttribute("has_users", true);
 		} else {
-			session.setAttribute("has_users", false);
+			request.setAttribute("has_users", false);
 		}
-		session.setAttribute("users", users);
-		response.sendRedirect("facebook.jsp");
+		request.setAttribute("users", users);
+		request.getRequestDispatcher("facebook.jsp").forward(request, response);
 		
 	}
 

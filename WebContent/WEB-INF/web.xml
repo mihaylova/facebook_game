@@ -66,4 +66,14 @@
     <servlet-name>Login</servlet-name>
     <url-pattern>/Login</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>Proba2</display-name>
+    <servlet-name>Proba2</servlet-name>
+    <servlet-class>Proba</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Proba2</servlet-name>
+    <url-pattern>/Proba2</url-pattern>
+  </servlet-mapping>
 </web-app>

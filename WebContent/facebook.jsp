@@ -5,8 +5,8 @@
     <%! ArrayList users; 
     String[] user;
     %>
-   <% users=(ArrayList)session.getAttribute("users"); %>
-<%--     <%= (String)session.getAttribute("name") %> --%>
+   <% users=(ArrayList)request.getAttribute("users"); %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,13 +15,13 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 </head>
 <body>
-<% if((Boolean)session.getAttribute("logged")){ %>
-		<h1>Hello <%= (String)session.getAttribute("name") %></h1>
+<% if((Boolean)request.getAttribute("logged")){ %>
+		<h1>Hello ${name} </h1>
 	<% } else { %>
 		<input type="button" value="login" onclick="login()" />
 	<% } %>
 
-	<% if((Boolean)session.getAttribute("has_users")) { %>
+	<% if((Boolean)request.getAttribute("has_users")) { %>
 		<table border="1">
 			<tr>
 				<td>UID</td>
