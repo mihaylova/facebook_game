@@ -44,7 +44,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>facebook</servlet-name>
-    <url-pattern>/facebook</url-pattern>
+    <url-pattern>/facebook/</url-pattern>
   </servlet-mapping>
   <servlet>
     <description></description>
@@ -55,5 +55,15 @@
   <servlet-mapping>
     <servlet-name>sess</servlet-name>
     <url-pattern>/sess</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>Login</display-name>
+    <servlet-name>Login</servlet-name>
+    <servlet-class>Login</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Login</servlet-name>
+    <url-pattern>/Login</url-pattern>
   </servlet-mapping>
 </web-app>

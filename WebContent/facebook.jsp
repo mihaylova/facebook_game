@@ -1,3 +1,12 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    <%@ page import="java.util.*" %>
+    
+    <%! ArrayList users; 
+    String[] user;
+    %>
+   <% users=(ArrayList)session.getAttribute("users"); %>
+<%--     <%= (String)session.getAttribute("name") %> --%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,28 +15,30 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 </head>
 <body>
-	<#if logged>
-		<h1>Hello ${name}</h1>
-	<#else>
+<% if((Boolean)session.getAttribute("logged")){ %>
+		<h1>Hello <%= (String)session.getAttribute("name") %></h1>
+	<% } else { %>
 		<input type="button" value="login" onclick="login()" />
-	</#if>
+	<% } %>
 
-	<#if has_users>
+	<% if((Boolean)session.getAttribute("has_users")) { %>
 		<table border="1">
 			<tr>
 				<td>UID</td>
 				<td>Name</td>
 			</tr>
-			<#list users as user>
+		<%for(int i=0; i<users.size(); i++){ 
+		user=(String [])users.get(i); 
+		%>
 				<tr>
 					<td>
-						<a href="http://facebook.com/${user[0]}" target="_blank">${user[0]}</a>
+						<a href="http://facebook.com/<%= user[0] %>" target="_blank"><%= user[0] %></a>
 					</td>
-					<td>${user[1]}</td>
+					<td><%= user[1] %></td>
 				</tr>
-			</#list>
+	
 		</table>
-	</#if>
+	<% } } %>
 
 	<div id="fb-root"></div>
 	<script>

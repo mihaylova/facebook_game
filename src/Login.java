@@ -1,45 +1,42 @@
 
-import java.io.*;
+
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
-import com.restfb.*;
+import com.restfb.DefaultFacebookClient;
+import com.restfb.FacebookClient;
 import com.restfb.types.User;
 
-/**
- * Servlet implementation class facebook
- */
-public class facebook extends HttpServlet {
+public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+       
+    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("text/html; charset=utf-8");
 		DB db = new DB();
 		Session sess = new Session(request, response, db);
-		Render render = new Render(getServletContext());
-		
+		HttpSession session = request.getSession(true);
 		String uid = sess.getUID();
 		if (uid == null || uid.isEmpty()) {
 			
-			render.set("logged", false);
+			session.setAttribute("logged", false);
 		} else {
-			render.set("logged", true);
-			render.set("name", sess.getName());
+			session.setAttribute("logged", true);
+			session.setAttribute("name", sess.getName());
 		}
-
-		ResultSet sessions = db.Get("SELECT * FROM sessions");
 		
-		ArrayList users = new ArrayList();
+ResultSet sessions = db.Get("SELECT * FROM sessions");
+		
+		ArrayList<String[]> users = new ArrayList<String[]>();
 
 		try {
 			while(sessions.next()) {
@@ -58,18 +55,16 @@ public class facebook extends HttpServlet {
 		}
 		
 		if (users.size() > 0) {
-			render.set("has_users", true);
+			session.setAttribute("has_users", true);
 		} else {
-			render.set("has_users", false);
+			session.setAttribute("has_users", false);
 		}
-		render.set("users", users);
-		
-		//sess.flush();
-
-		render.render(response, "facebook.html");
+		session.setAttribute("users", users);
+		response.sendRedirect("facebook.jsp");
 		
 	}
 
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		DB db = new DB();
 		Session sess = new Session(request, response, db);
@@ -77,7 +72,7 @@ public class facebook extends HttpServlet {
         String token = request.getParameter("token");
         if(token == null){
         	response.setHeader("Location", "/inna/facebook/");
-        	response.setStatus( response.SC_MOVED_TEMPORARILY);
+        	response.setStatus( HttpServletResponse.SC_MOVED_TEMPORARILY);
         } else {
         	FacebookClient facebookClient = new DefaultFacebookClient(token);
         	
@@ -92,6 +87,9 @@ public class facebook extends HttpServlet {
     		out.print("OK");
         }
         
+		
+      
+	}
 	}
 
-}
+

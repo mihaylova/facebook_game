@@ -13,7 +13,7 @@ import freemarker.template.TemplateException;
 
 public class Render {
 	private Configuration cfg; 
-	private Map root = new HashMap();
+	private Map<String, Object> root = new HashMap<String, Object>();
 	private Template tmpl;
 	
 	public Render(ServletContext servlet_context){

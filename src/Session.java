@@ -2,7 +2,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 
-import javax.servlet.*;
 import javax.servlet.http.*;
 
 public class Session {
@@ -10,7 +9,7 @@ public class Session {
 	private HttpServletResponse response;
 	private DB db;
 	private int id = 0;
-	private HashMap params = new HashMap();
+	private HashMap<String, String> params = new HashMap<String, String>();
 
 	public Session (HttpServletRequest request, HttpServletResponse response, DB db) {
 		this.request = request;
