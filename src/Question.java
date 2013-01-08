@@ -15,7 +15,8 @@ private String category;
 public Question(String category){
 	DB db = new DB();
 	this.category=category;
-	ResultSet result = db.GetRow("Select * from Questions where category='"+category+"' order by RAND() LIMIT 1;");
+	String sql="Select * from questions where category='"+category+"' order by RAND() LIMIT 1;";
+	ResultSet result = db.GetRow(sql);
 	try {
 		this.question=result.getString("question");
 		this.right_answer=result.getString("right_answer");
@@ -41,7 +42,7 @@ public static boolean add(String question, String right_answer, String answer1, 
 }
 
 public static String RandomCategory(){
-	String[] categories = {"Biologia", "Matematika"};
+	String[] categories = {"Математика", "История", "География", "Астрономия", "Компютърни науки"};
 	int item = (int) (Math.random() * (categories.length));
 	return categories[item];
 }
@@ -49,7 +50,7 @@ public static String RandomCategory(){
 private void MixAnswers(){
 	int size = this.answers.size();
 	for(int i=0; i<size; i++){
-		int random = (int) (Math.random() * (size-i));
+		int random = (int) (Math.random() * (size));
 		String a= this.answers.get(random);
 		this.answers.set(random, this.answers.get(i));
 		this.answers.set(i, a);

@@ -19,8 +19,8 @@ Category<br>
 <option value="История"> История</option>
 <option value="Астрономия"> Астрономия</option>
 <option value="География"> География</option>
-<option value="Физика"> Физика</option>
-<option value="Религия"> Религия</option>
+<option value="Компютърни науки"> Компютърни науки</option>
+
 
 
 </select> <br>
@@ -40,6 +40,7 @@ Other answers<br>
 
 <!-- Oformlenie  na saobshtenieto // status==true or false -->
 <h1>${status}</h1>
+<a href="Add_question"> Нов въпрос</a>
 
 <% } %>
 

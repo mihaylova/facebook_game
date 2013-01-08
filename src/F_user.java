@@ -1,5 +1,11 @@
+import java.io.Serializable;
 
-public class F_user {
+
+public class F_user implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String id;
 	private String points;
 	private DB db = new DB();

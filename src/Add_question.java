@@ -69,7 +69,7 @@ public class Add_question extends HttpServlet {
 		
 		request.setAttribute("submit", submit);
 		request.getRequestDispatcher("add_question.jsp").forward(request, response);
-		
+		submit=false;
 	}
 	
 }
