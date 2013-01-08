@@ -33,7 +33,7 @@ public class Login extends HttpServlet {
 			
 			request.setAttribute("logged", false);
 		} else {
-		F_user user = new F_user((String)sess.getUID(), (String)sess.getPoints());
+		
 			request.setAttribute("logged", true); 
 			request.setAttribute("name", sess.getName());
 		}

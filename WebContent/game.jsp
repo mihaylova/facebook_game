@@ -11,6 +11,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+
 <% if(!(Boolean)request.getAttribute("play")){ %>
 ${category}
 <form method="post" action="Game">
@@ -20,16 +21,25 @@ ${category}
 </form>
 
 <%} else { %>
-
+<%if(!(Boolean)request.getAttribute("gotanswer")){ %>
 ${question }
 <form method="post" action="Game">
-<input type="submit" name="user_answer" value=${answer1 }>
-<input type="submit" name="user_answer" value=${answer2 }>
-<input type="submit" name="user_answer" value=${answer3 }>
-<input type="submit" name="user_answer" value=${answer4 }>
+<input type="submit" name="user_answer" value="${answer1 }">
+<input type="submit" name="user_answer" value="${answer2 }">
+<input type="submit" name="user_answer" value="${answer3 }">
+<input type="submit" name="user_answer" value="${answer4 }">
 
 </form>
 
-<%} %>
+<%} 
+else if((Boolean)request.getAttribute("gotanswer")){
+%>
+
+${message } <br>
+${name } вече имате ${points } точки!
+<br>
+<a href="Game">Нова игра</a>
+<%}} %>
+
 </body>
 </html>
