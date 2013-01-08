@@ -26,6 +26,7 @@
 			<tr>
 				<td>UID</td>
 				<td>Name</td>
+				<td>Points</td>
 			</tr>
 		<%for(int i=0; i<users.size(); i++){ 
 		user=(String [])users.get(i); 
@@ -35,10 +36,14 @@
 						<a href="http://facebook.com/<%= user[0] %>" target="_blank"><%= user[0] %></a>
 					</td>
 					<td><%= user[1] %></td>
+					<td><%= user[2] %></td>
 				</tr>
 	
-		</table>
+		
 	<% } } %>
+	</table>
+	
+	<a href="Add_question">Добави въпрос</a>
 
 	<div id="fb-root"></div>
 	<script>
@@ -59,9 +64,9 @@
 	  function login() {
 		  FB.login(function(response) {
 			   if (response.authResponse) {
-					//window.location.href = '/inna/facebook?token=' + response.authResponse.accessToken;
-					$.post("/inna/facebook/", {"token": response.authResponse.accessToken}, function(){
-						window.location.href = '/inna/facebook/';
+					//window.location.href = '/inna/Login?token=' + response.authResponse.accessToken;
+					$.post("/inna/Login", {"token": response.authResponse.accessToken}, function(){
+						window.location.href = '/inna/Login';
 					})
 			   } else {
 			     console.log('User cancelled login or did not fully authorize.');

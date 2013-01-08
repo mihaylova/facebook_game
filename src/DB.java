@@ -31,14 +31,14 @@ public class DB {
 	}
 	
 	public boolean Do(String sql) {
-		boolean status = false;
+		boolean status = true;
 
 		try {
 			statement = connection.createStatement();
 			
-			status = statement.execute(sql);
+			statement.execute(sql);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			status = false;
 		}
 		
 		return status;

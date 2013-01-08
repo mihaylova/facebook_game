@@ -9,7 +9,7 @@ public class Session {
 	private HttpServletResponse response;
 	private DB db;
 	private int id = 0;
-	private HashMap<String, String> params = new HashMap<String, String>();
+	private HashMap params = new HashMap();
 
 	public Session (HttpServletRequest request, HttpServletResponse response, DB db) {
 		this.request = request;
@@ -42,6 +42,7 @@ public class Session {
 				params.put("uid", session_data.getString("uid"));
 				params.put("access_token", session_data.getString("access_token"));
 				params.put("name", session_data.getString("name"));
+				params.put("points", session_data.getString("points"));
 			} catch (SQLException e) {
 				id = 0;
 			}
@@ -83,12 +84,21 @@ public class Session {
 		return (String) params.get("access_token");
 	}
 	
+	public void setPoints (String points) {
+		params.put("points", points);
+	}
+
+	public String getPoints() {
+		return (String) params.get("points");
+	}
+	
 	public void flush() {
 		String query = "UPDATE sessions SET";
 
 		query += " uid='" + params.get("uid") + "',";
 		query += " access_token='" + params.get("access_token") + "',";
-		query += " name='" + params.get("name") + "'";
+		query += " name='" + params.get("name") + "',";
+		query += " points='" + params.get("points") + "'";
 		
 		query += " WHERE id=" + id;
 		

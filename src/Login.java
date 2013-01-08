@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
 import com.restfb.types.User;
@@ -34,7 +33,8 @@ public class Login extends HttpServlet {
 			
 			request.setAttribute("logged", false);
 		} else {
-			request.setAttribute("logged", true);
+		F_user user = new F_user((String)sess.getUID(), (String)sess.getPoints());
+			request.setAttribute("logged", true); 
 			request.setAttribute("name", sess.getName());
 		}
 		
@@ -46,10 +46,11 @@ ResultSet sessions = db.Get("SELECT * FROM sessions");
 			while(sessions.next()) {
 				String user_uid = sessions.getString("uid");
 				String user_name = sessions.getString("name");
+				String user_points = sessions.getString("points");
 				
 				if (user_uid != null && user_name != null) {
 
-					String[] user = {user_uid, user_name};
+					String[] user = {user_uid, user_name, user_points};
 	
 					users.add(user);
 				}
@@ -75,16 +76,18 @@ ResultSet sessions = db.Get("SELECT * FROM sessions");
 
         String token = request.getParameter("token");
         if(token == null){
-        	response.setHeader("Location", "/inna/facebook/");
+        	
+        	response.setHeader("Location", "/inna/Login");
         	response.setStatus( HttpServletResponse.SC_MOVED_TEMPORARILY);
         } else {
         	FacebookClient facebookClient = new DefaultFacebookClient(token);
         	
-        	User user = facebookClient.fetchObject("me", User.class);
+        	User fuser = facebookClient.fetchObject("me", User.class);
         	       	
-        	sess.setUID(user.getId());
-        	sess.setName(user.getName());
+        	sess.setUID(fuser.getId());
+        	sess.setName(fuser.getName());
         	sess.setAcessToken(token);
+        	sess.setPoints("200");
         	sess.flush();
 
     		PrintWriter out = response.getWriter();

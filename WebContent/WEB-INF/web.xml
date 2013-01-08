@@ -76,4 +76,34 @@
     <servlet-name>Proba2</servlet-name>
     <url-pattern>/Proba2</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>Add_question</display-name>
+    <servlet-name>Add_question</servlet-name>
+    <servlet-class>Add_question</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Add_question</servlet-name>
+    <url-pattern>/Add_question</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>Game</display-name>
+    <servlet-name>Game</servlet-name>
+    <servlet-class>Game</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Game</servlet-name>
+    <url-pattern>/Game</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>Game1</display-name>
+    <servlet-name>Game1</servlet-name>
+    <servlet-class>Game1</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Game1</servlet-name>
+    <url-pattern>/Game1</url-pattern>
+  </servlet-mapping>
 </web-app>
