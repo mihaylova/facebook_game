@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
@@ -26,69 +27,50 @@ public class Login extends HttpServlet {
 		
 		response.setContentType("text/html; charset=utf-8");
 		DB db = new DB();
-		Session sess = new Session(request, response, db);
+		HttpSession sess = request.getSession(true);
 		
-		String uid = sess.getUID();
+		String uid = (String) sess.getAttribute("uid");
 		if (uid == null || uid.isEmpty()) {
 			
 			request.setAttribute("logged", false);
 		} else {
 		
 			request.setAttribute("logged", true); 
-			request.setAttribute("name", sess.getName());
+			F_user user=new F_user(uid);
+			request.setAttribute("name", user.getName());
+			request.setAttribute("uid", sess.getAttribute("uid"));
+			
+			
 		}
 		
-ResultSet sessions = db.Get("SELECT * FROM sessions");
-		
-		ArrayList<String[]> users = new ArrayList<String[]>();
-
-		try {
-			while(sessions.next()) {
-				String user_uid = sessions.getString("uid");
-				String user_name = sessions.getString("name");
-				String user_points = sessions.getString("points");
-				
-				if (user_uid != null && user_name != null) {
-
-					String[] user = {user_uid, user_name, user_points};
-	
-					users.add(user);
-				}
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		if (users.size() > 0) {
-			request.setAttribute("has_users", true);
-		} else {
-			request.setAttribute("has_users", false);
-		}
-		request.setAttribute("users", users);
-		request.getRequestDispatcher("facebook.jsp").forward(request, response);
+		request.getRequestDispatcher("/facebook.jsp").forward(request, response);
 		
 	}
 
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		DB db = new DB();
-		Session sess = new Session(request, response, db);
+		HttpSession sess = request.getSession(true);
 
         String token = request.getParameter("token");
         if(token == null){
         	
-        	response.setHeader("Location", "/inna/Login");
+        	response.setHeader("Location", "/inna/Login/");
         	response.setStatus( HttpServletResponse.SC_MOVED_TEMPORARILY);
         } else {
         	FacebookClient facebookClient = new DefaultFacebookClient(token);
         	
         	User fuser = facebookClient.fetchObject("me", User.class);
-        	       	
-        	sess.setUID(fuser.getId());
-        	sess.setName(fuser.getName());
-        	sess.setAcessToken(token);
-        	sess.setPoints("200");
-        	sess.flush();
+        	
+        	sess.setAttribute("uid", fuser.getId());
+        	F_user f_user = new F_user(fuser.getId());
+        	if (f_user.isNew()) {
+	
+        		f_user.setName(fuser.getName());
+        		f_user.setPoints("200");
+        	}
+        	
+        	f_user.setAcessToken(token);
 
     		PrintWriter out = response.getWriter();
     		out.print("OK");

@@ -12,10 +12,10 @@ import javax.servlet.http.HttpSession;
 public class Game extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Boolean play=false;
-	private Boolean first=true;
+	
 	private Boolean gotanswer=false;
 	private Boolean right;
-	private Session sess;
+	
 	private F_user user;
 	private DB db=new DB();
 	private HttpSession session;
@@ -35,10 +35,8 @@ public class Game extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		CheckStatus(request, response);
 		
+		session=request.getSession(true);
 		
-		if(first){
-			SetUser(request, response);
-					}
 		
 		if(!play){
 			SetCategory(request, response);
@@ -61,11 +59,11 @@ public class Game extends HttpServlet {
 		
 		if(request.getParameter("play")!=null){
 			play=true;
-			first=false;
+			
 		}
 		if(request.getParameter("noplay")!=null){
 			play=false;
-			first=false;
+			
 		}
 		if(request.getParameter("user_answer")!=null){
 			gotanswer=true;
@@ -73,13 +71,7 @@ public class Game extends HttpServlet {
 		
 	}
 	
-	protected void SetUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-		sess=new Session(request, response, db);
-		user=new F_user(sess.getUID(), sess.getPoints(), sess.getName());
-		session = request.getSession();
-		session.setAttribute("user", user);
-		
-	}
+	
 
 	protected void SetQuestion(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		
@@ -131,7 +123,8 @@ public class Game extends HttpServlet {
 	}
 	
 	protected void UpdatePoints(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-		user=(F_user)session.getAttribute("user");
+		
+		user= new F_user((String)session.getAttribute("uid"));
 		if(right){
 			user.PlusPoints();
 		}

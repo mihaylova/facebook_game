@@ -2,10 +2,7 @@
     pageEncoding="UTF-8"%>
     <%@ page import="java.util.*" %>
     
-    <%! ArrayList users; 
-    String[] user;
-    %>
-   <% users=(ArrayList)request.getAttribute("users"); %>
+   
 
 <!DOCTYPE html>
 <html>
@@ -16,34 +13,18 @@
 </head>
 <body>
 <% if((Boolean)request.getAttribute("logged")){ %>
-		<h1>Hello ${name} </h1>
+		<h1>Hello ${name} </h1> <br>
+		<h1>Uid ${uid} </h1> <br>
+		<a href="Add_question">Добави въпрос</a> <br>
+		<a href="Game">Igrai</a>
+		
 	<% } else { %>
 		<input type="button" value="login" onclick="login()" />
 	<% } %>
 
-	<% if((Boolean)request.getAttribute("has_users")) { %>
-		<table border="1">
-			<tr>
-				<td>UID</td>
-				<td>Name</td>
-				<td>Points</td>
-			</tr>
-		<%for(int i=0; i<users.size(); i++){ 
-		user=(String [])users.get(i); 
-		%>
-				<tr>
-					<td>
-						<a href="http://facebook.com/<%= user[0] %>" target="_blank"><%= user[0] %></a>
-					</td>
-					<td><%= user[1] %></td>
-					<td><%= user[2] %></td>
-				</tr>
 	
-		
-	<% } } %>
-	</table>
 	
-	<a href="Add_question">Добави въпрос</a>
+	
 
 	<div id="fb-root"></div>
 	<script>
@@ -65,8 +46,8 @@
 		  FB.login(function(response) {
 			   if (response.authResponse) {
 					//window.location.href = '/inna/Login?token=' + response.authResponse.accessToken;
-					$.post("/inna/Login", {"token": response.authResponse.accessToken}, function(){
-						window.location.href = '/inna/Login';
+					$.post("/inna/Login/", {"token": response.authResponse.accessToken}, function(){
+						window.location.href = '/inna/Login/';
 					})
 			   } else {
 			     console.log('User cancelled login or did not fully authorize.');
