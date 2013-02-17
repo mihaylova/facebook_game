@@ -19,6 +19,17 @@ create table fb_user (
   constraint pk_fb_user primary key (id))
 ;
 
+create table game (
+  id                        bigint auto_increment not null,
+  player1uid                bigint,
+  player2uid                bigint,
+  is_start                  tinyint(1) default 0,
+  is_finish                 tinyint(1) default 0,
+  start                     datetime,
+  finish                    datetime,
+  constraint pk_game primary key (id))
+;
+
 create table question (
   id                        bigint auto_increment not null,
   question                  varchar(255),
@@ -54,6 +65,8 @@ SET FOREIGN_KEY_CHECKS=0;
 drop table admin;
 
 drop table fb_user;
+
+drop table game;
 
 drop table question;
 

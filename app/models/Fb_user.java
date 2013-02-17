@@ -34,4 +34,14 @@ public class Fb_user extends Model {
 	            .eq("uid", uid)
 	            .findUnique();
 		   }
+		  
+		  public void PlusPoints(int count){
+			  this.points=this.points+count;
+			  save();
+		  }
+		  
+		  public void MinusPoints(int count){
+			  this.points=this.points-count;
+			  save();
+		  }
 }
