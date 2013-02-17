@@ -1,0 +1,27 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+
+POST	/canvas/								controllers.Canvas.index()
+		
+GET		/question/add							controllers.User_questions.add()
+POST	/question								controllers.User_questions.save()
+GET		/question/:id							controllers.User_questions.show(id: Long)
+
+GET     /login                          	    controllers.Admins.login()
+POST    /login                           	   	controllers.Admins.authenticate()
+GET     /logout                           		controllers.Admins.logout()
+GET		/admin									controllers.Admins.index()
+
+GET		/admin/question/add							controllers.Questions.add()
+POST	/admin/question								controllers.Questions.save()
+GET		/admin/question/:id							controllers.Questions.show(id: Long)
+
+GET		/admin/users_questions								controllers.Questions.view()
+GET		/admin/users_questions/insert/:id					controllers.Questions.insert(id: Long)
+GET		/admin/users_questions/delete/:id					controllers.Questions.delete(id: Long)
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)
