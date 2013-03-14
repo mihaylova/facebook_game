@@ -1,0 +1,90 @@
+@(user_uid: Long)
+@main_play("star playing") {
+   	<a href="/canvas/"><img class="exit" src="@routes.Assets.at("images/exit.jpg")"></a>
+	<div id="users-table"></div>
+	<div id="message"></div>
+	<div id="category"></div>
+	
+			<div class="question"> 
+			<div class="question-cont"> 
+				<h4 class="question">Vaprosjhjfkhg jhgdjkdfhg kjdhfjkhdf</h4>
+			</div> 
+			<div class="answers"> 
+				<button class="btn answer" >Answer1kjfgk kjglkjdlfkjglkj kljglkfjlgfj... inaan ihsuh jdgfjgsdf hdfg hgdhsgjiauys jhgdhfgdjhf jhsgdjshgjf</button>
+				<button class="btn answer" >Answer2</button>
+				<button class="btn answer" >Answer3</button>
+				<button class="btn answer" >Answer4</button>
+			</div>
+		</div>
+		
+	
+		<div class="jokers">  
+			<button class="btn joker">50/50</button>
+			<button class="btn joker">Гласа на мнозинството</button>
+		</div>
+		
+		<div class="bet-btn" style="display:none;">
+			<span class="range">
+				<input type="range" name="foo" min="0" max="100" style="width:150px;">
+				<output for="foo" onforminput="value = foo.valueAsNumber;"></output> 
+			</span>
+			<button class="btn btn-block bet" id="bets">Заложи </button><br>
+			<span class="bet">100</span>
+			<button class="btn btn-block bet" id="bets">Отговори</button>
+			<button class="btn btn-block bet" id="bets">Откажи</button>
+		</div>
+		
+		<div class="bet"> <span> </span> </div>
+		<div class=:"joker"> </div>
+
+	<div style="top:180px;left:300px;position: absolute;">
+		<ul id="status">
+		</ul>
+	</div>
+	
+	<script type="text/template" id="status-template">
+		<li><%= message %></li>
+	</script>
+	<script type="text/template" id="users-table-template">
+		<% 
+			var number_of_slots = 4 ;
+			for(var i = 1; i <= number_of_slots; i++) {
+				// try to find player for this slot
+				var player = _.filter(members, function(member){ return member.slot == i; })
+
+				if (player.length) {
+					var member = player[0];
+		%>
+					<div id="member-<%= member.uid %>">
+						<span class="player<%= member.slot %> name"><%= member.name %></span>
+						<div class="player<%= member.slot %>"> 
+							<img class="player" src="<%= member.picture %>">
+						</div>
+					</div>
+				<% } else { %>		
+					<div class="no-player-slot">
+						<span class="player<%= i %> name">&nbsp;</span><br>
+						<div class="player<%= i %>"> 
+							<img class="player" src="@routes.Assets.at("images/noplayer.jpg")">
+						</div>
+					</div>
+				<% } %>	
+		<% } %>
+		
+	</script>
+	<script type="text/template" id="category-template">
+		
+		<div class="category"> 
+			<img style="" src="/assets/images/category/<%= message %>.gif"">  
+		</div>
+	</script>
+	<script type="text/template" id="message-template">
+		
+		<div class="message"><%=message %> </div>
+	</script>
+	<script>
+		window.game = new Game(@user_uid).start();
+	</script>
+	 <script src="@routes.Assets.at("javascripts/main.js")" type="text/javascript"></script>        
+     <script src="@routes.Assets.at("javascripts/game.js")" type="text/javascript"></script>
+}

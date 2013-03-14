@@ -1,0 +1,25 @@
+@(title: String)(content: Html)
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>@title</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <script src="https://app.divshot.com/js/jquery.min.js"></script>
+    	<script src="https://app.divshot.com/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+        <link rel="stylesheet" href="https://app.divshot.com/themes/readable/bootstrap.min.css">
+    	<link rel="stylesheet" href="https://app.divshot.com/css/bootstrap-responsive.css"> 
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    </head>
+    <body>
+    
+		
+	
+	        @content
+      
+        <script src="@routes.Assets.at("javascripts/main.js")" type="text/javascript"></script>
+    </body>
+</html>

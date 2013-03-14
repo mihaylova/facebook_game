@@ -20,7 +20,7 @@ public class User_question extends Model {
 	
 		private String question;
 		private String right_answer;
-		private String category;
+		private int category;
 		private String answer1;
 		private String answer2;
 		private String answer3;
@@ -73,12 +73,12 @@ public class User_question extends Model {
 		}
 
 
-		public String getCategory() {
+		public int getCategory() {
 			return category;
 		}
 
 
-		public void setCategory(String category) {
+		public void setCategory(int category) {
 			this.category = category;
 		}
 

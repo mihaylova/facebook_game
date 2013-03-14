@@ -1,0 +1,7 @@
+@(url: String)
+
+@main("facebook redirect") {
+	<script>
+		window.top.location = "@Html(url)";
+	</script>	
+}

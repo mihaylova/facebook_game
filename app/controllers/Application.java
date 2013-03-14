@@ -25,6 +25,7 @@ import org.json.simple.parser.JSONParser;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
 import com.restfb.types.User;
+import com.restfb.types.Photo;
 
 public class Application extends Controller {
 	private final static String api_secret = "64ad2046c999c2547c3db540ce0e1897";
@@ -43,7 +44,7 @@ public class Application extends Controller {
 			return Fb_user.find.byId(Long.parseLong(session("user_id")));
 		}
 		
-		return new Fb_user();
+		return null;
 	}
 
     public static Boolean parse_facebook_signed_request() {
@@ -62,28 +63,33 @@ public class Application extends Controller {
 			  return false;
 		  }
 		  
-		  Long uid = Long.parseLong(parsed_request.get("user_id").toString());
-		  String access_token = parsed_request.get("oauth_token").toString();
-		  session("access_token", access_token);
-
-		  Fb_user user = Fb_user.find_by_uid(uid);
+		  if (parsed_request.containsKey("user_id")) {
 		  
-		  if (user == null) {
-			  FacebookClient facebookClient = new DefaultFacebookClient(access_token);
+			  Long uid = Long.parseLong(parsed_request.get("user_id").toString());
+			  String access_token = parsed_request.get("oauth_token").toString();
+			  session("access_token", access_token);
 	
-			  User fuser = facebookClient.fetchObject("me", User.class);
-
-			  user = new Fb_user();
+			  Fb_user user = Fb_user.find_by_uid(uid);
 			  
-			  user.uid = uid;
-			  user.name = fuser.getName();
-			  user.points = 200;
-			  user.save();
+			  if (user == null) {
+				  FacebookClient facebookClient = new DefaultFacebookClient(access_token);
+		
+				  User fuser = facebookClient.fetchObject("me", User.class);
+				  //Photo picture = facebookClient.fetchObject("me?fields=picture", Photo.class);
+	
+				  user = new Fb_user();
+				  
+				  user.uid = uid;
+				  user.name = fuser.getName();
+				  user.points = 200;
+				  user.picture="https://graph.facebook.com/"+uid+"/picture?type=large";
+				  user.save();
+			  }
+			 
+			  session("user_id", user.id.toString());
+			  
+			  return true;
 		  }
-
-		  session("user_id", user.id.toString());
-		  
-		  return true;
 	  }
 	  
 	  return false;

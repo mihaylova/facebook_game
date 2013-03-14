@@ -18,14 +18,14 @@ public class Questions extends Application {
 	final static Form<Question> questionForm = form(Question.class);
 		
 					
-	public static Result show(Long id){
-		if(session("admin")!=null){
-				Question question = Question.find.byId(id);
-		
-				return ok(show.render(question));
-			}
-		else return redirect(routes.Admins.login());
-		}
+//	public static Result show(Long id){
+//		if(session("admin")!=null){
+//				Question question = Question.find.byId(id);
+//		
+//				return ok(show.render(question));
+//			}
+//		else return redirect(routes.Admins.login());
+//		}
 	
 	public static Result add () {
 		if(session("admin")!=null){	
@@ -42,10 +42,11 @@ public class Questions extends Application {
 		        return badRequest(add.render(filledForm));
 		    } else {
 		        Question question = filledForm.get();
-		        question.setAnswer4(question.getRight_answer());
+		       
 		       
 		        question.save();
-		        return redirect("/admin/question/" + question.id);
+		        flash("success", "Въпроса беше добавен!!!");
+		        return redirect("/admin/question/add");
 		              
 		    }
 				
@@ -57,7 +58,7 @@ public class Questions extends Application {
 		if(session("admin")!=null){	
 			List<User_question> user_questions =  (List<User_question> ) User_question.find.all();
 			
-			return ok(view_from_user.render(user_questions));
+			return ok(view_from_user.render(user_questions, Question.categories));
 			
 		}
 		else return redirect(routes.Admins.login());
@@ -66,9 +67,8 @@ public class Questions extends Application {
 	public static Result insert (Long id){
 		if(session("admin")!=null){
 			User_question user_question = User_question.find.byId(id);
-			Question question = Question.set_from_user(user_question);
-			question.save();
-			user_question.delete();
+			Question.set_from_user(user_question);
+			
 			flash("success", "Въпроса беше добавен!!!");
 			return redirect("/admin/users_questions");
 			}

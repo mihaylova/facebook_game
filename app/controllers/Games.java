@@ -2,69 +2,51 @@ package controllers;
 
 
 
+//import models.ChatRoom;
 import models.Game;
+import models.GameRoom;
+import models.Fb_user;
 import play.data.DynamicForm;
+import play.libs.Json;
 import play.mvc.Result;
+import play.mvc.WebSocket;
 import views.html.game.*;
+
+import org.codehaus.jackson.*;
+import org.codehaus.jackson.node.ObjectNode;
 
 public class Games extends Application {
 	
-	
 	public static Result index() {
-
-		Game game=Game.Join_or_Create();
-		session("game_id", Long.toString(game.id));
-		return ok();
-		
+		return ok(index.render(current_user().uid));
 	}
 	
+    public static WebSocket<JsonNode> join() {
+   	
+		final Game game = Game.Get();
+		String game_id = game.id.toString();
+		session("game_id", game_id);
+		final Fb_user user = current_user();
+    	
+        return new WebSocket<JsonNode>() {
+            
+            public void onReady(WebSocket.In<JsonNode> in, WebSocket.Out<JsonNode> out){
+                
+                // Join the game
+                try { 
+                    GameRoom.join(user, game, in, out);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        };
+    }
+    
+    private static boolean user_can_play() {
+    	return true;
+    }
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	//private static  Game game = new Game();
-	
-//	
-//	public static Result show_category() {
-//		game.setRandomCategory();
-//		return ok(show_category.render(game.getCategory()));
-//		
-//	}
-//		
-//	public static Result show_question() {
-//		game.setQuestion(game.getCategory());
-//		return ok(show_question.render(game.getQuestion()));
-//		
-//	}
-//	
-//	public static Result check_answer() {
-//		 DynamicForm form = form().bindFromRequest();
-//		
-//		if(form.get("user_answer").equals(game.getQuestion().getRight_answer())){
-//			game.getPlayer1().PlusPoints(10);
-//			flash("message", "Отговорихте правилно! Вашите точки сега са: "+game.getPlayer1().points);
-//			return redirect("/");
-//		}
-//		else{
-//			game.getPlayer1().MinusPoints(10);
-//			flash("message", "Отговорихте грешно! Вашите точки сега са: "+game.getPlayer1().points);
-//			return redirect("/");
-//		}
-//		
-//	}
-		
-
+    public static Result testview(){
+		return ok(view.render());
+	}
 }

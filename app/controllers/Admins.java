@@ -7,6 +7,7 @@ import play.data.Form;
 import play.db.DB;
 import play.mvc.Result;
 import views.html.admins.*;
+import views.html.questions.add;
 
 public class Admins extends Application {
 
@@ -50,7 +51,11 @@ public class Admins extends Application {
 		}
 		
 		public static Result index(){
-			return ok(index.render(session("admin")));
+			if(session("admin")!=null){	
+				return ok(index.render(session("admin")));
+			}
+			else return redirect(routes.Admins.login());
+			
 		}
 
 

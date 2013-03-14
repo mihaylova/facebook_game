@@ -25,20 +25,21 @@ public static Result save () {
     } else {
         User_question question = filledForm.get();
         
-       // question.setUsername() ot sesiata
-        //question.setUser_uid() ot sesiata
+       question.setUsername(current_user().name);
+       question.setUser_uid(current_user().uid);
        question.save();
-      return redirect("/question/" + question.id);
+       flash("success", "Въпроса беше добавен!!!");
+      return redirect("/question/add");
         
         
     }
 		
 }
-public static Result show(Long id){
-
-	User_question question = User_question.find.byId(id);
-
-	return ok(show.render(question));
-}
+//public static Result show(Long id){
+//
+//	User_question question = User_question.find.byId(id);
+//
+//	return ok(show.render(question));
+//}
 
 }

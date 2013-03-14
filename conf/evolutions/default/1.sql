@@ -16,6 +16,7 @@ create table fb_user (
   name                      varchar(255),
   acess_token               varchar(255),
   points                    integer,
+  picture                   varchar(255),
   constraint pk_fb_user primary key (id))
 ;
 
@@ -34,11 +35,14 @@ create table question (
   id                        bigint auto_increment not null,
   question                  varchar(255),
   right_answer              varchar(255),
-  category                  varchar(255),
+  category                  integer,
   answer1                   varchar(255),
   answer2                   varchar(255),
   answer3                   varchar(255),
-  answer4                   varchar(255),
+  choice_answer1            integer,
+  choice_answer2            integer,
+  choice_answer3            integer,
+  choice_answer4            integer,
   constraint pk_question primary key (id))
 ;
 
@@ -46,7 +50,7 @@ create table user_question (
   id                        bigint auto_increment not null,
   question                  varchar(255),
   right_answer              varchar(255),
-  category                  varchar(255),
+  category                  integer,
   answer1                   varchar(255),
   answer2                   varchar(255),
   answer3                   varchar(255),
