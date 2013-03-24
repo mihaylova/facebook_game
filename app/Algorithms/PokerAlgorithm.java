@@ -1,0 +1,186 @@
+package Algorithms;
+
+import static java.util.concurrent.TimeUnit.SECONDS;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+
+import models.GameRoom;
+import models.Question;
+import models.GameRoom.Call;
+import models.GameRoom.Fold;
+import models.GameRoom.Start;
+import models.GameRoom.GameState;
+import models.GameRoom.Member;
+import models.GameRoom.NextOnTurn;
+import play.libs.Akka;
+
+import akka.actor.ActorRef;
+import akka.actor.Cancellable;
+import akka.util.Duration;
+
+public class PokerAlgorithm {
+	public static Map<Long, Cancellable> timers= new HashMap<Long, Cancellable>();
+	
+  	
+	
+	public static void onStart(ActorRef gameRoom, GameState gamestate){
+		gamestate.Bet=0;
+		gamestate.user_on_turn = gamestate.members.get(0);
+		gamestate.SetMaxBet();
+		gamestate.poker_algorithm=true;
+   	 	gamestate.category =  Question.RandomCategory();
+   	 	gamestate.unanswered_question=0;
+   	 	
+		for(Member member: gamestate.members){
+			
+			member.MinusPoints(2);
+			gamestate.Bet = gamestate.Bet+2;
+			member.UnCallBet=0;
+			member.wait=false;
+			member.fold=false;
+			member.turn=0;
+		}
+		Notify.OnCategory(gamestate.category, gamestate);
+		Cancellable timer = SetTimer(gameRoom, gamestate);
+		timers.put(gamestate.game_id, timer);
+	}
+	
+	public static void onRaise(ActorRef gameRoom, Member member, int bet, GameState gamestate){
+		if(!timers.get(gamestate.game_id).isCancelled()){
+			timers.get(gamestate.game_id).cancel();
+		}
+		timers.remove(gamestate.game_id);
+		gamestate.Bet=gamestate.Bet+bet;
+		member.turn++;
+		for(Member othermember: gamestate.members){
+			if(othermember.uid!=member.uid){
+				othermember.UnCallBet=othermember.UnCallBet+(bet-member.UnCallBet);
+			}
+		}
+		member.UnCallBet=0;
+		member.MinusPoints(bet);
+		gamestate.SetMaxBet();
+		int sum = bet-member.UnCallBet;
+    	Notify.OnCallOrRaise(member.name+" наддаде с "+ sum + " точки!", gamestate, member);
+    	gamestate.NextUser_on_turn();
+		Cancellable timer = SetTimer(gameRoom, gamestate);
+		timers.put(gamestate.game_id, timer);
+	}
+	
+	public  static void onFold(ActorRef gameRoom, Member member, GameState gamestate){
+		if(!timers.get(gamestate.game_id).isCancelled()){
+			timers.get(gamestate.game_id).cancel();
+		}
+		timers.remove(gamestate.game_id);
+		member.UnCallBet=0;
+		member.fold=true;
+		member.turn++;
+		Notify.OnFold(member.name+ " се отказа от наддаването!", gamestate.members);
+		if(isFinishFold(gamestate.members)){
+			FinishFold(gamestate);
+		}
+		else if(isFinishPass(gamestate.members)){
+			FinishPass(gamestate);
+		}
+		else{
+			gamestate.NextUser_on_turn();
+			Cancellable timer = SetTimer(gameRoom, gamestate);
+			timers.put(gamestate.game_id, timer);
+		}
+	}
+	
+	public static void onCall(ActorRef gameRoom, Member member, GameState gamestate){
+		if(!timers.get(gamestate.game_id).isCancelled()){
+			timers.get(gamestate.game_id).cancel();
+		}
+		timers.remove(gamestate.game_id);
+		gamestate.Bet=gamestate.Bet+member.UnCallBet;
+		member.MinusPoints(member.UnCallBet);
+		member.UnCallBet=0;
+		member.turn++;
+		gamestate.SetMaxBet();
+		Notify.OnCallOrRaise(member.name + " отговори на наддаването!", gamestate, member);
+		if(isFinishFold(gamestate.members)){
+			FinishFold(gamestate);
+		}
+		else if(isFinishPass(gamestate.members)){
+			FinishPass(gamestate);
+		}
+		else{
+			gamestate.NextUser_on_turn();
+			Cancellable timer = SetTimer(gameRoom, gamestate);
+			timers.put(gamestate.game_id, timer);
+		}
+		
+	}
+	
+	private static Cancellable SetTimer(ActorRef gameRoom, GameState gamestate){
+		Cancellable timer;
+		gameRoom.tell(new NextOnTurn(gamestate.game_id));
+  		if(gamestate.user_on_turn.UnCallBet==0){
+			timer =Akka.system().scheduler().scheduleOnce(
+					Duration.create(10, SECONDS),
+    				gameRoom,
+    				new Call(gamestate.user_on_turn, gamestate.game_id)
+    		);
+		}
+		else{
+			timer =Akka.system().scheduler().scheduleOnce(
+					Duration.create(10, SECONDS),
+    				gameRoom,
+    				new Fold(gamestate.user_on_turn, gamestate.game_id)
+    		);
+		}
+		return timer;
+	}
+
+	private  static Boolean isFinishFold(ArrayList<Member> members){
+		Boolean finish= false;
+		int sum=0;
+		for(Member member: members){
+			if(member.fold || member.wait){
+				sum++;
+			}
+		}
+		if(sum==(members.size()-1)){
+			finish=true;
+		}
+		return finish;
+	}
+	
+	private  static Boolean isFinishPass(ArrayList<Member> members){
+		Boolean finish= false;
+		int un_call_bets=0;
+		int turns=0;
+		for(Member member: members){
+			un_call_bets=un_call_bets+member.UnCallBet;
+			turns=turns+member.turn;
+		}
+		if(un_call_bets==0 && turns>=members.size()){
+			finish=true;
+		}
+		
+		return finish;
+	}
+	
+	private static void FinishFold(GameState gamestate){
+		gamestate.poker_algorithm = false;
+		Member member = Member.Find_unfold(gamestate.members);
+		int sumpoints = member.UnCallBet + gamestate.Bet;
+		member.PlusPoints(sumpoints);
+		Notify.OnWin(member.uid, member.name, member.points, gamestate.members);
+		Akka.system().scheduler().scheduleOnce(
+				Duration.create(15, SECONDS),
+				GameRoom.gameRooms.get(gamestate.game_id),
+				new Start(gamestate.game_id)
+		);
+	}
+	
+	private static void FinishPass(GameState gamestate){
+		gamestate.poker_algorithm = false;
+    	GameRoom.AskQuestion(gamestate);
+    }
+}

@@ -24,7 +24,7 @@ public class Question extends Model {
 		private String answer2;
 		private String answer3;
 		
-		public ArrayList answers;
+		public ArrayList<String> answers;
 		public int choice_answer1;
 		public int choice_answer2;
 		public int choice_answer3;
@@ -103,24 +103,20 @@ public class Question extends Model {
 			this.answer3 = answer3;
 		} 
 		
-//		public String getAnswer4() {
-//			return answer4;
-//		}
-//
-//
-//		public void setAnswer4(String answer4) {
-//			this.answer4 = answer4;
-//		} 
-//		
-
 		
 		public static int RandomCategory(){
+			int random = (int)(Math.random()*(10));
+			if(random==0){
+				return RandomCategory();
+			}
+			else{
+				return random;
+			}
 			
-			return (int) (Math.random()*(9));
 		}
 
 		private void MixAnswers(){
-			this.answers=new ArrayList();
+			this.answers=new ArrayList<String>();
 			answers.add(this.answer1);
 			answers.add(this.answer2);
 			answers.add(this.answer3);
@@ -131,10 +127,7 @@ public class Question extends Model {
 				String a= (String) answers.get(random);
 				answers.set(random, answers.get(i));
 				answers.set(i, a);
-//				this.answer1=(String) answers.get(0);
-//				this.answer2=(String) answers.get(1);
-//				this.answer3=(String) answers.get(2);
-//				this.answer4=(String) answers.get(3);
+				
 			}
 		}
 
@@ -147,7 +140,6 @@ public class Question extends Model {
 			question.setAnswer1(user_question.getAnswer1());
 			question.setAnswer2(user_question.getAnswer2());
 			question.setAnswer3(user_question.getAnswer3());
-			//question.setAnswer4(user_question.getRight_answer());
 			question.save();
 			user_question.delete();
 			

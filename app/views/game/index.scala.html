@@ -3,17 +3,18 @@
    	<a href="/canvas/"><img class="exit" src="@routes.Assets.at("images/exit.jpg")"></a>
 	<div id="users-table"></div>
 	<div id="message"></div>
-	<div id="category"></div>
+	<div id="category" style="display:none;"></div>
+	<div id="timer"></div>
 	
-			<div class="question"> 
+			<div class="question" style="display:none;"> 
 			<div class="question-cont"> 
-				<h4 class="question">Vaprosjhjfkhg jhgdjkdfhg kjdhfjkhdf</h4>
+				<h4 class="question"></h4>
 			</div> 
 			<div class="answers"> 
-				<button class="btn answer" >Answer1kjfgk kjglkjdlfkjglkj kljglkfjlgfj... inaan ihsuh jdgfjgsdf hdfg hgdhsgjiauys jhgdhfgdjhf jhsgdjshgjf</button>
-				<button class="btn answer" >Answer2</button>
-				<button class="btn answer" >Answer3</button>
-				<button class="btn answer" >Answer4</button>
+				<button class="btn answer" id="answer1"></button>
+				<button class="btn answer" id="answer2"></button>
+				<button class="btn answer" id="answer3"></button>
+				<button class="btn answer" id="answer4"></button>
 			</div>
 		</div>
 		
@@ -22,19 +23,22 @@
 			<button class="btn joker">50/50</button>
 			<button class="btn joker">Гласа на мнозинството</button>
 		</div>
+		<span id="message-bet" style="display:none;"></span>
+		<span id="bet" style="display:none;"></span>
 		
 		<div class="bet-btn" style="display:none;">
 			<span class="range">
-				<input type="range" name="foo" min="0" max="100" style="width:150px;">
-				<output for="foo" onforminput="value = foo.valueAsNumber;"></output> 
+				
+				<input type="range" name="raise" style="width:150px;">
+				<output for="raise" onforminput="value = raise.valueAsNumber;"></output> 
 			</span>
-			<button class="btn btn-block bet" id="bets">Заложи </button><br>
-			<span class="bet">100</span>
-			<button class="btn btn-block bet" id="bets">Отговори</button>
-			<button class="btn btn-block bet" id="bets">Откажи</button>
+			<button class="btn btn-block bet" id="raise">Заложи </button><br>
+			<span class="bet"></span>
+			<button class="btn btn-block bet" id="call">Отговори</button>
+			<button class="btn btn-block bet" id="fold">Откажи</button>
 		</div>
 		
-		<div class="bet"> <span> </span> </div>
+		
 		<div class=:"joker"> </div>
 
 	<div style="top:180px;left:300px;position: absolute;">
@@ -58,6 +62,7 @@
 					<div id="member-<%= member.uid %>">
 						<span class="player<%= member.slot %> name"><%= member.name %></span>
 						<div class="player<%= member.slot %>"> 
+							<span class="points"><%= member.points %></span>
 							<img class="player" src="<%= member.picture %>">
 						</div>
 					</div>
@@ -74,8 +79,8 @@
 	</script>
 	<script type="text/template" id="category-template">
 		
-		<div class="category"> 
-			<img style="" src="/assets/images/category/<%= message %>.gif"">  
+		<div class="category" > 
+			<img style="" src="/assets/images/category/<%= category %>.gif">  
 		</div>
 	</script>
 	<script type="text/template" id="message-template">

@@ -45,4 +45,9 @@ public class Fb_user extends Model {
 			  this.points=this.points-count;
 			  save();
 		  }
+		  
+		  public void SetPoints(int count){
+			  this.points = count;
+			  save();
+		  }
 }

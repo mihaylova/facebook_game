@@ -331,7 +331,7 @@ span.bet{
 button.answer{
 	color:#505050;
 	background-image: -webkit-linear-gradient(top, rgb(233, 238, 173), rgba(214, 226, 153, 0));
-background-color: rgba(14, 219, 195, 0.2);
+	background-color: rgba(14, 219, 195, 0.2);
 }
 
 button.answer:hover{
@@ -359,3 +359,84 @@ div.betting div img{
 	border: 4px solid blue !important;
 	-webkit-border-radius: 2px;
 }
+span.points{
+	position: absolute;
+	background-image: -webkit-linear-gradient(top,  #444444, #999999);
+	width: 56px; 
+	height: 30px; 
+	text-align: center; 
+	color: white; 
+	border-radius: 10px; 
+	display: inline-block; 
+	font: bold 15px/30px Georgia;
+	top: 0px;
+	left: 0px;
+}
+#message-bet{
+	position: absolute;
+	top: 248px;
+	left: 118px;
+	font-size: 17px;
+	text-align: center;
+	width: 512px;
+	height: 29px;
+	color: rgb(12, 124, 124);
+	font-weight: bolder;
+}
+#bet{
+	position: absolute;
+	left: 267px;
+	top: 540px;
+	font-size: 19px;
+	color: rgb(17, 103, 119);
+	text-align: center;
+	width: 200px;
+	height: 40px;
+	font-weight: bolder;
+}
+
+div.unactive button{
+	color:#505050;
+	background-image: -webkit-linear-gradient(top, rgb(233, 238, 173), rgba(214, 226, 153, 0)) ;
+	background-color: rgba(14, 219, 195, 0.2);
+	font-weight:bold;
+	width: 299px;
+	height: 70px;
+	
+	display: inline-block;
+	padding: 4px 12px;
+	margin-bottom: 0;
+	font-size: 14px;
+	line-height: 20px;
+	
+	text-align: center;
+	text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+	vertical-align: middle;
+	cursor: auto;
+	
+	
+	
+	
+	background-repeat: repeat-x;
+	border: 1px solid #cccccc;
+	border-color: #e6e6e6 #e6e6e6 #bfbfbf;
+	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+	border-bottom-color: #b3b3b3;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+}
+
+button.check{
+	color:#505050 !important;
+	background-image: -webkit-linear-gradient(top, rgb(233, 238, 173), rgba(214, 226, 153, 0)) !important;
+	background-color: rgba(14, 219, 195, 0.9) !important;
+}
+
+button.right{
+	color: rgb(13, 14, 13) !important;
+	background-image: -webkit-linear-gradient(top, rgba(14, 219, 195, 0.27), rgba(214, 226, 153, 0)) !important;
+	background-color: rgb(118, 163, 146) !important;
+	font-size: 16px !important;
+}
+
