@@ -5,6 +5,10 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+
+
 
 
 import models.GameRoom;
@@ -12,8 +16,10 @@ import models.Question;
 import models.GameRoom.Call;
 import models.GameRoom.Fold;
 import models.GameRoom.Start;
-import models.GameRoom.GameState;
-import models.GameRoom.Member;
+import models.GameRoom.AskQuestion;
+
+import ForGameRoom.GameState;
+import ForGameRoom.Member;
 import models.GameRoom.NextOnTurn;
 import play.libs.Akka;
 
@@ -27,23 +33,25 @@ public class PokerAlgorithm {
   	
 	
 	public static void onStart(ActorRef gameRoom, GameState gamestate){
-		gamestate.Bet=0;
-		gamestate.user_on_turn = gamestate.members.get(0);
-		gamestate.SetMaxBet();
-		gamestate.poker_algorithm=true;
-   	 	gamestate.category =  Question.RandomCategory();
-   	 	gamestate.unanswered_question=0;
-   	 	
+		gamestate.Bet=0; 	 	
 		for(Member member: gamestate.members){
-			
-			member.MinusPoints(2);
-			gamestate.Bet = gamestate.Bet+2;
+			member.user_bet=0;
+			member.MinusPoints(1);
+			gamestate.Bet = gamestate.Bet+1;
 			member.UnCallBet=0;
 			member.wait=false;
 			member.fold=false;
 			member.turn=0;
 		}
+		
+		gamestate.user_on_turn = gamestate.members.get(0);
+		gamestate.SetMaxBet();
+		gamestate.poker_algorithm=true;
+   	 	gamestate.category =  Question.RandomCategory();
+   	 	gamestate.question = null;
+   	 	gamestate.unanswered_question=0;
 		Notify.OnCategory(gamestate.category, gamestate);
+		
 		Cancellable timer = SetTimer(gameRoom, gamestate);
 		timers.put(gamestate.game_id, timer);
 	}
@@ -60,17 +68,24 @@ public class PokerAlgorithm {
 				othermember.UnCallBet=othermember.UnCallBet+(bet-member.UnCallBet);
 			}
 		}
-		member.UnCallBet=0;
+		
 		member.MinusPoints(bet);
 		gamestate.SetMaxBet();
 		int sum = bet-member.UnCallBet;
+		member.UnCallBet=0;
     	Notify.OnCallOrRaise(member.name+" наддаде с "+ sum + " точки!", gamestate, member);
     	gamestate.NextUser_on_turn();
+//    	Cancellable timer1 =Akka.system().scheduler().scheduleOnce(
+//				Duration.create(2, SECONDS),
+//				gameRoom,
+//				new NextOnTurn(gamestate.game_id)
+//		);
+//		GameRoom.timers.put(gamestate.game_id, timer1);
 		Cancellable timer = SetTimer(gameRoom, gamestate);
 		timers.put(gamestate.game_id, timer);
 	}
 	
-	public  static void onFold(ActorRef gameRoom, Member member, GameState gamestate){
+	public  static void onFold(ActorRef gameRoom, Member member, final GameState gamestate){
 		if(!timers.get(gamestate.game_id).isCancelled()){
 			timers.get(gamestate.game_id).cancel();
 		}
@@ -80,13 +95,29 @@ public class PokerAlgorithm {
 		member.turn++;
 		Notify.OnFold(member.name+ " се отказа от наддаването!", gamestate.members);
 		if(isFinishFold(gamestate.members)){
-			FinishFold(gamestate);
+			
+			new Timer().schedule(new TimerTask() {          
+			    @Override
+			    public void run() {
+			    	FinishFold(gamestate);       
+			    }
+			}, 1000);
+
+			
+		
+					
 		}
 		else if(isFinishPass(gamestate.members)){
 			FinishPass(gamestate);
 		}
 		else{
 			gamestate.NextUser_on_turn();
+//			Cancellable timer1 =Akka.system().scheduler().scheduleOnce(
+//					Duration.create(2, SECONDS),
+//					gameRoom,
+//					new NextOnTurn(gamestate.game_id)
+//			);
+//			GameRoom.timers.put(gamestate.game_id, timer1);
 			Cancellable timer = SetTimer(gameRoom, gamestate);
 			timers.put(gamestate.game_id, timer);
 		}
@@ -103,14 +134,17 @@ public class PokerAlgorithm {
 		member.turn++;
 		gamestate.SetMaxBet();
 		Notify.OnCallOrRaise(member.name + " отговори на наддаването!", gamestate, member);
-		if(isFinishFold(gamestate.members)){
-			FinishFold(gamestate);
-		}
-		else if(isFinishPass(gamestate.members)){
+		 if(isFinishPass(gamestate.members)){
 			FinishPass(gamestate);
 		}
 		else{
 			gamestate.NextUser_on_turn();
+//			Cancellable timer1 =Akka.system().scheduler().scheduleOnce(
+//					Duration.create(2, SECONDS),
+//					gameRoom,
+//					new NextOnTurn(gamestate.game_id)
+//			);
+//			GameRoom.timers.put(gamestate.game_id, timer1);
 			Cancellable timer = SetTimer(gameRoom, gamestate);
 			timers.put(gamestate.game_id, timer);
 		}
@@ -120,16 +154,17 @@ public class PokerAlgorithm {
 	private static Cancellable SetTimer(ActorRef gameRoom, GameState gamestate){
 		Cancellable timer;
 		gameRoom.tell(new NextOnTurn(gamestate.game_id));
+		
   		if(gamestate.user_on_turn.UnCallBet==0){
 			timer =Akka.system().scheduler().scheduleOnce(
-					Duration.create(10, SECONDS),
+					Duration.create(7, SECONDS),
     				gameRoom,
     				new Call(gamestate.user_on_turn, gamestate.game_id)
     		);
 		}
 		else{
 			timer =Akka.system().scheduler().scheduleOnce(
-					Duration.create(10, SECONDS),
+					Duration.create(7, SECONDS),
     				gameRoom,
     				new Fold(gamestate.user_on_turn, gamestate.game_id)
     		);
@@ -172,15 +207,22 @@ public class PokerAlgorithm {
 		int sumpoints = member.UnCallBet + gamestate.Bet;
 		member.PlusPoints(sumpoints);
 		Notify.OnWin(member.uid, member.name, member.points, gamestate.members);
-		Akka.system().scheduler().scheduleOnce(
-				Duration.create(15, SECONDS),
+		Cancellable timer = Akka.system().scheduler().scheduleOnce(
+				Duration.create(3, SECONDS),
 				GameRoom.gameRooms.get(gamestate.game_id),
 				new Start(gamestate.game_id)
 		);
+		timers.put(gamestate.game_id, timer);
 	}
 	
 	private static void FinishPass(GameState gamestate){
 		gamestate.poker_algorithm = false;
-    	GameRoom.AskQuestion(gamestate);
+		Cancellable timer = Akka.system().scheduler().scheduleOnce(
+				Duration.create(1, SECONDS),
+				GameRoom.gameRooms.get(gamestate.game_id),
+				new AskQuestion(gamestate.game_id)
+		);
+		timers.put(gamestate.game_id, timer);
+    	
     }
 }

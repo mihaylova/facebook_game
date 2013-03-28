@@ -4,6 +4,8 @@ import models.Game;
 import models.Question;
 import Algorithms.PokerAlgorithm;
 import Algorithms.Notify;
+import ForGameRoom.Member;
+import ForGameRoom.GameState;
 
 import play.mvc.*;
 import play.mvc.WebSocket.Out;
@@ -61,9 +63,12 @@ public class GameRoom extends UntypedActor {
             		   //Do nothing
             	   }
             	   else{
-            		   
+            		   if(kind.equals("joker50")){
+            			   game_room.tell(new Joker50(member, game.id));
+            			  
+            		   }
             	   
-	                   if(kind.equals("raise")){
+            		   else if(kind.equals("raise")){
 	                	   
 	                	   if(gamestate.user_on_turn.uid!=user.uid || !gamestate.poker_algorithm  || gamestate.MaxBet< event.get("bet").asInt()){
 	                		   //user can't raise
@@ -92,7 +97,7 @@ public class GameRoom extends UntypedActor {
 	                	   if(member.answer!=null || !gamestate.answering){
 	                		   //user can't answering the question
 	                	   }
-	                	   else game_room.tell(new Answer(member, game.id, event.get("answer").asText(), event.get("button").asInt()));
+	                	   else game_room.tell(new Answer(member, game.id, event.get("answer").asText(), event.get("button").asText()));
 	                   }
             	   }
                } 
@@ -157,12 +162,24 @@ public class GameRoom extends UntypedActor {
             Quit quit = (Quit)message;
             GameState gamestate = GameState.Get(quit.game.id);
             gamestate.removeMember(quit.user.uid);
-
             
-
+            int count_of_playing_members=0;
+            for(Member member :gamestate.members){
+            	if(!member.fold && !member.out_of_points && !member.wait){
+            		count_of_playing_members++;
+            	}
+            }
+            
+            if(count_of_playing_members==1 &&  gamestate.question != null && Member.Find_unfold(gamestate.members).answer!=null && Member.Find_unfold(gamestate.members).answer.equals(gamestate.question.getRight_answer() ) ){
+            	Member.Find_unfold(gamestate.members).PlusPoints(gamestate.Bet);
+        	}
+            else if(count_of_playing_members==1 && (gamestate.poker_algorithm || gamestate.answering)){
+            	Member member = Member.Find_unfold(gamestate.members);
+            	member.PlusPoints(member.user_bet);
+            }
             Notify.OnJoinOrQuit("quit", gamestate.members);
-            if(gamestate.members.size() < 2){
-            	quitGame(quit.game.id);
+            if(gamestate.members.size() == 1){
+            	quitGame(quit.game.id); 
             }
         } 
         else if(message instanceof Start)  {
@@ -186,13 +203,11 @@ public class GameRoom extends UntypedActor {
         	Call call = (Call)message;
         	PokerAlgorithm.onCall(gameRooms.get(call.game_id), call.member, call.gamestate);
         }
-        else if(message instanceof FinishAnswering) {
-        	FinishAnswering finish_answering = (FinishAnswering) message;
-        	GameState gamestate = finish_answering.gamestate;
+        else if(message instanceof ShowWinner){
+        	ShowWinner show_winner = (ShowWinner) message;
+        	GameState gamestate = show_winner.gamestate;
         	ArrayList<Member> answered = GetAnswered(gamestate);
-        	
-        	gamestate.answering= false;
-        	Notify.All("finish_answering", gamestate.question.getRight_answer(), gamestate.members);
+        	Notify.All("mark_right_answer", gamestate.question.getRight_answer(), gamestate.members);
         	if(answered.isEmpty()){
         		
         		gamestate.unanswered_question++;
@@ -200,41 +215,42 @@ public class GameRoom extends UntypedActor {
         			Notify.All("message", "Няма отговорили", gamestate.members);
             		
             		Cancellable timer = Akka.system().scheduler().scheduleOnce(
-            				Duration.create(5, SECONDS),
-            				gameRooms.get(finish_answering.game_id),
-            				new AskQuestion(finish_answering.game_id)
+            				Duration.create(2, SECONDS),
+            				gameRooms.get(show_winner.game_id),
+            				new AskQuestion(show_winner.game_id)
             		);
-            		timers.put(finish_answering.game_id, timer);
+            		timers.put(show_winner.game_id, timer);
         		}
         		else{
-        			Notify.All("message", "Вече три пъти не отговаряте! Какво ви има?! :)))))", gamestate.members);
-        			quitGame(finish_answering.game_id);
+        			
+        			quitGame(show_winner.game_id);
         		}
         		
         	}
         	else{ 
         		ArrayList<Member> right_answered = GetRightAnswered(answered, gamestate);
         		if(right_answered.isEmpty()){
-        			Notify.OnNoRightAnswer(answered, gamestate);
+        			Notify.All("message", "Няма познали!",  gamestate.members);
         			Cancellable timer = Akka.system().scheduler().scheduleOnce(
-            				Duration.create(10, SECONDS),
-            				gameRooms.get(finish_answering.game_id),
-            				new AskQuestion(finish_answering.game_id)
+            				Duration.create(3, SECONDS),
+            				gameRooms.get(show_winner.game_id),
+            				new AskQuestion(show_winner.game_id)
             		);
-        			timers.put(finish_answering.game_id, timer);
+        			timers.put(show_winner.game_id, timer);
         		}
         		else if(right_answered.size()==1){
         			Member member = right_answered.get(0);
         			member.PlusPoints(gamestate.Bet);
+        			gamestate.Bet=0;
         			
         			
         			Notify.OnWin(member.uid, member.name, member.points, gamestate.members);
         			Cancellable timer = Akka.system().scheduler().scheduleOnce(
-            				Duration.create(10, SECONDS),
-            				gameRooms.get(finish_answering.game_id),
-            				new Start(finish_answering.game_id)
+            				Duration.create(3, SECONDS),
+            				gameRooms.get(show_winner.game_id),
+            				new Start(show_winner.game_id)
             		);
-        			timers.put(finish_answering.game_id, timer);
+        			timers.put(show_winner.game_id, timer);
         		}
         		else if(right_answered.size()>1){
         			ArrayList<Member> winners = GetWinners(right_answered);
@@ -242,16 +258,18 @@ public class GameRoom extends UntypedActor {
         				Member member  = winners.get(0);
             			
             			member.PlusPoints(gamestate.Bet);
+            			gamestate.Bet=0;
             			Notify.OnWin(member.uid, member.name, member.points, gamestate.members);
             			Cancellable timer = Akka.system().scheduler().scheduleOnce(
-                				Duration.create(10, SECONDS),
-                				gameRooms.get(finish_answering.game_id),
-                				new Start(finish_answering.game_id)
+                				Duration.create(3, SECONDS),
+                				gameRooms.get(show_winner.game_id),
+                				new Start(show_winner.game_id)
                 		);
-            			timers.put(finish_answering.game_id, timer);
+            			timers.put(show_winner.game_id, timer);
         			}
         			else if(winners.size()>1){
         				int bet = gamestate.Bet;
+        				gamestate.Bet=0;
         				int size = winners.size();
         				int module = bet%size;
         				String string = "Победители са";
@@ -265,16 +283,43 @@ public class GameRoom extends UntypedActor {
     					}
     					string = string + " Те си разделят точките, поради еднакви времена за отговор!";
     					Notify.OnMoreWinners(string, gamestate, winners);
+    					Cancellable timer = Akka.system().scheduler().scheduleOnce(
+                				Duration.create(3, SECONDS),
+                				gameRooms.get(show_winner.game_id),
+                				new Start(show_winner.game_id)
+                		);
+            			timers.put(show_winner.game_id, timer);
         			}
         		}
         		
         	}
+        	int count_out_of_pints=0;
         	for (Member member :gamestate.members){
         		if(member.points<=0){
+        			count_out_of_pints++;
         			member.out_of_points=true;
-        			//Notify.One - kazvame na usera che niama to4ki i mu predlagame da zadade vapros 
+        			Notify.One("out_of_points", "Нямате достатъчно точки за да играете, но можете да наблюдавате хода на играта без да участвате. Можете да получите точки чрез добавяне на въпрос.", member);
         		}
         	}
+        	if(count_out_of_pints>=gamestate.members.size()-1){
+        		quitGame(gamestate.game_id);
+        	}
+        }
+        else if(message instanceof FinishAnswering) {
+        	FinishAnswering finish_answering = (FinishAnswering) message;
+        	GameState gamestate = finish_answering.gamestate;
+        	
+        	
+        	gamestate.answering= false;
+        	Notify.OnFinishAnswering(gamestate.members);
+        	Cancellable timer = Akka.system().scheduler().scheduleOnce(
+    				Duration.create(3, SECONDS),
+    				gameRooms.get(finish_answering.game_id),
+    				new ShowWinner(finish_answering.game_id)
+    		);
+			timers.put(finish_answering.game_id, timer);
+        	
+        	
         }
         else if(message instanceof Answer) {
         	Answer answer = (Answer) message;
@@ -282,20 +327,45 @@ public class GameRoom extends UntypedActor {
         	member.answer = answer.answer;
         	member.time_on_answering = answer.time_on_answering;
         	member.button = answer.button;
-        	Notify.OneOnAnswer(member);
+        	Notify.One("answer", member.button, member);
         	
         }
         else if(message instanceof AskQuestion){
         	AskQuestion askquestion = (AskQuestion) message;
         	AskQuestion(askquestion.gamestate);
         }
+        
+        else if (message instanceof Joker50){
+        	Joker50 joker = (Joker50) message;
+        	Joker_50(joker.gamestate.question.answers, joker.gamestate.question.getRight_answer(), joker.member);
+        }
+        
         	else {
             unhandled(message);
        }
         
     }
     
-    public static ArrayList<Member> GetWinners(ArrayList<Member> right_answered){
+   private static void Joker_50(ArrayList<String> answers, String right_answer, Member member){
+	   
+	   int count=0;
+	   do{
+		   int random = (int)Math.random()*4;
+		   if(answers.get(random)!= null && answers.get(random)!= right_answer){
+			   String answer =  answers.get(random);
+				  answer=null;
+				  answers.remove(random);
+				  answers.add(random, answer);
+				  count++;
+	   }
+		  
+		 		   
+	   } while(count<2);
+	   
+	   Notify.OnJoker_50(member, answers);
+   }
+    
+    private  static ArrayList<Member> GetWinners(ArrayList<Member> right_answered){
     	ArrayList<Member> winners = new ArrayList<Member>();
     	
     	TreeSet<Long> times = new TreeSet<Long>();
@@ -313,7 +383,7 @@ public class GameRoom extends UntypedActor {
     	return winners;
     }
     
-    public static ArrayList<Member> GetRightAnswered(ArrayList<Member> answered, GameState gamestate){
+    private static  ArrayList<Member> GetRightAnswered(ArrayList<Member> answered, GameState gamestate){
     	ArrayList<Member> right_answered= new ArrayList<Member>();
     	
     	for(Member member : answered){
@@ -324,7 +394,7 @@ public class GameRoom extends UntypedActor {
     	return right_answered;
     }
     
-	public static ArrayList<Member> GetAnswered (GameState gamestate){
+	private static ArrayList<Member> GetAnswered (GameState gamestate){
     	ArrayList<Member> answered= new ArrayList<Member>();
     	
     	for(Member member:  gamestate.members){
@@ -339,7 +409,7 @@ public class GameRoom extends UntypedActor {
     	for(Member member : gamestate.members){
     		member.answer = null;
     		member.time_on_answering = 9999;
-    		member.button = 0;
+    		member.button = null;
     	}
     	
     	gamestate.answering = true;
@@ -374,10 +444,8 @@ public class GameRoom extends UntypedActor {
     		}
     		timers.remove(game_id);
     	}
-    	if(gamestate.members.size()==1 && gamestate.Bet>0){
-    		gamestate.members.get(0).PlusPoints(gamestate.Bet);
-    	}
-    	Notify.All("finish", "Играта приключи!", gamestate.members); //in js
+    	
+    	Notify.All("finish", "Играта приключи!", gamestate.members);
     	
 		
     }
@@ -388,11 +456,12 @@ public class GameRoom extends UntypedActor {
     	Notify.All("start", "game will begin in 5 seconds", gamestate.members);
     	
     	
-        Akka.system().scheduler().scheduleOnce(
+    	Cancellable timer = Akka.system().scheduler().scheduleOnce(
         		Duration.create(5, SECONDS),
         		gameRooms.get(game_id),
                 new Start(game_id)
         );
+    	timers.put(gamestate.game_id, timer);
     }
     
     public static class FinishAnswering{
@@ -400,6 +469,16 @@ public class GameRoom extends UntypedActor {
     	final GameState gamestate;
     	
     	public FinishAnswering(Long game_id){
+    		this.game_id = game_id;
+    		this.gamestate = GameState.Get(game_id);
+    	}
+    }
+    
+    public static class ShowWinner{
+    	final Long game_id;
+    	final GameState gamestate;
+    	
+    	public ShowWinner(Long game_id){
     		this.game_id = game_id;
     		this.gamestate = GameState.Get(game_id);
     	}
@@ -496,14 +575,16 @@ public class GameRoom extends UntypedActor {
     	}
     }
     
+  
+    
     public static class Answer{
     	final Member member;
     	final Long game_id;
     	final String answer;
     	final long time_on_answering;
-    	final int button;
+    	final String button;
     	
-    	public Answer(Member member, Long game_id, String answer, int button){
+    	public Answer(Member member, Long game_id, String answer, String button){
     		this.member = member;
     		this.game_id = game_id;
     		this.answer = answer;
@@ -522,152 +603,17 @@ public class GameRoom extends UntypedActor {
     	}
     }
     
-    public static class Member{
-	
-		public final Long uid;
-		public final int slot;
-		public final WebSocket.Out<JsonNode> channel;
-		public int UnCallBet=0;
-		public boolean fold=false;
-		public boolean wait = true;
-		public int turn=0;
-		public String answer = null;
-		public long time_on_answering=9999;
-		public int button = 0;
-		public int points;
-		public String name;
-		public boolean out_of_points = false;
-		
-		
-		 public Member(Long uid, int slot, WebSocket.Out<JsonNode> channel, int points, String name) {
-	         this.uid = uid;
-	         this.slot = slot;
-	         this.channel=channel;
-	         this.points = points;
-	         this.name = name;
-	     }
-		 
-		 public static Member Find_by_uid(Long uid, ArrayList<Member> members){
-			 for(Member member: members){
-				 if(member.uid.equals(uid)){
-					 return member;
-	   			 }
-			 }
-			 return null;
-		 }
-		 
-		 public static Member Find_unfold(ArrayList<Member> members){
-			 for(Member member: members){
-				 if(!member.fold || !member.wait || !member.out_of_points){
-					 return member;
-				 }
-			 }
-			 return null;
-		 }
-		 
-		 public void PlusPoints(int count){
-			 this.points= this.points + count;
-		 }
-		 
-		 public void MinusPoints(int count){
-			 this.points = this.points - count;
-		 }
+    public static class Joker50{
+    	final  long game_id;
+    	final Member member;
+    	final GameState gamestate;
+    	 public Joker50(Member member, long game_id){
+    		 this.game_id = game_id;
+    		 this.member = member;
+    		 this.gamestate = GameState.Get(game_id);
+    	 }
     }
     
-    public static class GameState{
-    	public static Map<Long, GameState> states= new HashMap<Long, GameState>();
-    	public Member user_on_turn;
-    	public Long  game_id;
-    	public int Bet=0;
-    	public int MaxBet=9999;
-    	public int category;
-    	public Question question;
-    	public long time;
-    	public int unanswered_question = 0;
-    	public boolean poker_algorithm=false;
-    	public boolean answering=false;
-    	public ArrayList<Member> members;
-    	public boolean finish = false;
-    	
-    	public  void addMember(Fb_user user, WebSocket.Out<JsonNode> channel) {
-    		Member member=new Member(user.uid, findFreeSlot(), channel, user.points, user.name);
-	    	this.members.add(member);
-    	}
-    	
-    	public  void removeMember(Long user_uid) { 
-        	for(Member member : this.members){
-        		if(member.uid == user_uid){
-        			Fb_user user = Fb_user.find_by_uid(member.uid);
-        			user.SetPoints(member.points);
-        			
-        			this.members.remove(member);
-        			Game.find.byId(this.game_id).remove_player(user_uid);
-        			break;
-        		}
-        	}
-        	if (members.isEmpty()) {
-        		gameRooms.remove(game_id);
-	    		GameState.Delete(game_id);
-        	}
-        }
-
-        protected  int findFreeSlot() {
-        	for(int i=1; i <= 2; i++){
-        		Boolean is_free = true;
-        		for(Member member: this.members){
-                	
-                	if(member.slot == i){
-                		is_free = false;
-                	}	
-                }
-        		
-        		if (is_free) {
-        			return i;
-        		}
-        	}
-        	
-			throw new ArrayIndexOutOfBoundsException();
-        }
-    	
-    	public void SetMaxBet(){
-    		for(Member member: this.members){
-    			this.MaxBet=Math.min(this.MaxBet, member.points);
-    		}
-    	}
-    	
-    	public static GameState Get(Long game_id){
-    		if(states.containsKey(game_id)){
-    			return states.get(game_id);
-    			
-    		}
-    		else{
-    			GameState gamestate = new GameState();
-    			gamestate.members = new ArrayList<Member>();
-        		gamestate.game_id=game_id;
-        		states.put(game_id, gamestate);
-        		return gamestate;
-    		}
-    	}
-
-    	public  void NextUser_on_turn(){
-    		int i = this.members.indexOf(this.user_on_turn);
-    		if(i<(members.size()-1)){
-    			this.user_on_turn=this.members.get(i+1);
-    		}
-    		else{
-    			this.user_on_turn=this.members.get(0);
-    		}
-    		
-    		if(user_on_turn.fold || user_on_turn.wait || user_on_turn.out_of_points){
-    			this.NextUser_on_turn();
-    		}
-
-    	}
-    	
-    	public static void Delete(Long game_id){
-    		states.remove(game_id);
-    	}
-    }
-
+    
     
 }

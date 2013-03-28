@@ -2,34 +2,44 @@
 @main_play("star playing") {
    	<a href="/canvas/"><img class="exit" src="@routes.Assets.at("images/exit.jpg")"></a>
 	<div id="users-table"></div>
-	<div id="message"></div>
+	<div id="finish-message" style="display:none;"> </div>
+	<div id="message-out-of-points" ></div>
 	<div id="category" style="display:none;"></div>
 	<div id="timer"></div>
-	
-			<div class="question" style="display:none;"> 
+	<div id="timer1"> </div>
+	<div id="timer2"> </div>
+	<div id="timer3"> </div>
+	<div id="timer4"> </div>
+		<div class="question" style="display:none;"> 
+			
+			
 			<div class="question-cont"> 
 				<h4 class="question"></h4>
 			</div> 
 			<div class="answers"> 
-				<button class="btn answer" id="answer1"></button>
-				<button class="btn answer" id="answer2"></button>
-				<button class="btn answer" id="answer3"></button>
-				<button class="btn answer" id="answer4"></button>
+				<span id="flag-answerA"> A </span>
+				<button class="btn answer" id="answerA"></button>
+				<span  id="flag-answerB"> B </span>
+				<button class="btn answer" id="answerB"></button>
+				<span id="flag-answerC"> C </span>
+				<button class="btn answer" id="answerC"></button>
+				<span id="flag-answerD"> D </span>
+				<button class="btn answer" id="answerD"></button>
 			</div>
 		</div>
 		
 	
 		<div class="jokers">  
-			<button class="btn joker">50/50</button>
+			<button class="btn joker" id="joker50">50/50</button>
 			<button class="btn joker">Гласа на мнозинството</button>
 		</div>
-		<span id="message-bet" style="display:none;"></span>
+		<span id="message" style="display:none;"> </span>
 		<span id="bet" style="display:none;"></span>
 		
 		<div class="bet-btn" style="display:none;">
 			<span class="range">
 				
-				<input type="range" name="raise" style="width:150px;">
+				<input type="range" name="raise" style="width:150px;" min="1" max="100" value="1">
 				<output for="raise" onforminput="value = raise.valueAsNumber;"></output> 
 			</span>
 			<button class="btn btn-block bet" id="raise">Заложи </button><br>
@@ -46,9 +56,7 @@
 		</ul>
 	</div>
 	
-	<script type="text/template" id="status-template">
-		<li><%= message %></li>
-	</script>
+	
 	<script type="text/template" id="users-table-template">
 		<% 
 			var number_of_slots = 4 ;
@@ -59,11 +67,18 @@
 				if (player.length) {
 					var member = player[0];
 		%>
-					<div id="member-<%= member.uid %>">
+					<div id="member-<%= member.uid %>" >
 						<span class="player<%= member.slot %> name"><%= member.name %></span>
 						<div class="player<%= member.slot %>"> 
 							<span class="points"><%= member.points %></span>
 							<img class="player" src="<%= member.picture %>">
+							<div class="user-answer" style="display:none;">
+								<img id="ballon<%= member.slot %>" src="/assets/images/ballons/<%= member.slot %>.gif">
+								<span id="answer<%= member.slot %>" class="answer"></span>
+								<span id="time<%= member.slot %>" class="time" ></span>
+								
+							</div>
+							
 						</div>
 					</div>
 				<% } else { %>		
@@ -71,6 +86,8 @@
 						<span class="player<%= i %> name">&nbsp;</span><br>
 						<div class="player<%= i %>"> 
 							<img class="player" src="@routes.Assets.at("images/noplayer.jpg")">
+							
+						
 						</div>
 					</div>
 				<% } %>	
@@ -90,6 +107,6 @@
 	<script>
 		window.game = new Game(@user_uid).start();
 	</script>
-	 <script src="@routes.Assets.at("javascripts/main.js")" type="text/javascript"></script>        
-     <script src="@routes.Assets.at("javascripts/game.js")" type="text/javascript"></script>
+	 <script src="@routes.Assets.at("javascripts/main.js")" type="text/javascript"></script>  
+	    
 }
