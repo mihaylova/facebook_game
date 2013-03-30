@@ -1,6 +1,7 @@
 package Algorithms;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import models.Fb_user;
 import ForGameRoom.GameState;
@@ -73,6 +74,7 @@ public class Notify {
 	             
 	    public static void All(String kind, String text, ArrayList<Member> members) {
 	        ObjectNode event = Json.newObject();
+	       
 	        event.put("kind", kind);
 	        event.put("message", text);
 	        for(Member member: members){
@@ -119,12 +121,23 @@ public class Notify {
 	        event.put("answer3", (String)gamestate.question.answers.get(2));
 	        event.put("answer4", (String)gamestate.question.answers.get(3));
 	        event.put("bet", Integer.toString(gamestate.Bet));
-	        
+	        int hasjoker = gamestate.hasVoiceJoker ? 1 : 0;
+	        event.put("hasjoker", hasjoker);
+	        //*******************************************************
+	        //if user doesn't have coins => don't show joker voice
 		    ArrayNode m = event.putArray("members");
 	        for(Member member: gamestate.members){
 	        	if(!member.fold && !member.wait && !member.out_of_points ){
 	        		m.add(member.uid);
 	        	}
+	        }
+	        ArrayNode c = event.putArray("members_out_of_coins");
+	        for(Member member :gamestate.members){
+	        	if(member.coins<5 ){
+	        		c.add(member.uid);
+	        	}
+	        	
+	        	
 	        }
 	        for(Member member: gamestate.members){
 	        	WebSocket.Out<JsonNode> channel = member.channel;
@@ -184,6 +197,17 @@ public class Notify {
 	        event.put("answer2", answers.get(1));
 	        event.put("answer3", answers.get(2));
 	        event.put("answer4", answers.get(3));
+	        member.channel.write(event);
+	    	
+	    }
+	    
+	    public static void OnJoker_voice(Member member, Map<Integer, Float> choices){
+	    	ObjectNode event = Json.newObject();
+	    	event.put("kind", "joker_voice");
+	    	event.put("choice_answer1", choices.get(1));
+	        event.put("choice_answer2", choices.get(2));
+	        event.put("choice_answer3", choices.get(3));
+	        event.put("choice_answer4", choices.get(4));
 	        member.channel.write(event);
 	    	
 	    }

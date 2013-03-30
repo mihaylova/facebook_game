@@ -8,6 +8,8 @@ import play.db.DB;
 import play.mvc.Result;
 import views.html.admins.*;
 import views.html.questions.add;
+import play.data.*;
+import static play.data.Form.*;
 
 public class Admins extends Application {
 

@@ -2,15 +2,18 @@
 
 @main_admin("Login") {
 	
-	@if(flash.contains("success")) {
-                <p class="success">
-                    @flash.get("success")
-                </p>
+            
+            @if(flash.contains("success")) {
+               
+                 <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+         @flash.get("success")</div>
             }
-             @if(flash.contains("error")) {
-                <p class="success">
-                    @flash.get("error")
-                </p>
+            @if(flash.contains("error")) {
+               
+                 <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+         @flash.get("error")</div>
             }
 	
 	

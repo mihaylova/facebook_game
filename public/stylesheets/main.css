@@ -726,3 +726,77 @@ button.right{
 	left: 18px;
 	top: 654px;
 }
+
+
+#choiceA{
+	position: absolute;
+	top: 48px;
+	right: 307px;
+	font-size: 22px;
+	font-weight: bolder;
+	text-shadow: 2px 2px 3px rgb(91, 88, 158);
+	font-style: oblique;
+	color: rgb(51, 47, 61);
+}
+
+#choiceB{
+	position: absolute;
+	top: 48px;
+	right: 4px;
+	font-size: 22px;
+	font-weight: bolder;
+	text-shadow: 2px 2px 3px rgb(91, 88, 158);
+	font-style: oblique;
+	color: rgb(51, 47, 61);
+}
+
+#choiceC{
+	position: absolute;
+	top: 119px;
+	right: 307px;
+	font-size: 22px;
+	font-weight: bolder;
+	text-shadow: 2px 2px 3px rgb(91, 88, 158);
+	font-style: oblique;
+	color: rgb(51, 47, 61);
+}
+
+#choiceD{
+	position: absolute;
+	top: 119px;
+	right: 4px;
+	font-size: 22px;
+	font-weight: bolder;
+	text-shadow: 2px 2px 3px rgb(91, 88, 158);
+	font-style: oblique;
+	color: rgb(51, 47, 61);
+}
+#username{
+	position: absolute;
+	right: 42px;
+	top: 172px;
+	font-size: 16px;
+	font-weight: bolder;
+	font-style: italic;
+	color: rgb(11, 58, 80);
+	text-shadow: 2px 2px 3px rgb(147, 156, 158);
+}
+#start_new_game{
+	position: absolute;
+	left: 287px;
+	top: 319px;
+	padding: 22px 25px;
+	font-size: 40px;
+	font-weight: bold;
+	color: rgb(202, 200, 154);
+}
+#start_new_game:hover{
+	position: absolute;
+	left: 282px;
+	top: 319px;
+	padding: 22px 25px;
+	font-size: 50px;
+	font-weight: bold;
+	color: rgb(14, 223, 173);
+}
+

@@ -6,6 +6,9 @@ import play.db.DB;
 import play.mvc.Result;
 import views.html.user_questions.*;
 
+import play.data.*;
+import static play.data.Form.*;
+
 public class User_questions extends Application {
 
 final static Form<User_question> questionForm = form(User_question.class);

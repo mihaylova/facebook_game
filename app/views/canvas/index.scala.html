@@ -1,22 +1,13 @@
-@(message: String)
+@(name: String, message: String)
 
 @main("facebook canvas") {
 	
-	 
-	
-	
-	   <div style="
-	
-      top: 180px;
-      left: 480px;
-      position: absolute;">
-		<p>@message</p>
-		
-		
-		 <a  href="/game" id="start_new_game" >Играй</a> 
-		
-		
-		
+	<p id="username">@name</p>
+	<a  class="btn btn-inverse btn-large" href="/game" id="start_new_game" >Play</a> 
+	<div style="position: absolute; left: 31px;top: 223px; font-size: 15px;font-weight: bold; padding-left: 0px;
+padding-right: 0px;
 
-	</div>
+border-left-width: 0px;
+border-right-width: 0px;" class="alert alert-error">@message</div>
+		
 }

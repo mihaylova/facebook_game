@@ -27,10 +27,12 @@ public class GameState {
 	public boolean poker_algorithm=false;
 	public boolean answering=false;
 	public ArrayList<Member> members;
-	public boolean finish = false;
+	public boolean hasVoiceJoker = false;
+	public boolean isStart=false;
+	public boolean isFinish=false;
 	
 	public  void addMember(Fb_user user, WebSocket.Out<JsonNode> channel) {
-		Member member=new Member(user.uid, findFreeSlot(), channel, user.points, user.name);
+		Member member=new Member(user.uid, findFreeSlot(), channel, user.points, user.name, user.coins);
     	this.members.add(member);
 	}
 	
@@ -39,7 +41,7 @@ public class GameState {
     		if(member.uid == user_uid){
     			Fb_user user = Fb_user.find_by_uid(member.uid);
     			user.SetPoints(member.points);
-    			
+    			user.SetCoins(member.coins);
     			this.members.remove(member);
     			Game.find.byId(this.game_id).remove_player(user_uid);
     			break;
@@ -48,6 +50,8 @@ public class GameState {
     	if (members.isEmpty()) {
     		GameRoom.gameRooms.remove(game_id);
     		GameState.Delete(game_id);
+    		Game.find.byId(this.game_id).delete();
+    		
     	}
     }
 

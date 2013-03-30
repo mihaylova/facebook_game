@@ -23,14 +23,17 @@ public class Member {
 	public String name;
 	public boolean out_of_points = false;
 	public int user_bet=0;
+	public boolean usejoker=false;
+	public int coins;
 	
 	
-	 public Member(Long uid, int slot, WebSocket.Out<JsonNode> channel, int points, String name) {
+	 public Member(Long uid, int slot, WebSocket.Out<JsonNode> channel, int points, String name, int coins) {
          this.uid = uid;
          this.slot = slot;
          this.channel=channel;
          this.points = points;
          this.name = name;
+         this.coins = coins;
      }
 	 
 	 public static Member Find_by_uid(Long uid, ArrayList<Member> members){

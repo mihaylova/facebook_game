@@ -5,6 +5,10 @@ import play.*;
 import play.data.DynamicForm;
 import play.mvc.*;
 
+
+import play.data.*;
+import static play.data.Form.*;
+
 import views.html.*;
 import views.html.canvas.index;
 
@@ -50,7 +54,7 @@ public class Application extends Controller {
     public static Boolean parse_facebook_signed_request() {
     	
 	  DynamicForm form = form().bindFromRequest();
-	
+	 
 	  if (form.get("signed_request") != null) {
 		  String sig_req = form.get("signed_request");
 		  
@@ -82,11 +86,13 @@ public class Application extends Controller {
 				  user.uid = uid;
 				  user.name = fuser.getName();
 				  user.points = 200;
+				  user.coins = 10;
 				  user.picture="https://graph.facebook.com/"+uid+"/picture?type=large";
 				  user.save();
 			  }
 			 
-			  session("user_id", user.id.toString());
+			  session("user_id", Long.toString(user.id));
+			  //session("user_uid", Long.toString(user.uid));
 			  
 			  return true;
 		  }

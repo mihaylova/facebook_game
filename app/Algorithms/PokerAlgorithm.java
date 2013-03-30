@@ -11,6 +11,7 @@ import java.util.TimerTask;
 
 
 
+import models.Game;
 import models.GameRoom;
 import models.Question;
 import models.GameRoom.Call;
@@ -23,9 +24,42 @@ import ForGameRoom.Member;
 import models.GameRoom.NextOnTurn;
 import play.libs.Akka;
 
-import akka.actor.ActorRef;
-import akka.actor.Cancellable;
-import akka.util.Duration;
+import akka.actor.*;
+import akka.dispatch.*;
+
+
+
+import Algorithms.Notify;
+
+
+import play.mvc.*;
+import play.mvc.WebSocket.Out;
+import play.libs.*;
+import play.libs.F.*;
+import scala.Int;
+import scala.concurrent.Await;
+import scala.concurrent.duration.Duration;
+import akka.util.*;
+
+
+import scala.concurrent.duration.*;
+
+
+
+
+import org.codehaus.jackson.*;
+import org.codehaus.jackson.node.*;
+
+import static java.util.concurrent.TimeUnit.*;
+
+import static akka.pattern.Patterns.ask;
+
+
+import org.joda.time.Seconds;
+
+import com.google.common.primitives.Longs;
+
+import java.util.*;
 
 public class PokerAlgorithm {
 	public static Map<Long, Cancellable> timers= new HashMap<Long, Cancellable>();
@@ -75,12 +109,7 @@ public class PokerAlgorithm {
 		member.UnCallBet=0;
     	Notify.OnCallOrRaise(member.name+" наддаде с "+ sum + " точки!", gamestate, member);
     	gamestate.NextUser_on_turn();
-//    	Cancellable timer1 =Akka.system().scheduler().scheduleOnce(
-//				Duration.create(2, SECONDS),
-//				gameRoom,
-//				new NextOnTurn(gamestate.game_id)
-//		);
-//		GameRoom.timers.put(gamestate.game_id, timer1);
+
 		Cancellable timer = SetTimer(gameRoom, gamestate);
 		timers.put(gamestate.game_id, timer);
 	}
@@ -112,12 +141,7 @@ public class PokerAlgorithm {
 		}
 		else{
 			gamestate.NextUser_on_turn();
-//			Cancellable timer1 =Akka.system().scheduler().scheduleOnce(
-//					Duration.create(2, SECONDS),
-//					gameRoom,
-//					new NextOnTurn(gamestate.game_id)
-//			);
-//			GameRoom.timers.put(gamestate.game_id, timer1);
+
 			Cancellable timer = SetTimer(gameRoom, gamestate);
 			timers.put(gamestate.game_id, timer);
 		}
@@ -139,12 +163,7 @@ public class PokerAlgorithm {
 		}
 		else{
 			gamestate.NextUser_on_turn();
-//			Cancellable timer1 =Akka.system().scheduler().scheduleOnce(
-//					Duration.create(2, SECONDS),
-//					gameRoom,
-//					new NextOnTurn(gamestate.game_id)
-//			);
-//			GameRoom.timers.put(gamestate.game_id, timer1);
+
 			Cancellable timer = SetTimer(gameRoom, gamestate);
 			timers.put(gamestate.game_id, timer);
 		}
@@ -153,20 +172,22 @@ public class PokerAlgorithm {
 	
 	private static Cancellable SetTimer(ActorRef gameRoom, GameState gamestate){
 		Cancellable timer;
-		gameRoom.tell(new NextOnTurn(gamestate.game_id));
+		gameRoom.tell(new NextOnTurn(gamestate.game_id, gamestate), gameRoom);
 		
   		if(gamestate.user_on_turn.UnCallBet==0){
 			timer =Akka.system().scheduler().scheduleOnce(
 					Duration.create(7, SECONDS),
     				gameRoom,
-    				new Call(gamestate.user_on_turn, gamestate.game_id)
+    				new Call(gamestate.user_on_turn, gamestate.game_id, gamestate),
+    				Akka.system().dispatcher()
     		);
 		}
 		else{
 			timer =Akka.system().scheduler().scheduleOnce(
 					Duration.create(7, SECONDS),
     				gameRoom,
-    				new Fold(gamestate.user_on_turn, gamestate.game_id)
+    				new Fold(gamestate.user_on_turn, gamestate.game_id, gamestate),
+    				Akka.system().dispatcher()
     		);
 		}
 		return timer;
@@ -210,7 +231,8 @@ public class PokerAlgorithm {
 		Cancellable timer = Akka.system().scheduler().scheduleOnce(
 				Duration.create(3, SECONDS),
 				GameRoom.gameRooms.get(gamestate.game_id),
-				new Start(gamestate.game_id)
+				new Start(gamestate.game_id, gamestate),
+				Akka.system().dispatcher()
 		);
 		timers.put(gamestate.game_id, timer);
 	}
@@ -220,7 +242,9 @@ public class PokerAlgorithm {
 		Cancellable timer = Akka.system().scheduler().scheduleOnce(
 				Duration.create(1, SECONDS),
 				GameRoom.gameRooms.get(gamestate.game_id),
-				new AskQuestion(gamestate.game_id)
+				//*************************************************
+				new AskQuestion(Game.Find(gamestate.game_id)),
+				Akka.system().dispatcher()
 		);
 		timers.put(gamestate.game_id, timer);
     	

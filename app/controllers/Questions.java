@@ -13,6 +13,9 @@ import play.db.DB;
 import play.mvc.Result;
 import views.html.questions.*;
 
+import play.data.*;
+import static play.data.Form.*;
+
 public class Questions extends Application {
 	
 	final static Form<Question> questionForm = form(Question.class);

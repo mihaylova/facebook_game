@@ -1,10 +1,15 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import play.db.ebean.Model;
 import java.util.*;
 import javax.persistence.*;
+
+import Algorithms.Notify;
+import ForGameRoom.Member;
 
 import play.db.ebean.*;
 import play.data.format.*;
@@ -25,10 +30,11 @@ public class Question extends Model {
 		private String answer3;
 		
 		public ArrayList<String> answers;
-		public int choice_answer1;
-		public int choice_answer2;
-		public int choice_answer3;
-		public int choice_answer4;
+		public int choice_answer1=0;
+		public int choice_answer2=0;
+		public int choice_answer3=0;
+		public int choice_answer4=0;
+		
 		
 		public static String[] categories={"", "История", "Природни науки", "Изкуство", "Литература", "Спорт", "География", "Астронимия", "Технологии", "Кино и телевизия"};
 		
@@ -37,6 +43,7 @@ public class Question extends Model {
 			Question question=(Question) Question.find.where().eq("category", category).orderBy("RAND()").setMaxRows(1).findUnique();
 	
 			question.MixAnswers();
+			
 			return question;
 		}
 		public static Finder<Long,Question> find = new Finder<Long, Question>(
@@ -148,8 +155,82 @@ public class Question extends Model {
 			
 		}
 
+		public void ChoiceAnswer(String answer){
+			if(answer1.equals(answer)){
+        		choice_answer1++;
+        	}
+        	else if(answer2.equals(answer)){
+        		choice_answer2++;
+        	}
+        	else if(answer3.equals(answer)){
+        		choice_answer3++;
+        	}
+        	else if(right_answer.equals(answer)){
+        		choice_answer4++;
+        	}
+			save();
+		}
 
-
+		private Map<Integer, Float> getChoicesOfAnswers(){
+			 Map<Integer, Float> choices = new HashMap<Integer, Float>();
+			   int button = 1;
+			   for(String answer :answers){
+				   if(answer==answer1){
+					   choices.put(button, (float) choice_answer1);
+				   }
+				   else if(answer==answer2){
+					   choices.put(button,(float) choice_answer2);
+				   }
+				   else if(answer==answer3){
+					   choices.put(button, (float) choice_answer3);
+				   }
+				   else if(answer==right_answer){
+					   choices.put(button, (float) choice_answer4);
+				   }
+				   button++;
+			   }
+			   return choices;
+		}
 		
+		  public  void Joker_50(Member member){
+			  member.usejoker = true;
+			  member.coins = member.coins-5;
+			   @SuppressWarnings("unchecked")
+			ArrayList<String> joker_answers = (ArrayList<String>)answers.clone();
+			   int count=0;
+			   do{
+				   int random = (int)(Math.random()*(4));
+				   if(joker_answers.get(random)!= "" && joker_answers.get(random)!= right_answer){
 
+					   joker_answers.remove(random);
+					   joker_answers.add(random, "");
+						  count++;
+			   }
+				  
+				 		   
+			   } while(count<2);
+			  
+			   Notify.OnJoker_50(member, joker_answers);
+		   }
+		    
+		   public  void Joker_Voice(Member member){
+			  member.usejoker = true;
+			  member.coins = member.coins-5;
+			  Map<Integer, Float> choices = getChoicesOfAnswers();
+			  float procent100 = 0;
+			  for(Float i: choices.values()){
+				  procent100 = procent100+i;
+			  }
+			  for(int i=1; i<=4; i++){
+				  float procent = choices.get(i);
+				  choices.remove(i);
+				  procent = Math.round((procent/procent100)*100);
+				  choices.put(i, procent);
+				  
+			  }
+			  
+			  Notify.OnJoker_voice(member, choices);
+			  //*******************************************************************
+			  //**********************************************************************
+		   }
 }

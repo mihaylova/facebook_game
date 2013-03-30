@@ -63,6 +63,11 @@
           kind: 'joker50'
         }));
       });
+      $('#joker_voice').on('click', function() {
+        return _this.ws.send(JSON.stringify({
+          kind: 'joker_voice'
+        }));
+      });
       this;
     }
 
@@ -115,7 +120,11 @@
           case 'out_of_points':
             return $('#message-out-of-points').text(data.message);
           case 'joker_50':
-            return _this.joker_50(data);
+            return _this.joker(data);
+          case 'update_points':
+            return $("#member-" + _this.user_id + " span.points").text(data.message);
+          case 'joker_voice':
+            return _this.joker_voice(data);
         }
       };
       return this;
@@ -138,35 +147,36 @@
       return el.html(result);
     };
 
-    Game.prototype.joker_50 = function(data) {
+    Game.prototype.joker_voice = function(data) {
+      $('#choiceA').show();
+      $('#choiceB').show();
+      $('#choiceC').show();
+      $('#choiceD').show();
+      $('#choiceA').text("" + data.choice_answer1 + "%");
+      $('#choiceB').text("" + data.choice_answer2 + "%");
+      $('#choiceC').text("" + data.choice_answer3 + "%");
+      $('#choiceD').text("" + data.choice_answer4 + "%");
+      return $('div.jokers').hide();
+    };
+
+    Game.prototype.joker = function(data) {
       var answer1, answer2, answer3, answer4;
       answer1 = data.answer1;
       answer2 = data.answer2;
       answer3 = data.answer3;
       answer4 = data.answer4;
-      if (answer1 === null) {
-        $('#answerA').text();
-      } else {
-        $('#answerA').text(answer1);
-      }
-      if (answer2 === null) {
-        $('#answerB').text();
-      } else {
-        $('#answerB').text(answer2);
-      }
-      if (answer3 === null) {
-        $('#answerC').text();
-      } else {
-        $('#answerC').text(answer3);
-      }
-      if (answer4 === null) {
-        return $('#answerD').text();
-      } else {
-        return $('#answerD').text(answer4);
-      }
+      $('#answerA').text(answer1);
+      $('#answerB').text(answer2);
+      $('#answerC').text(answer3);
+      $('#answerD').text(answer4);
+      return $('div.jokers').hide();
     };
 
     Game.prototype.finishGame = function(data) {
+      $('#choiceA').hide();
+      $('#choiceB').hide();
+      $('#choiceC').hide();
+      $('#choiceD').hide();
       $('div.jokers').hide();
       $('#timer').hide();
       $('#timer1').hide();
@@ -192,6 +202,10 @@
 
     Game.prototype.showCategory = function(data) {
       var member, members, _i, _len, _results;
+      $('#choiceA').hide();
+      $('#choiceB').hide();
+      $('#choiceC').hide();
+      $('#choiceD').hide();
       $("div.user-answer").hide();
       $('div.jokers').hide();
       $('div.question').hide();
@@ -199,7 +213,7 @@
       $('#bet').show();
       $('#category').show();
       this.render(data, 'category', this.selectors.category);
-      $('#bet').text(data.bet);
+      $('#bet').text("Залог: " + data.bet);
       members = data.members;
       _results = [];
       for (_i = 0, _len = members.length; _i < _len; _i++) {
@@ -254,7 +268,7 @@
       user_points = data.user_points;
       $('#message').text(message);
       $("#member-" + user_uid + " span.points").text(user_points);
-      return $('#bet').text(game_bet);
+      return $('#bet').text("Залог: " + game_bet);
     };
 
     Game.prototype.fold = function(data) {
@@ -284,7 +298,12 @@
     };
 
     Game.prototype.askQuestion = function(data) {
-      var answer1, answer2, answer3, answer4, bet, members, question, _ref;
+      var answer1, answer2, answer3, answer4, bet, hasjoker, members, members_out_of_coins, question, _ref, _ref1;
+      hasjoker = parseInt(data.hasjoker);
+      $('#choiceA').hide();
+      $('#choiceB').hide();
+      $('#choiceC').hide();
+      $('#choiceD').hide();
       console.log('question');
       $('#message').show();
       $('div.jokers').show();
@@ -301,6 +320,11 @@
           return $('#timer').pietimer('reset');
         }
       });
+      if (hasjoker === 1) {
+        $('#joker_voice').show();
+      } else {
+        $('#joker_voice').hide();
+      }
       $('#bet').hide();
       question = data.question;
       answer1 = data.answer1;
@@ -308,6 +332,7 @@
       answer3 = data.answer3;
       answer4 = data.answer4;
       members = data.members;
+      members_out_of_coins = data.members_out_of_coins;
       bet = data.bet;
       $('#category').hide();
       $('.betting').removeClass('betting');
@@ -330,7 +355,10 @@
         $('#answerB').addClass('answer');
         $('#answerC').addClass('answer');
         $('#answerD').addClass('answer');
-        return $('#message').text("Играете за " + bet + " точки");
+        $('#message').text("Играете за " + bet + " точки");
+        if ((_ref1 = this.user_id, __indexOf.call(members_out_of_coins, _ref1) >= 0)) {
+          return $('div.jokers').hide();
+        }
       } else {
         $('div.question').addClass('unactive');
         $('#answerA').removeClass('btn');
@@ -341,12 +369,17 @@
         $('#answerB').removeClass('answer');
         $('#answerC').removeClass('answer');
         $('#answerD').removeClass('answer');
-        return $('#message').text("Не можете да отговаряте");
+        $('#message').text("Не можете да отговаряте");
+        return $('div.jokers').hide();
       }
     };
 
     Game.prototype.markAnswer = function(data) {
       var button;
+      $('#choiceA').hide();
+      $('#choiceB').hide();
+      $('#choiceC').hide();
+      $('#choiceD').hide();
       console.log('markanswer');
       $('div.jokers').hide();
       button = data.message;
@@ -396,6 +429,10 @@
 
     Game.prototype.finishAnswering = function(data) {
       var member, members, time, _i, _len, _results;
+      $('#choiceA').hide();
+      $('#choiceB').hide();
+      $('#choiceC').hide();
+      $('#choiceD').hide();
       $('#message').hide();
       $('div.jokers').hide();
       $('#answerA').removeClass('btn');

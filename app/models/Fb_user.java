@@ -22,6 +22,7 @@ public class Fb_user extends Model {
 		  public String AcessToken;
 		  public int points;
 		  public String picture;
+		  public int coins;
 	
 		  
 		 
@@ -48,6 +49,11 @@ public class Fb_user extends Model {
 		  
 		  public void SetPoints(int count){
 			  this.points = count;
+			  save();
+		  }
+		  
+		  public void SetCoins(int count){
+			  this.coins = count;
 			  save();
 		  }
 }

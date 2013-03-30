@@ -1,15 +1,32 @@
 package models;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.TreeSet;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import models.GameRoom.AskQuestion;
+import models.GameRoom.FinishAnswering;
+import models.GameRoom.Start;
+import models.Question;
+import Algorithms.Notify;
+import Algorithms.PokerAlgorithm;
+import ForGameRoom.GameState;
+import ForGameRoom.Member;
+import akka.actor.Cancellable;
+
 import controllers.Application;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
+import play.libs.Akka;
+import scala.concurrent.duration.Duration;
 @Entity 
 public class Game extends Model {
 
@@ -20,14 +37,15 @@ public class Game extends Model {
 	
 	
 	
-	public Long player1UID;
-	public Long player2UID;
+	private Long player1UID;
+	private Long player2UID;
 	//public Long player3UID;
 	//public Long player4UID;
 	public Boolean isStart=false;
 	public Boolean isFinish=false;
-	public Date start;
-	public Date finish;
+	private Date start;
+	private Date finish;
+	public GameState gamestate;
 	
 	public static Finder<Long, Game> find = new Finder<Long,Game>(
 			Long.class, Game.class
@@ -49,6 +67,7 @@ public class Game extends Model {
 		Game game=Game.findByUid(Application.current_user().uid);
 				
 		if(game!=null){
+			game.gamestate = GameState.Get(game.id);
 			return game;
 		}
 		else{
@@ -68,7 +87,7 @@ public class Game extends Model {
 			for(Game unfinish_game: games){
 				if(unfinish_game.has_more_free_slots()){
 					game=unfinish_game;
-					// in Gameroom game.start_current_game();
+					
 					 game.set_player(Application.current_user().uid);
 					 break;
 				}
@@ -79,7 +98,13 @@ public class Game extends Model {
 			game.set_player(Application.current_user().uid);
 		}
 		
-		
+		game.gamestate = GameState.Get(game.id);
+		return game;
+	}
+	
+	public static Game Find(long game_id){
+		Game game = Game.find.byId(game_id);
+		game.gamestate = GameState.Get(game_id);
 		return game;
 	}
 	
@@ -93,13 +118,48 @@ public class Game extends Model {
 	public void start_current_game(){
 		isStart = true;
 		start = new Date();
-		save();
+		gamestate.isStart = true;
+		
+    	Notify.All("start", "game will begin in 5 seconds", gamestate.members);
+    	
+    	
+ 	
+    	Cancellable timer = Akka.system().scheduler().scheduleOnce(
+        		Duration.create(5, SECONDS),
+        		GameRoom.gameRooms.get(this.id),
+                new Start(this.id, gamestate),
+                Akka.system().dispatcher()
+        );
+    	GameRoom.timers.put(this.id, timer);
+    	save();
 	}
 	
 	public void finish_current_game(){
 		isFinish = true;
 		finish = new Date();
-		save();
+		gamestate.isFinish = true;
+		
+    	    	
+    	if(PokerAlgorithm.timers.containsKey(this.id)){
+    		if(!PokerAlgorithm.timers.get(this.id).isCancelled()){
+    			PokerAlgorithm.timers.get(this.id).cancel();
+    		}
+    	
+        	PokerAlgorithm.timers.remove(this.id);
+    	}
+    	
+    	if(GameRoom.timers.containsKey(this.id)){
+    		if(!GameRoom.timers.get(this.id).isCancelled()){
+    			GameRoom.timers.get(this.id).cancel();
+    		}
+    		GameRoom.timers.remove(this.id);
+    	}
+    	
+    	Notify.All("finish", "Играта приключи!", gamestate.members);
+    	
+    	checkPointsOnExit(gamestate.members.get(0));
+    	Notify.One("update_points", Integer.toString(gamestate.members.get(0).points), gamestate.members.get(0));
+    	save();
 	}
 	
 	private void set_player(long player_uid){
@@ -113,52 +173,204 @@ public class Game extends Model {
 	}
 	
 	public void remove_player(long player_uid){
-		if(this.player1UID==player_uid){
+		if(this.player1UID!= null && this.player1UID == player_uid){
 			this.player1UID=null;
 		}
-		else if(this.player2UID==player_uid){
+		else if(this.player1UID!= null && this.player2UID == player_uid){
 			this.player2UID=null;
 		}
 		save();
 	}
 	
-	
+	 public  void checkPointsOnExit(Member member){
+		   if(gamestate.question != null && member.answer!=null && member.answer.equals(gamestate.question.getRight_answer() ) ){
+	       	member.PlusPoints(gamestate.Bet);
+	   	}
+	       else if(gamestate.poker_algorithm || gamestate.answering){
+	       
+	       	member.PlusPoints(member.user_bet);
+	       }
+	   }
+	    
 
+	   
+	   private  ArrayList<Member> GetWinners(ArrayList<Member> right_answered){
+	    	ArrayList<Member> winners = new ArrayList<Member>();
+	    	
+	    	TreeSet<Long> times = new TreeSet<Long>();
+	    	for(Member member: right_answered){
+	    		times.add(member.time_on_answering);
+	    	}
+	    	
+	    	Long min = times.first();
+	    	
+	    	for(Member member: right_answered){
+	    		if(member.time_on_answering==min){
+	    			winners.add(member);
+	    		}
+	    	}
+	    	return winners;
+	    }
+	    
+	    private  ArrayList<Member> GetRightAnswered(ArrayList<Member> answered){
+	    	ArrayList<Member> right_answered= new ArrayList<Member>();
+	    	
+	    	for(Member member : answered){
+	    		if(member.answer.equals(gamestate.question.getRight_answer())){
+	    			right_answered.add(member);
+	    		}
+	    	}
+	    	return right_answered;
+	    }
+	    
+		private ArrayList<Member> GetAnswered (){
+	    	ArrayList<Member> answered= new ArrayList<Member>();
+	    	
+	    	for(Member member:  gamestate.members){
+	    		if(member.answer!=null){
+	    			answered.add(member);
+	    		}
+	    	}
+	    	return answered;
+	    }
+	    
+	    public  void AskQuestion(){
+	    	for(Member member : gamestate.members){
+	    		member.answer = null;
+	    		member.time_on_answering = 9999;
+	    		member.button = null;
+	    		member.usejoker = false;
+	    	}
+	    	
+	    	gamestate.answering = true;
+	    	gamestate.question = Question.Get(gamestate.category);
+	    	gamestate.time = new Date().getTime();
+	    	if(gamestate.question.choice_answer1+gamestate.question.choice_answer2+gamestate.question.choice_answer3+gamestate.question.choice_answer4!=0){
+	    		gamestate.hasVoiceJoker = true;
+			}
+	    	else gamestate.hasVoiceJoker = false;
+	    	Notify.OnQuestion(gamestate);
+	    	
+	    	Cancellable timer = Akka.system().scheduler().scheduleOnce(
+					Duration.create(15, SECONDS),
+					GameRoom.gameRooms.get(id),
+					new FinishAnswering(this),
+					Akka.system().dispatcher()
+			);
+	    	GameRoom.timers.put(id, timer);
+	    }
 	
 	
-	
-//	private String category;
-//	private Question question;
-//	
-//	public Game(){
-//		this.player1=Application.current_user();
-//	}
-//	public Fb_user getPlayer1() {
-//		return player1;
-//	}
-//	
-//	
-//	public Question getQuestion() {
-//		return question;
-//	}
-//	public void setQuestion(String category) {
-//		this.question = Question.Get(category);
-//	
-//		
-//	}
-//	public String getCategory() {
-//		return category;
-//	}
-//	public void setRandomCategory() {
-//		String category;
-//
-//		do{
-//			category=Question.RandomCategory();
-//		}
-//		while(category.equals(this.category));
-//
-//		this.category = category;
-//	}
+	   public void ShowWinner(){
+	    	
+        	ArrayList<Member> answered = GetAnswered();
+        	Notify.All("mark_right_answer", gamestate.question.getRight_answer(), gamestate.members);
+        	if(answered.isEmpty()){
+        		
+        		gamestate.unanswered_question++;
+        		if(gamestate.unanswered_question<3){
+        			Notify.All("message", "Няма отговорили", gamestate.members);
+        			
+            		Cancellable timer = Akka.system().scheduler().scheduleOnce(
+            				Duration.create(2, SECONDS),
+            				GameRoom.gameRooms.get(id),
+            				//******************************************
+            				new AskQuestion(this),
+            				Akka.system().dispatcher()
+            		);
+            		GameRoom.timers.put(id, timer);
+        		}
+        		else{
+        			
+        			
+        			finish_current_game();
+        		}
+        		
+        	}
+        	else{ 
+        		ArrayList<Member> right_answered = GetRightAnswered(answered);
+        		if(right_answered.isEmpty()){
+        			Notify.All("message", "Няма познали!",  gamestate.members);
+        			Cancellable timer = Akka.system().scheduler().scheduleOnce(
+            				Duration.create(3, SECONDS),
+            				GameRoom.gameRooms.get(id),
+            				//******************************************
+            				new AskQuestion(this),
+            				Akka.system().dispatcher()            				
+            		);
+        			GameRoom.timers.put(id, timer);
+        		}
+        		else if(right_answered.size()==1){
+        			Member member = right_answered.get(0);
+        			member.PlusPoints(gamestate.Bet);
+        			gamestate.Bet=0;
+        			
+        			
+        			Notify.OnWin(member.uid, member.name, member.points, gamestate.members);
+        			Cancellable timer = Akka.system().scheduler().scheduleOnce(
+            				Duration.create(3, SECONDS),
+            				GameRoom.gameRooms.get(id),
+            				new Start(id, gamestate),
+            				Akka.system().dispatcher()
+            		);
+        			GameRoom.timers.put(id, timer);
+        		}
+        		else if(right_answered.size()>1){
+        			ArrayList<Member> winners = GetWinners(right_answered);
+        			if(winners.size()==1){
+        				Member member  = winners.get(0);
+            			
+            			member.PlusPoints(gamestate.Bet);
+            			gamestate.Bet=0;
+            			Notify.OnWin(member.uid, member.name, member.points, gamestate.members);
+            			Cancellable timer = Akka.system().scheduler().scheduleOnce(
+                				Duration.create(3, SECONDS),
+                				GameRoom.gameRooms.get(id),
+                				new Start(id, gamestate),
+                				Akka.system().dispatcher()
+                		);
+            			GameRoom.timers.put(id, timer);
+        			}
+        			else if(winners.size()>1){
+        				int bet = gamestate.Bet;
+        				gamestate.Bet=0;
+        				int size = winners.size();
+        				int module = bet%size;
+        				String string = "Победители са";
+        				if(module!=0){
+        					bet=bet+module;
+        				}
+    					for(Member member :winners){
+    						
+    						member.PlusPoints(bet/size);
+    						string = string + " " + member.name;
+    					}
+    					string = string + " Те си разделят точките, поради еднакви времена за отговор!";
+    					Notify.OnMoreWinners(string, gamestate, winners);
+    					Cancellable timer = Akka.system().scheduler().scheduleOnce(
+                				Duration.create(3, SECONDS),
+                				GameRoom.gameRooms.get(id),
+                				new Start(id, gamestate),
+                				Akka.system().dispatcher()
+                		);
+            			GameRoom.timers.put(id, timer);
+        			}
+        		}
+        		
+        	}
+        	int count_out_of_pints=0;
+        	for (Member member :gamestate.members){
+        		if(member.points<=0){
+        			count_out_of_pints++;
+        			member.out_of_points=true;
+        			Notify.One("out_of_points", "Нямате достатъчно точки за да играете, но можете да наблюдавате хода на играта без да участвате. Можете да получите точки чрез добавяне на въпрос.", member);
+        		}
+        	}
+        	if(count_out_of_pints>=gamestate.members.size()-1){
+        		
+        		finish_current_game();
+        	}
+	    }
 
 	
 }

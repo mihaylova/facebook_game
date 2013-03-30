@@ -17,6 +17,7 @@ create table fb_user (
   acess_token               varchar(255),
   points                    integer,
   picture                   varchar(255),
+  coins                     integer,
   constraint pk_fb_user primary key (id))
 ;
 

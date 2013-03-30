@@ -10,7 +10,9 @@ import play.data.DynamicForm;
 import play.libs.Json;
 import play.mvc.Result;
 import play.mvc.WebSocket;
+import views.html.canvas.redirect;
 import views.html.game.*;
+
 
 import org.codehaus.jackson.*;
 import org.codehaus.jackson.node.ObjectNode;
@@ -18,7 +20,24 @@ import org.codehaus.jackson.node.ObjectNode;
 public class Games extends Application {
 	
 	public static Result index() {
-		return ok(index.render(current_user().uid));
+		//null pointer exception
+		if(current_user() != null){
+			if(current_user().points<=0){
+				return ok(views.html.canvas.index.render(current_user().name, "Нямате достатъчно точки за да играете. За получаване на точки можете да зададете въпрос."));
+			}
+			else{
+				return ok(index.render(current_user().uid));
+			}
+			
+		}
+		else {
+			String permission_request_url = "https://graph.facebook.com/oauth/authorize?"
+	                + "client_id=249406605187123&"
+	                + "redirect_uri=http://apps.facebook.com/249406605187123/";
+				
+				return ok(redirect.render(permission_request_url));
+		}
+		
 	}
 	
     public static WebSocket<JsonNode> join() {

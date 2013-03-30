@@ -3,7 +3,6 @@
 # ~~~~
 
 # Home page
-
 POST	/canvas/								controllers.Canvas.index()
 GET		/canvas/								controllers.Canvas.index()
 		

@@ -31,6 +31,10 @@ class Game
      
      $('#joker50').on 'click', =>
       @ws.send JSON.stringify({kind: 'joker50'})
+     
+     $('#joker_voice').on 'click', =>
+      @ws.send JSON.stringify({kind: 'joker_voice'})
+
 
     this
     
@@ -66,7 +70,9 @@ class Game
         when 'mark_right_answer' then @markRightAnswer (data)
         when 'finish' then @finishGame(data)
         when 'out_of_points' then $('#message-out-of-points').text(data.message)
-        when 'joker_50' then @joker_50 (data)
+        when 'joker_50' then @joker (data)
+        when 'update_points' then $("#member-#{@user_id} span.points").text(data.message)
+        when 'joker_voice' then @joker_voice (data)
 
     this
     
@@ -80,35 +86,38 @@ class Game
     
     el.html result
   
-  
-  joker_50: (data) ->
+  joker_voice: (data) ->
+    $('#choiceA').show()
+    $('#choiceB').show()
+    $('#choiceC').show()
+    $('#choiceD').show()
+    $('#choiceA').text("#{data.choice_answer1}%")
+    $('#choiceB').text("#{data.choice_answer2}%")
+    $('#choiceC').text("#{data.choice_answer3}%")
+    $('#choiceD').text("#{data.choice_answer4}%")
+    $('div.jokers').hide()
+    
+    
+  joker: (data) ->
     answer1 = data.answer1
     answer2 = data.answer2
     answer3 = data.answer3
     answer4 = data.answer4
-    if answer1 == null
-      $('#answerA').text()
-    else 
-      $('#answerA').text(answer1)
-    if answer2 == null
-      $('#answerB').text()
-    else 
-      $('#answerB').text(answer2)
-    if answer3 == null
-      $('#answerC').text()
-    else 
-      $('#answerC').text(answer3)
-    if answer4 == null
-      $('#answerD').text()
-    else 
-      $('#answerD').text(answer4)
-      
+    $('#answerA').text(answer1)
+    $('#answerB').text(answer2)
+    $('#answerC').text(answer3)
+    $('#answerD').text(answer4)
+    $('div.jokers').hide()  
     
    
     
     
     
   finishGame: (data) ->
+    $('#choiceA').hide()
+    $('#choiceB').hide()
+    $('#choiceC').hide()
+    $('#choiceD').hide()
     $('div.jokers').hide()
     $('#timer').hide()
     $('#timer1').hide()
@@ -133,6 +142,10 @@ class Game
     
     
   showCategory: (data) ->
+    $('#choiceA').hide()
+    $('#choiceB').hide()
+    $('#choiceC').hide()
+    $('#choiceD').hide()
     $("div.user-answer").hide()
     $('div.jokers').hide()
     $('div.question').hide()
@@ -140,7 +153,7 @@ class Game
     $('#bet').show()
     $('#category').show()
     @render(data, 'category', @selectors.category)
-    $('#bet').text(data.bet)
+    $('#bet').text("Залог: #{data.bet}")
     
     members = data.members
     
@@ -190,7 +203,8 @@ class Game
      user_points = data.user_points
      $('#message').text(message)
      $("#member-#{user_uid} span.points").text(user_points)
-     $('#bet').text(game_bet)
+     $('#bet').text("Залог: #{game_bet}")
+     
      
   fold: (data) ->
      $('#timer1').hide()
@@ -215,6 +229,11 @@ class Game
     $("#member-#{user_uid} span.points").text(user_points)
     
   askQuestion: (data) ->
+    hasjoker=parseInt(data.hasjoker)
+    $('#choiceA').hide()
+    $('#choiceB').hide()
+    $('#choiceC').hide()
+    $('#choiceD').hide()
     console.log 'question'
     $('#message').show()
     $('div.jokers').show()
@@ -233,7 +252,10 @@ class Game
       
           
             
-        
+    if(hasjoker==1)
+      $('#joker_voice').show()
+    else
+      $('#joker_voice').hide()     
     $('#bet').hide()
     question = data.question
     answer1 = data.answer1
@@ -241,6 +263,7 @@ class Game
     answer3 = data.answer3
     answer4 = data.answer4
     members = data.members
+    members_out_of_coins = data.members_out_of_coins
     bet = data.bet
     $('#category').hide()
     
@@ -275,6 +298,8 @@ class Game
       $('#answerC').addClass('answer');
       $('#answerD').addClass('answer');
       $('#message').text("Играете за #{bet} точки")
+      if(@user_id in members_out_of_coins)
+        $('div.jokers').hide()
     else
       $('div.question').addClass('unactive')
       $('#answerA').removeClass('btn');
@@ -286,9 +311,14 @@ class Game
       $('#answerC').removeClass('answer');
       $('#answerD').removeClass('answer');
       $('#message').text("Не можете да отговаряте")
+      $('div.jokers').hide()
       
 
   markAnswer: (data) ->
+    $('#choiceA').hide()
+    $('#choiceB').hide()
+    $('#choiceC').hide()
+    $('#choiceD').hide()
     console.log 'markanswer'
     $('div.jokers').hide()
     button =  data.message
@@ -331,6 +361,10 @@ class Game
       $('#answerD').addClass('right')
       
   finishAnswering: (data) ->
+    $('#choiceA').hide()
+    $('#choiceB').hide()
+    $('#choiceC').hide()
+    $('#choiceD').hide()
     $('#message').hide()
     $('div.jokers').hide()
     $('#answerA').removeClass('btn');

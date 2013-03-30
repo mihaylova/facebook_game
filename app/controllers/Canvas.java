@@ -13,7 +13,7 @@ public class Canvas extends Application {
 //	@With(ProbaAction.class)
 	public static Result index () {
 		if (parse_facebook_signed_request() || current_user() != null) {
-			return ok(index.render(current_user().name));
+			return ok(index.render(current_user().name, ""));
 		} else {
 			String permission_request_url = "https://graph.facebook.com/oauth/authorize?"
                 + "client_id=249406605187123&"
