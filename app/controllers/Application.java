@@ -77,7 +77,7 @@ public class Application extends Controller {
 			  
 			  if (user == null) {
 				  FacebookClient facebookClient = new DefaultFacebookClient(access_token);
-		
+				  
 				  User fuser = facebookClient.fetchObject("me", User.class);
 				  //Photo picture = facebookClient.fetchObject("me?fields=picture", Photo.class);
 	
@@ -88,8 +88,11 @@ public class Application extends Controller {
 				  user.points = 200;
 				  user.coins = 10;
 				  user.picture="https://graph.facebook.com/"+uid+"/picture?type=large";
+				  user.AcessToken = access_token;
 				  user.save();
 			  }
+			  else user.AcessToken = access_token;
+			  user.save();
 			 
 			  session("user_id", Long.toString(user.id));
 			  //session("user_uid", Long.toString(user.uid));

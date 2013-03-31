@@ -147,6 +147,7 @@ public class Question extends Model {
 			question.setAnswer1(user_question.getAnswer1());
 			question.setAnswer2(user_question.getAnswer2());
 			question.setAnswer3(user_question.getAnswer3());
+			//add point to user
 			question.save();
 			user_question.delete();
 			

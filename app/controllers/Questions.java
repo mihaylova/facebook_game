@@ -21,14 +21,7 @@ public class Questions extends Application {
 	final static Form<Question> questionForm = form(Question.class);
 		
 					
-//	public static Result show(Long id){
-//		if(session("admin")!=null){
-//				Question question = Question.find.byId(id);
-//		
-//				return ok(show.render(question));
-//			}
-//		else return redirect(routes.Admins.login());
-//		}
+
 	
 	public static Result add () {
 		if(session("admin")!=null){	
@@ -56,34 +49,60 @@ public class Questions extends Application {
 		}
 		else return redirect(routes.Admins.login());
 	}
+		
+		public static Result editQuestion () {
+			if(session("admin")!=null){	
+				Form<Question> filledForm = questionForm.bindFromRequest();
+				
+			    if(filledForm.hasErrors()) {
+			        return badRequest(add.render(filledForm));
+			    } else {
+			        
+			        Question question = Question.find.byId(Long.parseLong(session("edit")));
+			        question.setQuestion(filledForm.data().get("question"));
+			        question.setRight_answer(filledForm.data().get("right_answer"));
+			        question.setAnswer1(filledForm.data().get("answer1"));
+			        question.setAnswer2(filledForm.data().get("answer2"));
+			        question.setAnswer3(filledForm.data().get("answer3"));
+			        question.save();
+			        flash("success", "Въпроса беше променен!!!");
+			        return redirect("/admin/questions");
+			              
+			    }
+					
+			}
+		
+		
+		else return redirect(routes.Admins.login());
+	}
 	
 	public static Result view() {
 		if(session("admin")!=null){	
-			List<User_question> user_questions =  (List<User_question> ) User_question.find.all();
+			List<Question> questions =  (List<Question> )Question.find.all();
 			
-			return ok(view_from_user.render(user_questions, Question.categories));
+			return ok(view.render(questions, Question.categories));
 			
 		}
 		else return redirect(routes.Admins.login());
 	}
-
-	public static Result insert (Long id){
+	
+	public static Result edit (Long id){
 		if(session("admin")!=null){
-			User_question user_question = User_question.find.byId(id);
-			Question.set_from_user(user_question);
+			Question question = Question.find.byId(id);
 			
-			flash("success", "Въпроса беше добавен!!!");
-			return redirect("/admin/users_questions");
+			session("edit", Long.toString(question.id));
+			
+			return ok(edit.render(question, Question.categories));
 			}
 		else return redirect(routes.Admins.login());
 				}
 	
 	public static Result delete(Long id){
 		if(session("admin")!=null){
-				User_question question = User_question.find.byId(id);
+				Question question = Question.find.byId(id);
 				question.delete();
 				flash("success", "Въпроса беше изтрит!!!");
-				return redirect("/admin/users_questions");
+				return redirect("/admin/questions");
 			}
 		else return redirect(routes.Admins.login());
 				}

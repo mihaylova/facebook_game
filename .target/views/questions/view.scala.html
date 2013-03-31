@@ -1,6 +1,6 @@
-@(questions: List[User_question], categories: Array[String])
+@(questions: List[Question], categories: Array[String])
 
-@main_admin("Questions from users") {
+@main_admin("Questions") {
 	
 	
    
@@ -10,8 +10,8 @@
        <a href="/admin">Home</a> 
       </li>
      <li><a href="/admin/question/add">Добави въпрос</a></li>
-	<li class="active"> <a href="/admin/users_questions"> Преглед на потребоителски въпроси</a></li>
-	<li> <a href="/admin/questions"> Преглед на въпроси</a></li>
+	<li > <a href="/admin/users_questions"> Преглед на потребоителски въпроси</a></li>
+	<li class="active"> <a href="/admin/questions"> Преглед на въпроси</a></li>
 		       
     </ul>
 
@@ -26,8 +26,7 @@
       <thead>
         <tr>
         
-<th class="user">UID_user</th>
-<th class="user">Потребител</th>
+
 <th class="question">Въпрос</th>
 <th class="category">Категория</th>
 <th class="answer">Верен отговор</th>
@@ -46,16 +45,15 @@
 		<tr>
 		
 	
-		<td>@question.getUser_uid()</td>
-		<td>@question.getUsername()</td>
+		
 		<td>@question.getQuestion()</td>
 		<td>@categories(question.getCategory())</td>
 		<td>@question.getRight_answer()</td>
 		<td>@question.getAnswer1()</td>
 		<td>@question.getAnswer2()</td>
 		<td>@question.getAnswer3()</td>
-		<td> <a  class="btn btn-success btn-mini" href="/admin/users_questions/insert/@question.id">Insert</a></td>
-		<td> <a  class="btn btn-danger btn-mini" href="/admin/users_questions/delete/@question.id">Delete</a></td>
+		<td> <a  class="btn btn-success btn-mini" href="/admin/questions/edit/@question.id">Edit</a></td>
+		<td> <a  class="btn btn-danger btn-mini" href="/admin/questions/delete/@question.id">Delete</a></td>
 		
 		</tr>
 

@@ -1,5 +1,7 @@
 package models;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import javax.persistence.*;
 
@@ -29,9 +31,39 @@ public class Admin extends Model {
 		  ); 
 		  
 		  public static Admin authenticate(String username, String password) {
-		        return find.where()
+		        Admin admin =  find.where()
 		            .eq("username", username)
-		            .eq("password", password)
+		            //.eq("password", password)
 		            .findUnique();
+		       
+					MessageDigest md = null;
+					try {
+						md = MessageDigest.getInstance("SHA-1");
+					} catch (NoSuchAlgorithmException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				if(admin==null){
+					return null;
+				}
+				else{
+					String password_hash = byteArrayToHexString(md.digest(password.getBytes()));
+			        if(admin.password.equals(password_hash)){
+			        	return admin;
+			        }
+			        else return null;
+				}
+		        
 		    }
+
+
+		  public static String byteArrayToHexString(byte[] b) {
+			  String result = "";
+			  for (int i=0; i < b.length; i++) {
+			    result +=
+			          Integer.toString( ( b[i] & 0xff ) + 0x100, 16).substring( 1 );
+			  }
+			  return result;
+		  }
 }

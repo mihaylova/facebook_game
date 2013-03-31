@@ -243,7 +243,15 @@ public class Game extends Model {
 	    	}
 	    	
 	    	gamestate.answering = true;
-	    	gamestate.question = Question.Get(gamestate.category);
+	    	Question question;
+	    	//test*****************************************TEST
+	    	do{
+	    		question  = Question.Get(gamestate.category);
+	    	}
+	    	while(question.id.equals(gamestate.question.id));
+	    	
+	    	gamestate.question = question;
+	    	
 	    	gamestate.time = new Date().getTime();
 	    	if(gamestate.question.choice_answer1+gamestate.question.choice_answer2+gamestate.question.choice_answer3+gamestate.question.choice_answer4!=0){
 	    		gamestate.hasVoiceJoker = true;

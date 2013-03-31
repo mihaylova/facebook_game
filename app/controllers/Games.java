@@ -61,11 +61,7 @@ public class Games extends Application {
         };
     }
     
-    private static boolean user_can_play() {
-    	return true;
-    }
+   
 	
-    public static Result testview(){
-		return ok(view.render());
-	}
+   
 }

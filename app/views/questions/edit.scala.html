@@ -1,0 +1,70 @@
+@(question: Question, categories: Array[String])
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@main_admin("Edit Question") {
+<div id="exit"> <p> <a class="btn btn-primary" href="/logout"> Изход</a> </p> </div>
+<ul class="nav nav-tabs">
+      <li>
+       <a href="/admin">Home</a> 
+      </li>
+     <li ><a href="/admin/question/add">Добави въпрос</a></li>
+	<li> <a href="/admin/users_questions"> Преглед на потребоителски въпроси</a></li>
+	<li class="active"> <a href="/admin/questions"> Преглед на въпроси</a></li>
+	
+    </ul>  
+    
+ 
+      <div class="row"></div>
+    <div class="row"></div>
+    <div class="row"></div>
+    <div class="row-fluid">
+      <div class="span10 offset1">
+        @helper.form(action = routes.Questions.editQuestion) {
+          <h2>Добавете въпрос:</h2>
+          <div class="row-fluid">
+            <div class="span4">
+              <span class="help-block">Въпрос</span>
+              <textarea class="input-block-level" rows="6" name="question"
+              >@question.getQuestion()</textarea>
+            </div>
+            <div class="span4">
+              <span class="help-block">Категория</span>
+              <select name="category">
+                <option value="@question.getCategory()">@categories(question.getCategory())</option>
+                
+             
+      
+      		@for(a <- 1 until 10){
+        		 @if(a!=question.getCategory()){
+        		 	<option value="@a">@categories(a)</option>
+        		 }
+      		}
+                
+                
+               
+              </select>
+              <span class="help-block">Верен отговор</span>
+              <input type="text" class="input-block-level" value="@question.getRight_answer"
+              name="right_answer"> 
+            </div>
+            <div class="span4">
+              <span class="help-block">Други отговори</span>
+              <input type="text" class="input-block-level input-medium" value="@question.getAnswer1"
+              name="answer1">
+              <input type="text" class="input-block-level input-medium" value="@question.getAnswer2" name="answer2">
+              <input type="text" class="input-block-level input-medium" value="@question.getAnswer3" name="answer3">
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <input type="reset" class="btn" value="Reset"> 
+              </div>
+            </div>
+          </div>
+       }
+      </div>
+    </div>
+    
+    
+    
+}

@@ -1,5 +1,6 @@
 package controllers;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 
 import models.Admin;
