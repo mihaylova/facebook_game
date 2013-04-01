@@ -12,39 +12,6 @@ border-right-width: 0px;" class="alert alert-error">@message</div>
 
 
 
-<p><a onclick='postToFeed(); return false;'>Post to Feed</a></p>
-    <p id='msg'></p>
- <script src="//connect.facebook.net/en_US/all.js"></script>
- 
-  <script> 
-      FB.init({appId: "249406605187123", status: true, cookie: true});
-
-      function postToFeed() {
-
-        // calling the API ...
-        var obj = {
-          method: 'feed',
-          redirect_uri: 'http://localhost:9000/canvas/',
-          link: 'https://developers.facebook.com/docs/reference/dialogs/',
-          picture: 'http://fbrell.com/f8.jpg',
-          name: 'Facebook Dialogs',
-          caption: 'Reference Documentation',
-          description: 'Using Dialogs to interact with users.'
-        };
-
-        function callback(response) {
-          document.getElementById('msg').innerHTML = "Post ID: " + response['post_id'];
-        }
-
-        FB.ui(obj, callback);
-        
-       
-      }
-      
-      
-    
-    </script>
-		
 		
 		
 }

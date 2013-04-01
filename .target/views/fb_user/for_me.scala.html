@@ -3,11 +3,145 @@
 
 @main("For me") {
 	<div id="info">
-		<p id="name"> <span>Име: </span>@user.name </p>
-		<p id="points"> <span>Точки: </span> @user.points </p>
-		<p id="coins"> </span>Монети: </span> @user.coins </p>
+		<p > <span>Име: </span>@user.name </p>
+		<p> <span>Точки: </span> @user.points </p>
+		<p> </span>Монети: </span> @user.coins </p>
+			</div>
+	<button  onclick='ShowConvert(@user.points);'class="btn btn-inverse"  id="convert" >Купи монети</button> 
+	<div id="show_convert" style="display:none;"> 
+		<form oninput="coins.value = parseInt(points.value)/2" action="/for_me/convert" method="post">
+		<span>Точки: </span>
+		<input type="number" name="points" min="2" max="@{user.points -(user.points%2)}" step="2"> <br>
+		<span>Монети: </span> <output for="points" name="coins"></output><br><br>
+		 <input type="submit"  class="btn btn-inverse btn-small" value="Купи"  style="
+    left: 106px;
+    position: absolute;
+    font-weight: bold;
+" > 
+		</form>
+		</div>
+		<div id="error-no-points"  style="display:none;">Нямате достатъчно точки за да купите монети. За получаване на точки можете да добавите въпрос.</div>
 		
-	</div>
-
-
+		
+		<div id="medals">
+			<span>Медали</span>
+			<table align="center">
+				<tr>
+					<th>Категории</th>
+					<th>Бронзов</th>
+					<th>Сребърен</th>
+					<th>Златен</th>
+				</tr>
+				<tr>
+					<td>История</td>
+					<td align="center" >@if(user.medals1>9){
+						<img  class="medal" src="@routes.Assets.at("images/bronze.gif")">
+					}</td>
+					<td align="center" >@if(user.medals1>19){
+						<img  class="medal" src="@routes.Assets.at("images/silver.gif")">
+					}</td>
+					<td align="center" >@if(user.medals1>49){
+						<img  class="medal" src="@routes.Assets.at("images/gold.gif")">
+					}</td>
+				</tr>	
+				<tr>
+					<td>Природни науки</td>
+					<td align="center" >@if(user.medals2>9){
+						<img  class="medal" src="@routes.Assets.at("images/bronze.gif")">
+					}</td>
+					<td align="center" >@if(user.medals2>19){
+						<img  class="medal" src="@routes.Assets.at("images/silver.gif")">
+					}</td>
+					<td align="center" >@if(user.medals2>49){
+						<img  class="medal" src="@routes.Assets.at("images/gold.gif")">
+					}</td>
+				</tr>
+				<tr>
+					<td>Изкуство</td>
+					<td align="center" >@if(user.medals3>9){
+						<img  class="medal" src="@routes.Assets.at("images/bronze.gif")">
+					}</td>
+					<td align="center" >@if(user.medals3>19){
+						<img  class="medal" src="@routes.Assets.at("images/silver.gif")">
+					}</td>
+					<td align="center" >@if(user.medals3>49){
+						<img  class="medal" src="@routes.Assets.at("images/gold.gif")">
+					}</td>
+				</tr>
+				<tr>
+					<td>Литература</td>
+					<td align="center" >@if(user.medals4>9){
+						<img  class="medal" src="@routes.Assets.at("images/bronze.gif")">
+					}</td>
+					<td align="center" >@if(user.medals4>19){
+						<img  class="medal" src="@routes.Assets.at("images/silver.gif")">
+					}</td>
+					<td align="center" >@if(user.medals4>49){
+						<img  class="medal" src="@routes.Assets.at("images/gold.gif")">
+					}</td>
+				</tr>
+				<tr>
+					<td>Спорт</td>
+					<td align="center" >@if(user.medals5>9){
+						<img  class="medal" src="@routes.Assets.at("images/bronze.gif")">
+					}</td>
+					<td align="center" >@if(user.medals5>19){
+						<img  class="medal" src="@routes.Assets.at("images/silver.gif")">
+					}</td>
+					<td align="center" >@if(user.medals5>49){
+						<img  class="medal" src="@routes.Assets.at("images/gold.gif")">
+					}</td>
+				</tr>
+				<tr>
+					<td>География</td>
+					<td align="center" >@if(user.medals6>9){
+						<img  class="medal" src="@routes.Assets.at("images/bronze.gif")">
+					}</td>
+					<td align="center" >@if(user.medals6>19){
+						<img  class="medal" src="@routes.Assets.at("images/silver.gif")">
+					}</td>
+					<td align="center" >@if(user.medals6>49){
+						<img  class="medal" src="@routes.Assets.at("images/gold.gif")">
+					}</td>
+				</tr>
+				<tr>
+					<td>Астронимия</td>
+					<td align="center" >@if(user.medals7>9){
+						<img  class="medal" src="@routes.Assets.at("images/bronze.gif")">
+					}</td>
+					<td align="center" >@if(user.medals7>19){
+						<img  class="medal" src="@routes.Assets.at("images/silver.gif")">
+					}</td>
+					<td align="center" >@if(user.medals7>49){
+						<img  class="medal" src="@routes.Assets.at("images/gold.gif")">
+					}</td>
+				</tr>
+				<tr>
+					<td>Технологии</td>
+					<td align="center" >@if(user.medals8>9){
+						<img  class="medal" src="@routes.Assets.at("images/bronze.gif")">
+					}</td>
+					<td align="center" >@if(user.medals8>19){
+						<img  class="medal" src="@routes.Assets.at("images/silver.gif")">
+					}</td>
+					<td align="center" >@if(user.medals8>49){
+						<img  class="medal" src="@routes.Assets.at("images/gold.gif")">
+					}</td>
+				</tr>
+				<tr>
+					<td>Кино и телевизия</td>
+					<td align="center" >@if(user.medals9>9){
+						<img  class="medal" src="@routes.Assets.at("images/bronze.gif")">
+					}</td>
+					<td align="center" >@if(user.medals9>19){
+						<img  class="medal" src="@routes.Assets.at("images/silver.gif")">
+					}</td>
+					<td align="center" >@if(user.medals9>49){
+						<img  class="medal" src="@routes.Assets.at("images/gold.gif")">
+					}</td>
+				</tr>
+			</table>
+				
+			
+		</div>
 }

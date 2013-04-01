@@ -4,12 +4,15 @@
 
 # Home page
 POST	/canvas/											controllers.Canvas.index()
-GET		/canvas/											controllers.Canvas.index()
+GET		/canvas/											controllers.Canvas.redirect()
+GET		/home/											controllers.Canvas.index()
 		
 GET		/question/add										controllers.User_questions.add()
 POST	/question											controllers.User_questions.save()
 
 GET		/for_me												controllers.Fb_users.for_me()
+POST	/for_me/convert										controllers.Fb_users.convert()
+
 
 
 

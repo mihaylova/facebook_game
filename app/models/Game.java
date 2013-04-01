@@ -39,8 +39,8 @@ public class Game extends Model {
 	
 	private Long player1UID;
 	private Long player2UID;
-	//public Long player3UID;
-	//public Long player4UID;
+	private Long player3UID;
+	private Long player4UID;
 	public Boolean isStart=false;
 	public Boolean isFinish=false;
 	private Date start;
@@ -58,7 +58,7 @@ public class Game extends Model {
 			game=find.where().eq("player"+i+"uid", uid ).eq("is_finish", false).findUnique();
 			i++;
 		}
-		while(game == null && i < 3);
+		while(game == null && i < 5);
 		
 		return game;
 	}
@@ -109,7 +109,7 @@ public class Game extends Model {
 	}
 	
 	private Boolean has_more_free_slots(){
-		if(player1UID==null || player2UID==null){
+		if(player1UID==null || player2UID==null || player3UID==null ||player4UID==null ){
 			return true;
 		}
 		else return false;
@@ -169,6 +169,12 @@ public class Game extends Model {
 		else if(this.player2UID==null){
 			this.player2UID=player_uid;
 		}
+		else if(this.player3UID==null){
+			this.player3UID=player_uid;
+		}
+		else if(this.player4UID==null){
+			this.player4UID=player_uid;
+		}
 		save();
 	}
 	
@@ -176,8 +182,14 @@ public class Game extends Model {
 		if(this.player1UID!= null && this.player1UID == player_uid){
 			this.player1UID=null;
 		}
-		else if(this.player1UID!= null && this.player2UID == player_uid){
+		else if(this.player2UID!= null && this.player2UID == player_uid){
 			this.player2UID=null;
+		}
+		else if(this.player3UID!= null && this.player3UID == player_uid){
+			this.player3UID=null;
+		}
+		else if(this.player4UID!= null && this.player4UID == player_uid){
+			this.player4UID=null;
 		}
 		save();
 	}
@@ -243,14 +255,21 @@ public class Game extends Model {
 	    	}
 	    	
 	    	gamestate.answering = true;
-	    	Question question;
-	    	//test*****************************************TEST
-	    	do{
-	    		question  = Question.Get(gamestate.category);
-	    	}
-	    	while(question.id.equals(gamestate.question.id));
 	    	
-	    	gamestate.question = question;
+	    	//test*****************************************TEST
+	    	if(gamestate.question==null){
+	    		gamestate.question= Question.Get(gamestate.category);
+	    	}
+	    	else{
+	    		Question question;
+	    		do{
+		    		question  = Question.Get(gamestate.category);
+		    	}
+		    	while(question.id.equals(gamestate.question.id));
+		    	
+		    	gamestate.question = question;
+	    	}
+	    	
 	    	
 	    	gamestate.time = new Date().getTime();
 	    	if(gamestate.question.choice_answer1+gamestate.question.choice_answer2+gamestate.question.choice_answer3+gamestate.question.choice_answer4!=0){
@@ -312,8 +331,20 @@ public class Game extends Model {
         			Member member = right_answered.get(0);
         			member.PlusPoints(gamestate.Bet);
         			gamestate.Bet=0;
-        			
-        			
+        			member.PlusMedalItem(gamestate.category);
+        			String medal = member.isNewMedal(gamestate.category);
+        			if(!medal.equals("no")){
+        				Notify.OnMedal(medal, member);
+        				if(medal.equals("bronze")){
+        					member.PlusPoints(10);
+        				}
+        				else if(medal.equals("silver")){
+        					member.PlusPoints(20);
+        				}
+        				else if(medal.equals("gold")){
+        					member.PlusPoints(50);
+        				}
+        			}
         			Notify.OnWin(member.uid, member.name, member.points, gamestate.members);
         			Cancellable timer = Akka.system().scheduler().scheduleOnce(
             				Duration.create(3, SECONDS),
@@ -324,6 +355,22 @@ public class Game extends Model {
         			GameRoom.timers.put(id, timer);
         		}
         		else if(right_answered.size()>1){
+        			for(Member member: right_answered){
+        				member.PlusMedalItem(gamestate.category);
+        				String medal = member.isNewMedal(gamestate.category);
+            			if(!medal.equals("no")){
+            				Notify.OnMedal(medal, member);
+            				if(medal.equals("bronze")){
+            					member.PlusPoints(10);
+            				}
+            				else if(medal.equals("silver")){
+            					member.PlusPoints(20);
+            				}
+            				else if(medal.equals("gold")){
+            					member.PlusPoints(50);
+            				}
+            			}
+        			}
         			ArrayList<Member> winners = GetWinners(right_answered);
         			if(winners.size()==1){
         				Member member  = winners.get(0);

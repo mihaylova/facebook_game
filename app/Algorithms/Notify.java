@@ -211,4 +211,16 @@ public class Notify {
 	        member.channel.write(event);
 	    	
 	    }
+	    
+	    
+	    public static void OnMedal(String medal, Member member){
+	    	ObjectNode event = Json.newObject();
+	    	event.put("kind", "medal");
+	    	event.put("kind_of_medal", medal);
+	    	event.put("name", member.name);
+	    	
+	        
+	        member.channel.write(event);
+	    	
+	    }
 }

@@ -88,14 +88,13 @@ public class Application extends Controller {
 				  user.points = 200;
 				  user.coins = 10;
 				  user.picture="https://graph.facebook.com/"+uid+"/picture?type=large";
-				  user.AcessToken = access_token;
+				  
 				  user.save();
 			  }
-			  else user.AcessToken = access_token;
-			  user.save();
+			 
 			 
 			  session("user_id", Long.toString(user.id));
-			  //session("user_uid", Long.toString(user.uid));
+			  
 			  
 			  return true;
 		  }

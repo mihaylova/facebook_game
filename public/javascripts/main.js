@@ -85,7 +85,18 @@ $('#form-add-question').submit(function(e) {
 		}
 	
 });
-
+function ShowConvert(count){
+	if(count<2){
+		$("#convert").hide();
+		$("#error-no-points").show();
+	}
+	else{
+		$("#convert").hide();
+		$("#show_convert").show();
+	}
+	
+	
+}
 
 
 //$('.btn-no-dblclick').dblclick(function(e){ 

@@ -212,6 +212,7 @@ public class Question extends Model {
 			   } while(count<2);
 			  
 			   Notify.OnJoker_50(member, joker_answers);
+			   Notify.One("update_coins", Integer.toString(member.coins), member);
 		   }
 		    
 		   public  void Joker_Voice(Member member){
@@ -231,7 +232,7 @@ public class Question extends Model {
 			  }
 			  
 			  Notify.OnJoker_voice(member, choices);
-			  //*******************************************************************
-			  //**********************************************************************
+			  Notify.One("update_coins", Integer.toString(member.coins), member);
+			 
 		   }
 }

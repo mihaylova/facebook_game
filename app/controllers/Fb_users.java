@@ -1,5 +1,8 @@
 package controllers;
 
+import static play.data.Form.form;
+import models.Fb_user;
+import play.data.DynamicForm;
 import play.mvc.Result;
 import views.html.canvas.redirect;
 import views.html.fb_user.*;
@@ -18,6 +21,15 @@ public class Fb_users extends Application {
 				
 				return ok(redirect.render(permission_request_url));
 		}
+		
+	}
+	
+	public static Result convert(){
+		DynamicForm form = form().bindFromRequest();
+		Fb_user user = current_user();
+		user.MinusPoints(Integer.parseInt(form.get("points")));
+		user.SetCoins(user.coins+ (Integer.parseInt(form.get("points")))/2);
+		return redirect(routes.Fb_users.for_me());
 		
 	}
 	

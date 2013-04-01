@@ -286,7 +286,7 @@ button.bet{
 button.bet:hover{
 	background-image: -webkit-linear-gradient(top, #757575, #feffef)  !important;
 }
-output { 
+output.range { 
 	position: absolute;
 	background-image: -webkit-linear-gradient(top,  #444444, #999999);
 	width: 40px; 
@@ -299,7 +299,7 @@ output {
 	bottom: 175%;
 	left: 0;
 }
-output:after { 
+output.range:after { 
 	content: "";
 	position: absolute; 
 	width: 0;
@@ -808,4 +808,119 @@ button.right{
 	color: rgb(5, 34, 28);
 	font-weight: bolder;
 	text-shadow: 2px 2px 3px rgb(98, 114, 111);
+}
+
+#coins img{
+	width: 39px;
+}
+#coins{
+	position: absolute;
+	left: 13px;
+	top: 4px;
+}
+
+#coins span{
+	color: rgb(221, 152, 28);
+	font-size: 15px;
+	font-weight: bolder;
+	text-shadow: 2px 2px 3px black;
+}
+
+#convert{
+	position: absolute;
+	left: 110px;
+	top: 336px;
+}
+
+#show_convert{
+	position: absolute;
+	left: 97px;
+	top: 325px;
+	border: 2px solid;
+	border-color: rgb(68, 67, 61);
+	box-shadow: 7px 7px 5px rgb(150, 150, 153);
+	border-radius: 20px;
+	background-color: rgba(60, 60, 70, 0.07);
+	width: 206px;
+	height: 160px;
+}
+
+#show_convert input{
+	width: 44px;
+}
+
+#show_convert span{
+	font-size: 15px;
+	color: rgb(5, 34, 28);
+	font-weight: bolder;
+	text-shadow: 2px 2px 3px rgb(98, 114, 111);
+}
+
+#show_convert form{
+	position: absolute;
+	left: 20px;
+	top: 20px;
+}
+
+#show_convert output{
+	font-weight: bolder;
+}
+
+#error-no-points{
+	position: absolute;
+	left: 20px;
+	top: 316px;
+	color: rgb(226, 79, 79);
+	font-size: 16px;
+	font-weight: bolder;
+	text-align: center;
+	width: 317px;
+	text-shadow: 3px 3px 3px rgb(158, 152, 152);
+}
+#medals{
+	border: 1px solid;
+	border-radius: 9px;
+	background-color: rgba(227, 230, 163, 0.62);
+	width: 356px;
+	height: 453px;
+	position: absolute;
+	left: 343px;
+	top: 197px;
+}
+
+
+img.medal{
+	width: 35px;
+}
+
+#medals span{
+	position: absolute;
+	left: 256px;
+	top: 12px;
+	font-size: 23px;
+	font-weight: bolder;
+	color: rgb(56, 46, 46);
+	text-shadow: 3px 3px 3px rgb(99, 100, 79);
+	font-style: italic;
+}
+
+#medals table tr{
+	height: 42px;
+}
+
+#medals table td{
+	width: 85px;
+}
+
+#medals table th{
+	ont-size: 16px;
+}
+
+#medals table{
+	top: 27px;
+	left: 12px;
+	position: absolute;
+	color: rgb(4, 58, 54);
+	text-shadow: 3px 3px 3px rgb(30, 53, 58);
+	font-weight: bold;
 }

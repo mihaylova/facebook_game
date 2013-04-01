@@ -170,6 +170,8 @@ public class GameRoom extends UntypedActor {
             	gamestate.addMember(join.user, join.channel);
 
                 Notify.OnJoinOrQuit("join",  gamestate.members);
+                Member member = Member.Find_by_uid(join.user.uid, gamestate.members);
+                Notify.One("update_coins", Integer.toString(member.coins), member);
                 
                 if (gamestate.members.size() > 1) {
                 	

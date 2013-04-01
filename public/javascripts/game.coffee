@@ -73,6 +73,8 @@ class Game
         when 'joker_50' then @joker (data)
         when 'update_points' then $("#member-#{@user_id} span.points").text(data.message)
         when 'joker_voice' then @joker_voice (data)
+        when 'update_coins' then $("#coins span").text(data.message)
+        when 'medal' then @onMedal (data)
 
     this
     
@@ -85,6 +87,24 @@ class Game
     result = _.template(template, data)
     
     el.html result
+  
+  
+  onMedal: (data) ->
+    kind_of_medal = data.kind_of_medal
+    name = data.name
+    
+    obj =
+      method: 'feed',
+      redirect_uri: 'http://localhost:9000/canvas/',
+      link: 'http://localhost:9000/canvas/',
+      picture: "http://fbrell.com/f8.jpg",
+      name: 'Know your trump',
+      caption: "#{name} just get #{kind_of_medal} medal!",
+      description: 'Share with your friends.'
+
+    FB.ui obj, ->
+      console.log('medal callback called')
+  
   
   joker_voice: (data) ->
     $('#choiceA').show()

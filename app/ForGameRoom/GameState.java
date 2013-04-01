@@ -32,7 +32,7 @@ public class GameState {
 	public boolean isFinish=false;
 	
 	public  void addMember(Fb_user user, WebSocket.Out<JsonNode> channel) {
-		Member member=new Member(user.uid, findFreeSlot(), channel, user.points, user.name, user.coins);
+		Member member=new Member(findFreeSlot(), channel, user);
     	this.members.add(member);
 	}
 	
@@ -42,6 +42,7 @@ public class GameState {
     			Fb_user user = Fb_user.find_by_uid(member.uid);
     			user.SetPoints(member.points);
     			user.SetCoins(member.coins);
+    			user.SetMedals(member);
     			this.members.remove(member);
     			Game.find.byId(this.game_id).remove_player(user_uid);
     			break;
@@ -56,7 +57,7 @@ public class GameState {
     }
 
     protected  int findFreeSlot() {
-    	for(int i=1; i <= 2; i++){
+    	for(int i=1; i <= 4; i++){
     		Boolean is_free = true;
     		for(Member member: this.members){
             	

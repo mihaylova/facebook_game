@@ -18,6 +18,15 @@ create table fb_user (
   points                    integer,
   picture                   varchar(255),
   coins                     integer,
+  medals1                   integer,
+  medals2                   integer,
+  medals3                   integer,
+  medals4                   integer,
+  medals5                   integer,
+  medals6                   integer,
+  medals7                   integer,
+  medals8                   integer,
+  medals9                   integer,
   constraint pk_fb_user primary key (id))
 ;
 
@@ -25,6 +34,8 @@ create table game (
   id                        bigint auto_increment not null,
   player1uid                bigint,
   player2uid                bigint,
+  player3uid                bigint,
+  player4uid                bigint,
   is_start                  tinyint(1) default 0,
   is_finish                 tinyint(1) default 0,
   start                     datetime,

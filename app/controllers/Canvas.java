@@ -22,5 +22,7 @@ public class Canvas extends Application {
 			return ok(redirect.render(permission_request_url));
 		}
 	}
-	
+	public static Result redirect(){
+		return redirect("http://apps.facebook.com/249406605187123/");
+	}
 }

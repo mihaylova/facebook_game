@@ -125,6 +125,10 @@
             return $("#member-" + _this.user_id + " span.points").text(data.message);
           case 'joker_voice':
             return _this.joker_voice(data);
+          case 'update_coins':
+            return $("#coins span").text(data.message);
+          case 'medal':
+            return _this.onMedal(data);
         }
       };
       return this;
@@ -145,6 +149,24 @@
       template = $("#" + tmpl_name + "-template").html();
       result = _.template(template, data);
       return el.html(result);
+    };
+
+    Game.prototype.onMedal = function(data) {
+      var kind_of_medal, name, obj;
+      kind_of_medal = data.kind_of_medal;
+      name = data.name;
+      obj = {
+        method: 'feed',
+        redirect_uri: 'http://localhost:9000/canvas/',
+        link: 'http://localhost:9000/canvas/',
+        picture: "http://fbrell.com/f8.jpg",
+        name: 'Know your trump',
+        caption: "" + name + " just get " + kind_of_medal + " medal!",
+        description: 'Share with your friends.'
+      };
+      return FB.ui(obj, function() {
+        return console.log('medal callback called');
+      });
     };
 
     Game.prototype.joker_voice = function(data) {
