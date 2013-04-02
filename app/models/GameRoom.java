@@ -265,7 +265,7 @@ public class GameRoom extends UntypedActor {
         	member.button = answer.button;
         	Notify.One("answer", member.button, member);
         	//test
-        	answer.gamestate.ChoiceAnswer(answer.answer);
+        	answer.question.ChoiceAnswer(answer.answer);
         	
         }
         else if(message instanceof AskQuestion){

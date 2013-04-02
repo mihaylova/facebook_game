@@ -82,10 +82,8 @@ public class PokerAlgorithm {
 		gamestate.SetMaxBet();
 		gamestate.poker_algorithm=true;
    	 	gamestate.category =  Question.RandomCategory();
-   	 	if(gamestate.question!=null){
-   	 		gamestate.question.SetChoiceAnswers(gamestate.question_choiceAnswer1, gamestate.question_choiceAnswer2, gamestate.question_choiceAnswer3, gamestate.question_choiceAnswer4);
-   	 		gamestate.question = null;
-   	 	}
+   	 	gamestate.question = null;
+   	 	
    	 	
    	 	gamestate.unanswered_question=0;
 		Notify.OnCategory(gamestate.category, gamestate);
