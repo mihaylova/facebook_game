@@ -1,0 +1,40 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+POST	/canvas/											controllers.Canvas.index()
+GET		/canvas/											controllers.Canvas.redirect()
+GET		/home/											controllers.Canvas.index()
+		
+GET		/question/add										controllers.User_questions.add()
+POST	/question											controllers.User_questions.save()
+
+GET		/for_me												controllers.Fb_users.for_me()
+POST	/for_me/convert										controllers.Fb_users.convert()
+
+
+
+
+GET   	/login                          	   				controllers.Admins.login()
+POST    /login                           	   				controllers.Admins.authenticate()
+GET     /logout                           					controllers.Admins.logout()
+GET		/admin												controllers.Admins.index()
+
+GET		/admin/question/add									controllers.Questions.add()
+POST	/admin/question										controllers.Questions.save()
+POST	/admin/editQuestion									controllers.Questions.editQuestion()
+
+GET		/admin/questions									controllers.Questions.view()
+GET		/admin/users_questions								controllers.User_questions.view()
+GET		/admin/users_questions/insert/:id					controllers.User_questions.insert(id: Long)
+GET		/admin/users_questions/delete/:id					controllers.User_questions.delete(id: Long)
+GET		/admin/questions/edit/:id							controllers.Questions.edit(id: Long)
+GET		/admin/questions/delete/:id							controllers.Questions.delete(id: Long)
+
+GET		/game												controllers.Games.index()
+GET		/game/join											controllers.Games.join()
+
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)
