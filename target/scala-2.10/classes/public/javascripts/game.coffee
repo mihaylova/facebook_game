@@ -39,9 +39,9 @@ class Game
     this
     
   start: ->
-    @ws = new WebSocket 'ws://localhost:9000/game/join'
+    @ws = new WebSocket 'wss://trump-mihailova.rhcloud.com:8443/game/join'
 
-    @ws.onerror = ->
+    @ws.onerror = (error) ->
       alert "WebSocket Error #{error}"
     
     @ws.onclose = =>

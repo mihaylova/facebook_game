@@ -73,8 +73,8 @@
 
     Game.prototype.start = function() {
       var _this = this;
-      this.ws = new WebSocket('ws://localhost:9000/game/join');
-      this.ws.onerror = function() {
+      this.ws = new WebSocket('wss://trump-mihailova.rhcloud.com:8443/game/join');
+      this.ws.onerror = function(error) {
         return alert("WebSocket Error " + error);
       };
       this.ws.onclose = function() {

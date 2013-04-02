@@ -7,7 +7,7 @@
 		revision="1.0-SNAPSHOT"
 		conf="runtime-internal"
 		confs="compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, sources, docs, pom"
-		date="20130402142119"/>
+		date="20130402151908"/>
 	<dependencies>
 		<module organisation="com.restfb" name="restfb">
 			<revision name="1.6.11" status="release" pubdate="20120907234305" resolver="public" artresolver="public" homepage="http://restfb.com" downloaded="false" searched="false" default="false" conf="default(compile), default, compile, runtime, master" position="63">
@@ -34,11 +34,11 @@
 			</revision>
 		</module>
 		<module organisation="org.apache.directory.studio" name="org.apache.commons.codec">
-			<revision name="1.6" status="release" pubdate="20120224191421" resolver="public" artresolver="public" homepage="" downloaded="true" searched="true" default="false" conf="default(compile), default, compile, runtime, master" position="58">
-				<metadata-artifact status="successful" details="" size="4387" time="238" location="/home/r/src/play-2.1.0/framework/../repository/cache/org.apache.directory.studio/org.apache.commons.codec/ivy-1.6.xml" searched="true" original-local-location="/home/r/src/play-2.1.0/framework/../repository/cache/org.apache.directory.studio/org.apache.commons.codec/ivy-1.6.xml.original" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/org/apache/directory/studio/org.apache.commons.codec/1.6/org.apache.commons.codec-1.6.pom"/>
+			<revision name="1.6" status="release" pubdate="20120224191421" resolver="public" artresolver="public" homepage="" downloaded="false" searched="false" default="false" conf="default(compile), default, compile, runtime, master" position="58">
+				<metadata-artifact status="no" details="" size="82352" time="0" location="/home/r/src/play-2.1.0/framework/../repository/cache/org.apache.directory.studio/org.apache.commons.codec/ivy-1.6.xml" searched="false" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/org/apache/directory/studio/org.apache.commons.codec/1.6/org.apache.commons.codec-1.6.pom"/>
 				<caller organisation="gamequiz" name="gamequiz_2.10" conf="optional, compile, runtime, runtime-internal" rev="1.6" rev-constraint-default="1.6" rev-constraint-dynamic="1.6" callerrev="1.0-SNAPSHOT"/>
 				<artifacts>
-					<artifact name="org.apache.commons.codec" type="jar" ext="jar" status="successful" details="" size="190873" time="484" location="/home/r/src/play-2.1.0/framework/../repository/cache/org.apache.directory.studio/org.apache.commons.codec/jars/org.apache.commons.codec-1.6.jar">
+					<artifact name="org.apache.commons.codec" type="jar" ext="jar" status="no" details="" size="190873" time="0" location="/home/r/src/play-2.1.0/framework/../repository/cache/org.apache.directory.studio/org.apache.commons.codec/jars/org.apache.commons.codec-1.6.jar">
 						<origin-location is-local="false" location="http://repo1.maven.org/maven2/org/apache/directory/studio/org.apache.commons.codec/1.6/org.apache.commons.codec-1.6.jar"/>
 					</artifact>
 				</artifacts>
