@@ -60,7 +60,7 @@ Seq[Any](format.raw/*1.19*/("""
 }
                 /*
                     -- GENERATED --
-                    DATE: Tue Apr 02 16:41:10 EEST 2013
+                    DATE: Tue Apr 02 18:32:52 EEST 2013
                     SOURCE: /home/r/work/FbPokerQuiz/app/views/admins/index.scala.html
                     HASH: 59e6414baa52d2499bc32200bd92dd68f77c29da
                     MATRIX: 730->1|824->18|861->21|888->40|927->42

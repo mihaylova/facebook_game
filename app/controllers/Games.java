@@ -17,6 +17,8 @@ import views.html.game.*;
 import org.codehaus.jackson.*;
 import org.codehaus.jackson.node.ObjectNode;
 
+import com.typesafe.config.ConfigFactory;
+
 
 public class Games extends Application {
 	
@@ -27,14 +29,14 @@ public class Games extends Application {
 				return ok(views.html.canvas.index.render(current_user().name, "Нямате достатъчно точки за да играете. За получаване на точки можете да зададете въпрос."));
 			}
 			else{
-				return ok(index.render(current_user().uid));
+				return ok(index.render(current_user().uid,  ConfigFactory.load().getString("host.ws")));
 			}
 			
 		}
 		else {
 			String permission_request_url = "https://graph.facebook.com/oauth/authorize?"
-	                + "client_id=249406605187123&"
-	                + "redirect_uri=http://apps.facebook.com/249406605187123/";
+	                + "client_id="+ConfigFactory.load().getString("fbapp.id")+"&"
+	                + "redirect_uri=http://apps.facebook.com/"+ConfigFactory.load().getString("fbapp.id")+"/&scope=user_about_me";
 				
 				return ok(redirect.render(permission_request_url));
 		}

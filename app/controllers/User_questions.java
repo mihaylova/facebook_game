@@ -22,6 +22,7 @@ import com.restfb.types.User;
 import com.restfb.types.Photo;
 import com.restfb.types.FacebookType;
 import com.restfb.Parameter;
+import com.typesafe.config.ConfigFactory;
 
 
 public class User_questions extends Application {
@@ -37,8 +38,8 @@ public class User_questions extends Application {
 		}
 		else {
 			String permission_request_url = "https://graph.facebook.com/oauth/authorize?"
-	                + "client_id=249406605187123&"
-	                + "redirect_uri=http://apps.facebook.com/249406605187123/&scope=user_about_me";
+	                + "client_id="+ConfigFactory.load().getString("fbapp.id")+"&"
+	                + "redirect_uri=http://apps.facebook.com/"+ConfigFactory.load().getString("fbapp.id")+"/&scope=user_about_me";
 				
 				return ok(redirect.render(permission_request_url));
 		}

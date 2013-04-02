@@ -155,22 +155,36 @@ public class Question extends Model {
 		
 			
 		}
-
-		public void ChoiceAnswer(String answer){
-			if(answer1.equals(answer)){
-        		choice_answer1++;
-        	}
-        	else if(answer2.equals(answer)){
-        		choice_answer2++;
-        	}
-        	else if(answer3.equals(answer)){
-        		choice_answer3++;
-        	}
-        	else if(right_answer.equals(answer)){
-        		choice_answer4++;
-        	}
-			save();
+		
+		public void SetChoiceAnswers(int choice_answer1, int choice_answer2, int choice_answer3, int choice_answer4){
+		
+				
+	        		this.choice_answer1 = choice_answer1;
+	        	
+	        		this.choice_answer2 = choice_answer2;
+	        	
+	        		this.choice_answer3 = choice_answer3;
+	        	
+	        		this.choice_answer4 = choice_answer4;
+	        	
+				save();
 		}
+
+//		public void ChoiceAnswer(String answer){
+//			if(answer1.equals(answer)){
+//        		choice_answer1++;
+//        	}
+//        	else if(answer2.equals(answer)){
+//        		choice_answer2++;
+//        	}
+//        	else if(answer3.equals(answer)){
+//        		choice_answer3++;
+//        	}
+//        	else if(right_answer.equals(answer)){
+//        		choice_answer4++;
+//        	}
+//			save();
+//		}
 
 		private Map<Integer, Float> getChoicesOfAnswers(){
 			 Map<Integer, Float> choices = new HashMap<Integer, Float>();

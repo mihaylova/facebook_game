@@ -1,6 +1,9 @@
 package controllers;
 
 import static play.data.Form.form;
+
+import com.typesafe.config.ConfigFactory;
+
 import models.Fb_user;
 import play.data.DynamicForm;
 import play.mvc.Result;
@@ -17,8 +20,8 @@ public class Fb_users extends Application {
 		}
 		else{
 			String permission_request_url = "https://graph.facebook.com/oauth/authorize?"
-	                + "client_id=249406605187123&"
-	                + "redirect_uri=http://apps.facebook.com/249406605187123/&scope=user_about_me";
+	                + "client_id="+ConfigFactory.load().getString("fbapp.id")+"&"
+	                + "redirect_uri=http://apps.facebook.com/"+ConfigFactory.load().getString("fbapp.id")+"/&scope=user_about_me";
 				
 				return ok(redirect.render(permission_request_url));
 		}

@@ -20,13 +20,13 @@ import play.api.data.Field
 import play.mvc.Http.Context.Implicit._
 import views.html._
 /**/
-object index extends BaseScalaTemplate[play.api.templates.Html,Format[play.api.templates.Html]](play.api.templates.HtmlFormat) with play.api.templates.Template1[Long,play.api.templates.Html] {
+object index extends BaseScalaTemplate[play.api.templates.Html,Format[play.api.templates.Html]](play.api.templates.HtmlFormat) with play.api.templates.Template2[Long,String,play.api.templates.Html] {
 
     /**/
-    def apply/*1.2*/(user_uid: Long):play.api.templates.Html = {
+    def apply/*1.2*/(user_uid: Long, host_ws :String):play.api.templates.Html = {
         _display_ {
 
-Seq[Any](format.raw/*1.18*/("""
+Seq[Any](format.raw/*1.35*/("""
 """),_display_(Seq[Any](/*2.2*/main_play("Know your trump")/*2.30*/ {_display_(Seq[Any](format.raw/*2.32*/("""
 	<div id="fb-root"></div>  
    	<a href="/home/"><img class="exit" src=""""),_display_(Seq[Any](/*4.46*/routes/*4.52*/.Assets.at("images/exit.jpg"))),format.raw/*4.81*/(""""></a>
@@ -143,25 +143,25 @@ Seq[Any](format.raw/*1.18*/("""
 
 	<script>
 		FB.init("""),format.raw/*117.11*/("""{"""),format.raw/*117.12*/("""appId: "249406605187123", status: true, cookie: true"""),format.raw/*117.64*/("""}"""),format.raw/*117.65*/(""");
-		window.game = new Game("""),_display_(Seq[Any](/*118.27*/user_uid)),format.raw/*118.35*/(""").start();
+		window.game = new Game("""),_display_(Seq[Any](/*118.27*/user_uid)),format.raw/*118.35*/(""").start(""""),_display_(Seq[Any](/*118.45*/host_ws)),format.raw/*118.52*/("""");
 	</script>
 """)))})))}
     }
     
-    def render(user_uid:Long): play.api.templates.Html = apply(user_uid)
+    def render(user_uid:Long,host_ws:String): play.api.templates.Html = apply(user_uid,host_ws)
     
-    def f:((Long) => play.api.templates.Html) = (user_uid) => apply(user_uid)
+    def f:((Long,String) => play.api.templates.Html) = (user_uid,host_ws) => apply(user_uid,host_ws)
     
     def ref: this.type = this
 
 }
                 /*
                     -- GENERATED --
-                    DATE: Tue Apr 02 16:41:10 EEST 2013
+                    DATE: Tue Apr 02 18:32:52 EEST 2013
                     SOURCE: /home/r/work/FbPokerQuiz/app/views/game/index.scala.html
-                    HASH: c6ca854f5e0e85a4c5ef2691dcb000460041d247
-                    MATRIX: 726->1|819->17|855->19|891->47|930->49|1039->123|1053->129|1103->158|3344->2371|3373->2372|3493->2464|3522->2465|3576->2491|3605->2492|3659->2518|3688->2519|4371->3175|4399->3176|4433->3182|4462->3183|4665->3350|4680->3356|4735->3389|4812->3439|4840->3440|4878->3450|4907->3451|5265->3772|5281->3778|5337->3811|5485->3930|5515->3931|5596->3983|5626->3984|5692->4013|5723->4021
-                    LINES: 26->1|29->1|30->2|30->2|30->2|32->4|32->4|32->4|97->69|97->69|99->71|99->71|99->71|99->71|101->73|101->73|118->90|118->90|118->90|118->90|122->94|122->94|122->94|127->99|127->99|128->100|128->100|141->113|141->113|141->113|145->117|145->117|145->117|145->117|146->118|146->118
+                    HASH: bf0b530af367e19db7b6dde2049db7ea101748b8
+                    MATRIX: 733->1|843->34|879->36|915->64|954->66|1063->140|1077->146|1127->175|3368->2388|3397->2389|3517->2481|3546->2482|3600->2508|3629->2509|3683->2535|3712->2536|4395->3192|4423->3193|4457->3199|4486->3200|4689->3367|4704->3373|4759->3406|4836->3456|4864->3457|4902->3467|4931->3468|5289->3789|5305->3795|5361->3828|5509->3947|5539->3948|5620->4000|5650->4001|5716->4030|5747->4038|5794->4048|5824->4055
+                    LINES: 26->1|29->1|30->2|30->2|30->2|32->4|32->4|32->4|97->69|97->69|99->71|99->71|99->71|99->71|101->73|101->73|118->90|118->90|118->90|118->90|122->94|122->94|122->94|127->99|127->99|128->100|128->100|141->113|141->113|141->113|145->117|145->117|145->117|145->117|146->118|146->118|146->118|146->118
                     -- GENERATED --
                 */
             

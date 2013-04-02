@@ -22,6 +22,10 @@ public class GameState {
 	public int MaxBet=9999;
 	public int category;
 	public Question question=null;
+	public int question_choiceAnswer1;
+	public int question_choiceAnswer2;
+	public int question_choiceAnswer3;
+	public int question_choiceAnswer4;
 	public long time;
 	public int unanswered_question = 0;
 	public boolean poker_algorithm=false;
@@ -55,7 +59,32 @@ public class GameState {
     		
     	}
     }
-
+	
+	public void SetQuestion(Question question){
+		this.question= question;
+		question_choiceAnswer1 = question.choice_answer1;
+		question_choiceAnswer2 = question.choice_answer2;
+		question_choiceAnswer3 = question.choice_answer3;
+		question_choiceAnswer4 = question.choice_answer4;
+	}
+	
+	
+	public void ChoiceAnswer(String answer){
+		if(question.getAnswer1().equals(answer)){
+			question_choiceAnswer1++;
+    	}
+    	else if(question.getAnswer2().equals(answer)){
+    		question_choiceAnswer2++;
+    	}
+    	else if(question.getAnswer3().equals(answer)){
+    		question_choiceAnswer3++;
+    	}
+    	else if(question.getRight_answer().equals(answer)){
+    		question_choiceAnswer4++;
+    	}
+	
+	}
+	
     protected  int findFreeSlot() {
     	for(int i=1; i <= 4; i++){
     		Boolean is_free = true;

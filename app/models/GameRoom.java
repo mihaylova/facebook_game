@@ -115,7 +115,7 @@ public class GameRoom extends UntypedActor {
 	                   else if(kind.equals("answer")){
 	                	   
 	                	   if(member.answer==null && gamestate.answering){
-	                		   game_room.tell(new Answer(gamestate.question, member, game.id, event.get("answer").asText(), event.get("button").asText()), game_room);
+	                		   game_room.tell(new Answer(gamestate.question, member, game.id, event.get("answer").asText(), event.get("button").asText(), gamestate), game_room);
 	                	   }
 	                	  
 	                   }
@@ -265,8 +265,7 @@ public class GameRoom extends UntypedActor {
         	member.button = answer.button;
         	Notify.One("answer", member.button, member);
         	//test
-        	//Question question = Question.find.byId(answer.question.id);
-        	//question.ChoiceAnswer(answer.answer);
+        	answer.gamestate.ChoiceAnswer(answer.answer);
         	
         }
         else if(message instanceof AskQuestion){
@@ -421,13 +420,14 @@ public class GameRoom extends UntypedActor {
     	final long time_on_answering;
     	final String button;
     	final Question question;
+    	final GameState gamestate;
     	
-    	public Answer(Question question, Member member, Long game_id, String answer, String button){
+    	public Answer(Question question, Member member, Long game_id, String answer, String button, GameState gamestate){
     		this.member = member;
     		this.game_id = game_id;
     		this.answer = answer;
     		this.button = button;
-    		GameState gamestate = GameState.Get(game_id);
+    		this.gamestate = gamestate;
     		this.time_on_answering = (new Date().getTime() - gamestate.time)/1000;
     		this.question = question;
     	}

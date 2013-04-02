@@ -258,7 +258,9 @@ public class Game extends Model {
 	    	
 	    	//test*****************************************TEST
 	    	if(gamestate.question==null){
-	    		gamestate.question= Question.Get(gamestate.category);
+	    		Question question = Question.Get(gamestate.category);
+	    		gamestate.SetQuestion(question);
+	    		
 	    	}
 	    	else{
 	    		Question question;
@@ -266,8 +268,8 @@ public class Game extends Model {
 		    		question  = Question.Get(gamestate.category);
 		    	}
 		    	while(question.id.equals(gamestate.question.id));
-		    	
-		    	gamestate.question = question;
+		    	gamestate.question.SetChoiceAnswers(gamestate.question_choiceAnswer1, gamestate.question_choiceAnswer2, gamestate.question_choiceAnswer3, gamestate.question_choiceAnswer4);
+	    		gamestate.SetQuestion(question);
 	    	}
 	    	
 	    	

@@ -30,9 +30,11 @@ import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
 import com.restfb.types.User;
 import com.restfb.types.Photo;
+import com.typesafe.config.ConfigFactory;
 
 public class Application extends Controller {
-	private final static String api_secret = "64ad2046c999c2547c3db540ce0e1897";
+	private final static String api_secret = ConfigFactory.load().getString("fbapp.secret");
+	//private final static String api_secret = "7ddab6b600525e43530e930f2ec2c53d";
 	//private static Fb_user current_user_object = null;
 
 	public static Fb_user current_user() {

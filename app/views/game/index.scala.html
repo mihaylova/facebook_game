@@ -1,4 +1,4 @@
-@(user_uid: Long)
+@(user_uid: Long, host_ws :String)
 @main_play("Know your trump") {
 	<div id="fb-root"></div>  
    	<a href="/home/"><img class="exit" src="@routes.Assets.at("images/exit.jpg")"></a>
@@ -115,6 +115,6 @@
 
 	<script>
 		FB.init({appId: "249406605187123", status: true, cookie: true});
-		window.game = new Game(@user_uid).start();
+		window.game = new Game(@user_uid).start("@host_ws");
 	</script>
 }
