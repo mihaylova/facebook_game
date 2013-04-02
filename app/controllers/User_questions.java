@@ -2,6 +2,7 @@ package controllers;
 
 import java.util.List;
 
+import models.Fb_user;
 import models.Question;
 import models.User_question;
 import play.data.Form;
@@ -77,6 +78,8 @@ public class User_questions extends Application {
 	public static Result insert (Long id){
 		if(session("admin")!=null){
 			User_question user_question = User_question.find.byId(id);
+			Fb_user user = Fb_user.find_by_uid(user_question.getUser_uid());
+			user.PlusPoints(5);
 			Question.set_from_user(user_question);
 			
 			flash("success", "Въпроса беше добавен!!!");

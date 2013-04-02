@@ -157,9 +157,9 @@
       name = data.name;
       obj = {
         method: 'feed',
-        redirect_uri: 'http://localhost:9000/canvas/',
-        link: 'http://localhost:9000/canvas/',
-        picture: "http://fbrell.com/f8.jpg",
+        redirect_uri: 'http://trump-mihailova.rhcloud.com/canvas/',
+        link: 'http://trump-mihailova.rhcloud.com/canvas/',
+        picture: "trump-mihailova.rhcloud.com/assets/images/cards690-366.jpg",
         name: 'Know your trump',
         caption: "" + name + " just get " + kind_of_medal + " medal!",
         description: 'Share with your friends.'
