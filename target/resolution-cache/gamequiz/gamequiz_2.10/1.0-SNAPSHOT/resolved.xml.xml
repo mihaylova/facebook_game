@@ -4,7 +4,7 @@
 		module="gamequiz_2.10"
 		revision="1.0-SNAPSHOT"
 		status="integration"
-		publication="20130402132506"
+		publication="20130402142119"
 	>
 		<description>
 		GameQuiz
@@ -37,6 +37,10 @@
 		<dependency org="play" name="play-java_2.10" rev="2.1.0" conf="compile->default(compile)"/>
 		<dependency org="play" name="play-java-jdbc_2.10" rev="2.1.0" conf="compile->default(compile)"/>
 		<dependency org="play" name="play-java-ebean_2.10" rev="2.1.0" conf="compile->default(compile)"/>
+		<dependency org="mysql" name="mysql-connector-java" rev="5.1.22" conf="compile->default(compile)"/>
+		<dependency org="org.apache.directory.studio" name="org.apache.commons.codec" rev="1.6" conf="compile->default(compile)"/>
+		<dependency org="com.googlecode.json-simple" name="json-simple" rev="1.1.1" conf="compile->default(compile)"/>
+		<dependency org="com.restfb" name="restfb" rev="1.6.11" conf="compile->default(compile)"/>
 		<exclude org="org.scala-lang" module="scala-library" artifact="*" type="jar" ext="*" matcher="exact"/>
 		<exclude org="org.scala-lang" module="scala-compiler" artifact="*" type="jar" ext="*" matcher="exact"/>
 		<override org="org.scala-lang" module="scala-library" matcher="exact" rev="2.10.0"/>
