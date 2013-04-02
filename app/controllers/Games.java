@@ -17,6 +17,7 @@ import views.html.game.*;
 import org.codehaus.jackson.*;
 import org.codehaus.jackson.node.ObjectNode;
 
+
 public class Games extends Application {
 	
 	public static Result index() {

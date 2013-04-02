@@ -7,6 +7,7 @@ import play.mvc.Result;
 import views.html.canvas.redirect;
 import views.html.fb_user.*;
 
+
 public class Fb_users extends Application {
 	
 	

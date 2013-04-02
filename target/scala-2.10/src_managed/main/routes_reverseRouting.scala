@@ -1,6 +1,6 @@
 // @SOURCE:/home/r/work/FbPokerQuiz/conf/routes
 // @HASH:911a2957d17f5764443340a71bb8c641f56529f8
-// @DATE:Tue Apr 02 15:58:35 EEST 2013
+// @DATE:Tue Apr 02 16:41:06 EEST 2013
 
 import Routes.{prefix => _prefix, defaultPrefix => _defaultPrefix}
 import play.core._

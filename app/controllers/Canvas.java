@@ -8,6 +8,7 @@ import play.mvc.*;
 
 import views.html.canvas.*;
 
+
 public class Canvas extends Application {
 
 //	@With(ProbaAction.class)
