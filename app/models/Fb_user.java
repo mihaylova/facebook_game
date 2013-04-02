@@ -20,7 +20,7 @@ public class Fb_user extends Model {
 		  public Long uid;
 		  		  
 		  public String name;
-		  public String AcessToken;
+		 
 		  public int points;
 		  public String picture;
 		  public int coins;

@@ -27,9 +27,15 @@ public class Fb_users extends Application {
 	public static Result convert(){
 		DynamicForm form = form().bindFromRequest();
 		Fb_user user = current_user();
-		user.MinusPoints(Integer.parseInt(form.get("points")));
-		user.SetCoins(user.coins+ (Integer.parseInt(form.get("points")))/2);
-		return redirect(routes.Fb_users.for_me());
+		if(user.points<Integer.parseInt(form.get("points")) || Integer.parseInt(form.get("points"))%2!=0){
+			return redirect(routes.Fb_users.for_me());
+		}
+		else{
+			user.MinusPoints(Integer.parseInt(form.get("points")));
+			user.SetCoins(user.coins+ (Integer.parseInt(form.get("points")))/2);
+			return redirect(routes.Fb_users.for_me());
+		}
+		
 		
 	}
 	

@@ -14,7 +14,6 @@ create table fb_user (
   id                        bigint auto_increment not null,
   uid                       bigint,
   name                      varchar(255),
-  acess_token               varchar(255),
   points                    integer,
   picture                   varchar(255),
   coins                     integer,

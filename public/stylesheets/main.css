@@ -1,7 +1,6 @@
 
 #home_users{
 	background-image:url('../images/canvas.jpg');
-	
 	background-position:center top;
 	background-repeat: no-repeat;
 }
@@ -28,9 +27,12 @@
     font-weight:bold;
     color: #333;
     background-image: -webkit-linear-gradient(top, #757575, #feffef);
+    background-image: -moz-linear-gradient(top, #757575, #feffef);
+	background-image: -o-linear-gradient(top, #757575, #feffef);
+	
 }
 #sign_in{
-	 top: 160px;
+	top: 160px;
     left: 25px;
     position: absolute;
 }
@@ -81,52 +83,55 @@ table{
     font-weight:bold;
     color: #333;
     background-image: -webkit-linear-gradient(top, #feffef, #757575);
+    background-image: -moz-linear-gradient(top, #feffef, #757575);
+	background-image: -o-linear-gradient(top, #feffef, #757575);
 }
 #submit-btn:hover{
 	background-image: -webkit-linear-gradient(top, #757575, #feffef);
+	background-image: -moz-linear-gradient(top, #757575, #feffef);
+	background-image: -o-linear-gradient(top, #757575, #feffef);
 }
 #error{
 	width: 640px;
 	top: 174px;
-   left: 33px;
+   	left: 33px;
     position: absolute;
    }
 #error1{
 	width: 640px;
 	top: 174px;
-   left: 33px;
+  	left: 33px;
     position: absolute;
    }
 
 
 #play{
 	background-image:url('../images/canvas2.jpg');
-	
 	background-position:center top;
 	background-repeat: no-repeat;
 }
 div.player1{
 	
 	top: 114px;
-   left: 1px;
+   	left: 1px;
     position: absolute;
 }
 div.player2{
 
 	top: 114px;
-   left: 628px;
+   	left: 628px;
     position: absolute;
 }
 div.player3{
 
 	top: 662px;
-   left: 628px;
+   	left: 628px;
     position: absolute;
 }
 div.player4{
 
 	top: 662px;
-   left: 1px;
+   	left: 1px;
     position: absolute;
 }
 img.player{
@@ -134,33 +139,35 @@ img.player{
 	height: 120px;
 	border: 4px solid #fff;
 	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+    border-radius: 2px;
 }
 span.player1{
 	
 	text-align: left;
 	top: 94px;
-   left: 1px;
+   	left: 1px;
     position: absolute;
 }
 span.player2{
 	
 	text-align: right;
 	top: 94px;
-   left: 555px;
+   	left: 555px;
     position: absolute;
 }
 span.player3{
 	
 	text-align: right;
 	top: 782px;
-   left: 555px;
+   	left: 555px;
     position: absolute;
 }
 span.player4{
 	
 	text-align: left;
 	top: 782px;
-   left: 1px;
+   	left: 1px;
     position: absolute;
 }
 span.name{
@@ -281,20 +288,28 @@ button.bet{
 	font-size: 12px  !important;
 	color: #333  !important;
 	background-image: -webkit-linear-gradient(top, #feffef, #757575)  !important;
+	background-image: -moz-linear-gradient(top, #feffef, #757575) !important;
+	background-image: -o-linear-gradient(top, #feffef, #757575) !important;
 }
 
 button.bet:hover{
 	background-image: -webkit-linear-gradient(top, #757575, #feffef)  !important;
+	background-image: -moz-linear-gradient(top, #757575, #feffef) !important;
+	background-image: -o-linear-gradient(top, #757575, #feffef) !important;
 }
 output.range { 
 	position: absolute;
 	background-image: -webkit-linear-gradient(top,  #444444, #999999);
+	background-image: -moz-linear-gradient(top, #444444, #999999);
+	background-image: -o-linear-gradient(top, #444444, #999999);
 	width: 40px; 
 	height: 30px; 
 	text-align: center; 
 	color: white; 
-	border-radius: 10px; 
-	display: inline-block; 
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    display: inline-block; 
 	font: bold 15px/30px Georgia;
 	bottom: 175%;
 	left: 0;
@@ -320,17 +335,23 @@ output.range:after {
 span.bet{
 	margin-right: -14px;
 	background-image: -webkit-linear-gradient(top,  #444444, #999999);
+	background-image: -moz-linear-gradient(top, #444444, #999999);
+	background-image: -o-linear-gradient(top, #444444, #999999);
 	width: 56px;
 	height: 30px; 
 	text-align: center; 
 	color: white; 
-	border-radius: 10px; 
-	display: inline-block; 
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    display: inline-block; 
 	font: bold 15px/30px Georgia;
 }
 button.answer{
 	color:#505050;
 	background-image: -webkit-linear-gradient(top, rgb(233, 238, 173), rgba(214, 226, 153, 0));
+	background-image: -moz-linear-gradient(top, rgb(233, 238, 173), rgba(214, 226, 153, 0));
+	background-image: -o-linear-gradient(top, rgb(233, 238, 173), rgba(214, 226, 153, 0));
 	background-color: rgba(14, 219, 195, 0.2);
 }
 
@@ -338,7 +359,9 @@ button.answer:hover{
 	
 	color:#505050;
 	background-image: -webkit-linear-gradient(top, rgb(233, 238, 173), rgba(214, 226, 153, 0));
-background-color: rgba(14, 219, 195, 0.4);
+	background-image: -moz-linear-gradient(top, rgb(233, 238, 173), rgba(214, 226, 153, 0));
+	background-image: -o-linear-gradient(top, rgb(233, 238, 173), rgba(214, 226, 153, 0));
+	background-color: rgba(14, 219, 195, 0.4);
 }
 
 h4.question{
@@ -358,6 +381,8 @@ div.betting div img{
 	height: 140px;
 	border: 4px solid rgb(41, 122, 119) !important;
 	-webkit-border-radius: 8px !important;
+	-moz-border-radius: 8px !important;
+    border-radius: 8px !important;
 	opacity: 0.3;
 }
 div.betting span.name{
@@ -387,12 +412,16 @@ div.betting div.player4{
 span.points{
 	position: absolute;
 	background-image: -webkit-linear-gradient(top,  #444444, #999999);
+	background-image: -moz-linear-gradient(top, #444444, #999999);
+	background-image: -o-linear-gradient(top, #444444, #999999);
 	width: 56px; 
 	height: 30px; 
 	text-align: center; 
 	color: white; 
 	border-radius: 10px; 
-	display: inline-block; 
+	-moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    display: inline-block; 
 	font: bold 15px/30px Georgia;
 	top: 0px;
 	left: 0px;
@@ -425,25 +454,21 @@ span.points{
 div.unactive button{
 	color:#505050;
 	background-image: -webkit-linear-gradient(top, rgb(233, 238, 173), rgba(214, 226, 153, 0)) ;
+	background-image: -moz-linear-gradient(top, rgb(233, 238, 173), rgba(214, 226, 153, 0));
+	background-image: -o-linear-gradient(top, rgb(233, 238, 173), rgba(214, 226, 153, 0));
 	background-color: rgba(14, 219, 195, 0.2);
 	font-weight:bold;
 	width: 299px;
 	height: 70px;
-	
 	display: inline-block;
 	padding: 4px 12px;
 	margin-bottom: 0;
 	font-size: 14px;
 	line-height: 20px;
-	
 	text-align: center;
 	text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
 	vertical-align: middle;
 	cursor: auto;
-	
-	
-	
-	
 	background-repeat: repeat-x;
 	border: 1px solid #cccccc;
 	border-color: #e6e6e6 #e6e6e6 #bfbfbf;
@@ -457,12 +482,16 @@ div.unactive button{
 button.check{
 	color:#505050 !important;
 	background-image: -webkit-linear-gradient(top, rgb(233, 238, 173), rgba(214, 226, 153, 0)) !important;
+	background-image: -moz-linear-gradient(top, rgb(233, 238, 173), rgba(214, 226, 153, 0)) !important;
+	background-image: -o-linear-gradient(top, rgb(233, 238, 173), rgba(214, 226, 153, 0)) !important;
 	background-color: rgba(14, 219, 195, 0.9) !important;
 }
 
 button.right{
 	color: rgb(13, 14, 13) !important;
 	background-image: -webkit-linear-gradient(top, rgba(14, 219, 195, 0.27), rgba(214, 226, 153, 0)) !important;
+	background-image: -moz-linear-gradient(top, rgba(14, 219, 195, 0.27), rgba(214, 226, 153, 0)) !important;
+	background-image: -o-linear-gradient(top, rgba(14, 219, 195, 0.27), rgba(214, 226, 153, 0)) !important;
 	background-color: rgb(118, 163, 146) !important;
 	font-size: 16px !important;
 }
@@ -534,14 +563,14 @@ button.right{
 }
 
 #time1{
-	width: 74px;
+	width: 76px;
 	font-weight: bolder;
 	position: absolute;
 	top: 155px;
 	left: 113px;
 }
 #time2{
-	width: 74px;
+	width: 76px;
 	font-weight: bolder;
 	position: absolute;
 	top: 158px;
@@ -549,7 +578,7 @@ button.right{
 }
 
 #time3{
-	width: 74px;
+	width: 76px;
 	font-weight: bolder;
 	position: absolute;
 	top: -15px;
@@ -557,7 +586,7 @@ button.right{
 }
 
 #time4{
-	width: 74px;
+	width: 76px;
 	font-weight: bolder;
 	position: absolute;
 	top: -23px;
@@ -840,7 +869,9 @@ button.right{
 	border-color: rgb(68, 67, 61);
 	box-shadow: 7px 7px 5px rgb(150, 150, 153);
 	border-radius: 20px;
-	background-color: rgba(60, 60, 70, 0.07);
+	-moz-border-radius: 20px;
+    -webkit-border-radius: 20px;
+    background-color: rgba(60, 60, 70, 0.07);
 	width: 206px;
 	height: 160px;
 }
@@ -880,7 +911,9 @@ button.right{
 #medals{
 	border: 1px solid;
 	border-radius: 9px;
-	background-color: rgba(227, 230, 163, 0.62);
+	-moz-border-radius: 9px;
+    -webkit-border-radius: 9px;
+    background-color: rgba(107, 107, 99, 0.24);
 	width: 356px;
 	height: 453px;
 	position: absolute;
