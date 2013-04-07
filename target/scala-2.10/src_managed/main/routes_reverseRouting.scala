@@ -1,6 +1,6 @@
 // @SOURCE:/home/r/work/FbPokerQuiz/conf/routes
-// @HASH:911a2957d17f5764443340a71bb8c641f56529f8
-// @DATE:Tue Apr 02 20:33:16 EEST 2013
+// @HASH:155198b250e9f894dea232a4a13b964abe550582
+// @DATE:Sun Apr 07 21:29:15 EEST 2013
 
 import Routes.{prefix => _prefix, defaultPrefix => _defaultPrefix}
 import play.core._
@@ -13,12 +13,14 @@ import play.libs.F
 import Router.queryString
 
 
-// @LINE:40
+// @LINE:43
+// @LINE:39
+// @LINE:38
 // @LINE:36
 // @LINE:35
+// @LINE:34
 // @LINE:33
 // @LINE:32
-// @LINE:31
 // @LINE:30
 // @LINE:29
 // @LINE:28
@@ -38,21 +40,21 @@ import Router.queryString
 // @LINE:6
 package controllers {
 
-// @LINE:31
-// @LINE:30
-// @LINE:29
+// @LINE:34
+// @LINE:33
+// @LINE:32
 // @LINE:11
 // @LINE:10
 class ReverseUser_questions {
     
 
-// @LINE:29
+// @LINE:32
 def view(): Call = {
    Call("GET", _prefix + { _defaultPrefix } + "admin/users_questions")
 }
                                                 
 
-// @LINE:31
+// @LINE:34
 def delete(id:Long): Call = {
    Call("GET", _prefix + { _defaultPrefix } + "admin/users_questions/delete/" + implicitly[PathBindable[Long]].unbind("id", id))
 }
@@ -70,7 +72,7 @@ def add(): Call = {
 }
                                                 
 
-// @LINE:30
+// @LINE:33
 def insert(id:Long): Call = {
    Call("GET", _prefix + { _defaultPrefix } + "admin/users_questions/insert/" + implicitly[PathBindable[Long]].unbind("id", id))
 }
@@ -79,11 +81,11 @@ def insert(id:Long): Call = {
 }
                           
 
-// @LINE:40
+// @LINE:43
 class ReverseAssets {
     
 
-// @LINE:40
+// @LINE:43
 def at(file:String): Call = {
    Call("GET", _prefix + { _defaultPrefix } + "assets/" + implicitly[PathBindable[String]].unbind("file", file))
 }
@@ -92,8 +94,10 @@ def at(file:String): Call = {
 }
                           
 
-// @LINE:33
-// @LINE:32
+// @LINE:36
+// @LINE:35
+// @LINE:30
+// @LINE:29
 // @LINE:28
 // @LINE:26
 // @LINE:25
@@ -107,9 +111,15 @@ def view(): Call = {
 }
                                                 
 
-// @LINE:33
+// @LINE:36
 def delete(id:Long): Call = {
    Call("GET", _prefix + { _defaultPrefix } + "admin/questions/delete/" + implicitly[PathBindable[Long]].unbind("id", id))
+}
+                                                
+
+// @LINE:29
+def view_by_category(): Call = {
+   Call("GET", _prefix + { _defaultPrefix } + "admin/questions/view_by_category/")
 }
                                                 
 
@@ -125,7 +135,13 @@ def save(): Call = {
 }
                                                 
 
-// @LINE:32
+// @LINE:30
+def search(): Call = {
+   Call("GET", _prefix + { _defaultPrefix } + "admin/questions/search")
+}
+                                                
+
+// @LINE:35
 def edit(id:Long): Call = {
    Call("GET", _prefix + { _defaultPrefix } + "admin/questions/edit/" + implicitly[PathBindable[Long]].unbind("id", id))
 }
@@ -140,18 +156,18 @@ def add(): Call = {
 }
                           
 
-// @LINE:36
-// @LINE:35
+// @LINE:39
+// @LINE:38
 class ReverseGames {
     
 
-// @LINE:36
+// @LINE:39
 def join(): Call = {
    Call("GET", _prefix + { _defaultPrefix } + "game/join")
 }
                                                 
 
-// @LINE:35
+// @LINE:38
 def index(): Call = {
    Call("GET", _prefix + { _defaultPrefix } + "game")
 }
@@ -246,12 +262,14 @@ case () if true => Call("GET", _prefix + { _defaultPrefix } + "home/")
                   
 
 
-// @LINE:40
+// @LINE:43
+// @LINE:39
+// @LINE:38
 // @LINE:36
 // @LINE:35
+// @LINE:34
 // @LINE:33
 // @LINE:32
-// @LINE:31
 // @LINE:30
 // @LINE:29
 // @LINE:28
@@ -271,15 +289,15 @@ case () if true => Call("GET", _prefix + { _defaultPrefix } + "home/")
 // @LINE:6
 package controllers.javascript {
 
-// @LINE:31
-// @LINE:30
-// @LINE:29
+// @LINE:34
+// @LINE:33
+// @LINE:32
 // @LINE:11
 // @LINE:10
 class ReverseUser_questions {
     
 
-// @LINE:29
+// @LINE:32
 def view : JavascriptReverseRoute = JavascriptReverseRoute(
    "controllers.User_questions.view",
    """
@@ -290,7 +308,7 @@ def view : JavascriptReverseRoute = JavascriptReverseRoute(
 )
                         
 
-// @LINE:31
+// @LINE:34
 def delete : JavascriptReverseRoute = JavascriptReverseRoute(
    "controllers.User_questions.delete",
    """
@@ -323,7 +341,7 @@ def add : JavascriptReverseRoute = JavascriptReverseRoute(
 )
                         
 
-// @LINE:30
+// @LINE:33
 def insert : JavascriptReverseRoute = JavascriptReverseRoute(
    "controllers.User_questions.insert",
    """
@@ -337,11 +355,11 @@ def insert : JavascriptReverseRoute = JavascriptReverseRoute(
 }
               
 
-// @LINE:40
+// @LINE:43
 class ReverseAssets {
     
 
-// @LINE:40
+// @LINE:43
 def at : JavascriptReverseRoute = JavascriptReverseRoute(
    "controllers.Assets.at",
    """
@@ -355,8 +373,10 @@ def at : JavascriptReverseRoute = JavascriptReverseRoute(
 }
               
 
-// @LINE:33
-// @LINE:32
+// @LINE:36
+// @LINE:35
+// @LINE:30
+// @LINE:29
 // @LINE:28
 // @LINE:26
 // @LINE:25
@@ -375,12 +395,23 @@ def view : JavascriptReverseRoute = JavascriptReverseRoute(
 )
                         
 
-// @LINE:33
+// @LINE:36
 def delete : JavascriptReverseRoute = JavascriptReverseRoute(
    "controllers.Questions.delete",
    """
       function(id) {
       return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "admin/questions/delete/" + (""" + implicitly[PathBindable[Long]].javascriptUnbind + """)("id", id)})
+      }
+   """
+)
+                        
+
+// @LINE:29
+def view_by_category : JavascriptReverseRoute = JavascriptReverseRoute(
+   "controllers.Questions.view_by_category",
+   """
+      function() {
+      return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "admin/questions/view_by_category/"})
       }
    """
 )
@@ -408,7 +439,18 @@ def save : JavascriptReverseRoute = JavascriptReverseRoute(
 )
                         
 
-// @LINE:32
+// @LINE:30
+def search : JavascriptReverseRoute = JavascriptReverseRoute(
+   "controllers.Questions.search",
+   """
+      function() {
+      return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "admin/questions/search"})
+      }
+   """
+)
+                        
+
+// @LINE:35
 def edit : JavascriptReverseRoute = JavascriptReverseRoute(
    "controllers.Questions.edit",
    """
@@ -433,12 +475,12 @@ def add : JavascriptReverseRoute = JavascriptReverseRoute(
 }
               
 
-// @LINE:36
-// @LINE:35
+// @LINE:39
+// @LINE:38
 class ReverseGames {
     
 
-// @LINE:36
+// @LINE:39
 def join : JavascriptReverseRoute = JavascriptReverseRoute(
    "controllers.Games.join",
    """
@@ -449,7 +491,7 @@ def join : JavascriptReverseRoute = JavascriptReverseRoute(
 )
                         
 
-// @LINE:35
+// @LINE:38
 def index : JavascriptReverseRoute = JavascriptReverseRoute(
    "controllers.Games.index",
    """
@@ -587,12 +629,14 @@ def index : JavascriptReverseRoute = JavascriptReverseRoute(
         
 
 
-// @LINE:40
+// @LINE:43
+// @LINE:39
+// @LINE:38
 // @LINE:36
 // @LINE:35
+// @LINE:34
 // @LINE:33
 // @LINE:32
-// @LINE:31
 // @LINE:30
 // @LINE:29
 // @LINE:28
@@ -612,21 +656,21 @@ def index : JavascriptReverseRoute = JavascriptReverseRoute(
 // @LINE:6
 package controllers.ref {
 
-// @LINE:31
-// @LINE:30
-// @LINE:29
+// @LINE:34
+// @LINE:33
+// @LINE:32
 // @LINE:11
 // @LINE:10
 class ReverseUser_questions {
     
 
-// @LINE:29
+// @LINE:32
 def view(): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
    controllers.User_questions.view(), HandlerDef(this, "controllers.User_questions", "view", Seq(), "GET", """""", _prefix + """admin/users_questions""")
 )
                       
 
-// @LINE:31
+// @LINE:34
 def delete(id:Long): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
    controllers.User_questions.delete(id), HandlerDef(this, "controllers.User_questions", "delete", Seq(classOf[Long]), "GET", """""", _prefix + """admin/users_questions/delete/$id<[^/]+>""")
 )
@@ -644,7 +688,7 @@ def add(): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
 )
                       
 
-// @LINE:30
+// @LINE:33
 def insert(id:Long): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
    controllers.User_questions.insert(id), HandlerDef(this, "controllers.User_questions", "insert", Seq(classOf[Long]), "GET", """""", _prefix + """admin/users_questions/insert/$id<[^/]+>""")
 )
@@ -653,11 +697,11 @@ def insert(id:Long): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
 }
                           
 
-// @LINE:40
+// @LINE:43
 class ReverseAssets {
     
 
-// @LINE:40
+// @LINE:43
 def at(path:String, file:String): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
    controllers.Assets.at(path, file), HandlerDef(this, "controllers.Assets", "at", Seq(classOf[String], classOf[String]), "GET", """ Map static resources from the /public folder to the /assets URL path""", _prefix + """assets/$file<.+>""")
 )
@@ -666,8 +710,10 @@ def at(path:String, file:String): play.api.mvc.HandlerRef[_] = new play.api.mvc.
 }
                           
 
-// @LINE:33
-// @LINE:32
+// @LINE:36
+// @LINE:35
+// @LINE:30
+// @LINE:29
 // @LINE:28
 // @LINE:26
 // @LINE:25
@@ -681,9 +727,15 @@ def view(): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
 )
                       
 
-// @LINE:33
+// @LINE:36
 def delete(id:Long): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
    controllers.Questions.delete(id), HandlerDef(this, "controllers.Questions", "delete", Seq(classOf[Long]), "GET", """""", _prefix + """admin/questions/delete/$id<[^/]+>""")
+)
+                      
+
+// @LINE:29
+def view_by_category(): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
+   controllers.Questions.view_by_category(), HandlerDef(this, "controllers.Questions", "view_by_category", Seq(), "GET", """""", _prefix + """admin/questions/view_by_category/""")
 )
                       
 
@@ -699,7 +751,13 @@ def save(): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
 )
                       
 
-// @LINE:32
+// @LINE:30
+def search(): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
+   controllers.Questions.search(), HandlerDef(this, "controllers.Questions", "search", Seq(), "GET", """""", _prefix + """admin/questions/search""")
+)
+                      
+
+// @LINE:35
 def edit(id:Long): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
    controllers.Questions.edit(id), HandlerDef(this, "controllers.Questions", "edit", Seq(classOf[Long]), "GET", """""", _prefix + """admin/questions/edit/$id<[^/]+>""")
 )
@@ -714,18 +772,18 @@ def add(): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
 }
                           
 
-// @LINE:36
-// @LINE:35
+// @LINE:39
+// @LINE:38
 class ReverseGames {
     
 
-// @LINE:36
+// @LINE:39
 def join(): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
    controllers.Games.join(), HandlerDef(this, "controllers.Games", "join", Seq(), "GET", """""", _prefix + """game/join""")
 )
                       
 
-// @LINE:35
+// @LINE:38
 def index(): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
    controllers.Games.index(), HandlerDef(this, "controllers.Games", "index", Seq(), "GET", """""", _prefix + """game""")
 )

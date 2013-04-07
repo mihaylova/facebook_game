@@ -26,6 +26,9 @@ POST	/admin/question										controllers.Questions.save()
 POST	/admin/editQuestion									controllers.Questions.editQuestion()
 
 GET		/admin/questions									controllers.Questions.view()
+GET		/admin/questions/view_by_category/					controllers.Questions.view_by_category()
+GET		/admin/questions/search								controllers.Questions.search()
+
 GET		/admin/users_questions								controllers.User_questions.view()
 GET		/admin/users_questions/insert/:id					controllers.User_questions.insert(id: Long)
 GET		/admin/users_questions/delete/:id					controllers.User_questions.delete(id: Long)

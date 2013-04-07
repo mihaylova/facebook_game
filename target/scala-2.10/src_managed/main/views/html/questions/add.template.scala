@@ -41,7 +41,7 @@ Seq[Any](format.raw/*1.33*/("""
      <li class="active"><a href="/admin/question/add">Добави въпрос</a></li>
 	<li> <a href="/admin/users_questions"> Преглед на потребоителски въпроси</a></li>
 	<li> <a href="/admin/questions"> Преглед на въпроси</a></li>
-	
+	<li> <a href="/admin/questions/search"> Търсене</a></li>
     </ul>  
     
     """),_display_(Seq[Any](/*18.6*/if(flash.contains("success"))/*18.35*/ {_display_(Seq[Any](format.raw/*18.37*/("""
@@ -111,10 +111,10 @@ Seq[Any](format.raw/*1.33*/("""
 }
                 /*
                     -- GENERATED --
-                    DATE: Tue Apr 02 20:33:21 EEST 2013
+                    DATE: Sun Apr 07 21:29:22 EEST 2013
                     SOURCE: /home/r/work/FbPokerQuiz/app/views/questions/add.scala.html
-                    HASH: 192b56cbd222de3362e9062d984c5827c1ead273
-                    MATRIX: 739->1|897->32|925->85|961->87|995->113|1034->115|1484->530|1522->559|1562->561|1752->715|1766->720|1803->735|1855->755|2050->914|2065->920|2111->957|2151->959|3969->2746
+                    HASH: 098db5e34b75c095387ecd0a88b80425655576db
+                    MATRIX: 739->1|897->32|925->85|961->87|995->113|1034->115|1540->586|1578->615|1618->617|1808->771|1822->776|1859->791|1911->811|2106->970|2121->976|2167->1013|2207->1015|4025->2802
                     LINES: 26->1|32->1|34->5|35->6|35->6|35->6|47->18|47->18|47->18|51->22|51->22|51->22|52->23|58->29|58->29|58->29|58->29|96->67
                     -- GENERATED --
                 */

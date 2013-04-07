@@ -1,6 +1,6 @@
 // @SOURCE:/home/r/work/FbPokerQuiz/conf/routes
-// @HASH:911a2957d17f5764443340a71bb8c641f56529f8
-// @DATE:Tue Apr 02 20:33:16 EEST 2013
+// @HASH:155198b250e9f894dea232a4a13b964abe550582
+// @DATE:Sun Apr 07 21:29:15 EEST 2013
 
 
 import play.core._
@@ -89,37 +89,45 @@ private[this] lazy val controllers_Questions_view14 = Route("GET", PathPattern(L
         
 
 // @LINE:29
-private[this] lazy val controllers_User_questions_view15 = Route("GET", PathPattern(List(StaticPart(Routes.prefix),StaticPart(Routes.defaultPrefix),StaticPart("admin/users_questions"))))
+private[this] lazy val controllers_Questions_view_by_category15 = Route("GET", PathPattern(List(StaticPart(Routes.prefix),StaticPart(Routes.defaultPrefix),StaticPart("admin/questions/view_by_category/"))))
         
 
 // @LINE:30
-private[this] lazy val controllers_User_questions_insert16 = Route("GET", PathPattern(List(StaticPart(Routes.prefix),StaticPart(Routes.defaultPrefix),StaticPart("admin/users_questions/insert/"),DynamicPart("id", """[^/]+"""))))
-        
-
-// @LINE:31
-private[this] lazy val controllers_User_questions_delete17 = Route("GET", PathPattern(List(StaticPart(Routes.prefix),StaticPart(Routes.defaultPrefix),StaticPart("admin/users_questions/delete/"),DynamicPart("id", """[^/]+"""))))
+private[this] lazy val controllers_Questions_search16 = Route("GET", PathPattern(List(StaticPart(Routes.prefix),StaticPart(Routes.defaultPrefix),StaticPart("admin/questions/search"))))
         
 
 // @LINE:32
-private[this] lazy val controllers_Questions_edit18 = Route("GET", PathPattern(List(StaticPart(Routes.prefix),StaticPart(Routes.defaultPrefix),StaticPart("admin/questions/edit/"),DynamicPart("id", """[^/]+"""))))
+private[this] lazy val controllers_User_questions_view17 = Route("GET", PathPattern(List(StaticPart(Routes.prefix),StaticPart(Routes.defaultPrefix),StaticPart("admin/users_questions"))))
         
 
 // @LINE:33
-private[this] lazy val controllers_Questions_delete19 = Route("GET", PathPattern(List(StaticPart(Routes.prefix),StaticPart(Routes.defaultPrefix),StaticPart("admin/questions/delete/"),DynamicPart("id", """[^/]+"""))))
+private[this] lazy val controllers_User_questions_insert18 = Route("GET", PathPattern(List(StaticPart(Routes.prefix),StaticPart(Routes.defaultPrefix),StaticPart("admin/users_questions/insert/"),DynamicPart("id", """[^/]+"""))))
+        
+
+// @LINE:34
+private[this] lazy val controllers_User_questions_delete19 = Route("GET", PathPattern(List(StaticPart(Routes.prefix),StaticPart(Routes.defaultPrefix),StaticPart("admin/users_questions/delete/"),DynamicPart("id", """[^/]+"""))))
         
 
 // @LINE:35
-private[this] lazy val controllers_Games_index20 = Route("GET", PathPattern(List(StaticPart(Routes.prefix),StaticPart(Routes.defaultPrefix),StaticPart("game"))))
+private[this] lazy val controllers_Questions_edit20 = Route("GET", PathPattern(List(StaticPart(Routes.prefix),StaticPart(Routes.defaultPrefix),StaticPart("admin/questions/edit/"),DynamicPart("id", """[^/]+"""))))
         
 
 // @LINE:36
-private[this] lazy val controllers_Games_join21 = Route("GET", PathPattern(List(StaticPart(Routes.prefix),StaticPart(Routes.defaultPrefix),StaticPart("game/join"))))
+private[this] lazy val controllers_Questions_delete21 = Route("GET", PathPattern(List(StaticPart(Routes.prefix),StaticPart(Routes.defaultPrefix),StaticPart("admin/questions/delete/"),DynamicPart("id", """[^/]+"""))))
         
 
-// @LINE:40
-private[this] lazy val controllers_Assets_at22 = Route("GET", PathPattern(List(StaticPart(Routes.prefix),StaticPart(Routes.defaultPrefix),StaticPart("assets/"),DynamicPart("file", """.+"""))))
+// @LINE:38
+private[this] lazy val controllers_Games_index22 = Route("GET", PathPattern(List(StaticPart(Routes.prefix),StaticPart(Routes.defaultPrefix),StaticPart("game"))))
         
-def documentation = List(("""POST""", prefix + (if(prefix.endsWith("/")) "" else "/") + """canvas/""","""controllers.Canvas.index()"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """canvas/""","""controllers.Canvas.redirect()"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """home/""","""controllers.Canvas.index()"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """question/add""","""controllers.User_questions.add()"""),("""POST""", prefix + (if(prefix.endsWith("/")) "" else "/") + """question""","""controllers.User_questions.save()"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """for_me""","""controllers.Fb_users.for_me()"""),("""POST""", prefix + (if(prefix.endsWith("/")) "" else "/") + """for_me/convert""","""controllers.Fb_users.convert()"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """login""","""controllers.Admins.login()"""),("""POST""", prefix + (if(prefix.endsWith("/")) "" else "/") + """login""","""controllers.Admins.authenticate()"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """logout""","""controllers.Admins.logout()"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """admin""","""controllers.Admins.index()"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """admin/question/add""","""controllers.Questions.add()"""),("""POST""", prefix + (if(prefix.endsWith("/")) "" else "/") + """admin/question""","""controllers.Questions.save()"""),("""POST""", prefix + (if(prefix.endsWith("/")) "" else "/") + """admin/editQuestion""","""controllers.Questions.editQuestion()"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """admin/questions""","""controllers.Questions.view()"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """admin/users_questions""","""controllers.User_questions.view()"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """admin/users_questions/insert/$id<[^/]+>""","""controllers.User_questions.insert(id:Long)"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """admin/users_questions/delete/$id<[^/]+>""","""controllers.User_questions.delete(id:Long)"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """admin/questions/edit/$id<[^/]+>""","""controllers.Questions.edit(id:Long)"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """admin/questions/delete/$id<[^/]+>""","""controllers.Questions.delete(id:Long)"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """game""","""controllers.Games.index()"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """game/join""","""controllers.Games.join()"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """assets/$file<.+>""","""controllers.Assets.at(path:String = "/public", file:String)""")).foldLeft(List.empty[(String,String,String)]) { (s,e) => e match {
+
+// @LINE:39
+private[this] lazy val controllers_Games_join23 = Route("GET", PathPattern(List(StaticPart(Routes.prefix),StaticPart(Routes.defaultPrefix),StaticPart("game/join"))))
+        
+
+// @LINE:43
+private[this] lazy val controllers_Assets_at24 = Route("GET", PathPattern(List(StaticPart(Routes.prefix),StaticPart(Routes.defaultPrefix),StaticPart("assets/"),DynamicPart("file", """.+"""))))
+        
+def documentation = List(("""POST""", prefix + (if(prefix.endsWith("/")) "" else "/") + """canvas/""","""controllers.Canvas.index()"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """canvas/""","""controllers.Canvas.redirect()"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """home/""","""controllers.Canvas.index()"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """question/add""","""controllers.User_questions.add()"""),("""POST""", prefix + (if(prefix.endsWith("/")) "" else "/") + """question""","""controllers.User_questions.save()"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """for_me""","""controllers.Fb_users.for_me()"""),("""POST""", prefix + (if(prefix.endsWith("/")) "" else "/") + """for_me/convert""","""controllers.Fb_users.convert()"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """login""","""controllers.Admins.login()"""),("""POST""", prefix + (if(prefix.endsWith("/")) "" else "/") + """login""","""controllers.Admins.authenticate()"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """logout""","""controllers.Admins.logout()"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """admin""","""controllers.Admins.index()"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """admin/question/add""","""controllers.Questions.add()"""),("""POST""", prefix + (if(prefix.endsWith("/")) "" else "/") + """admin/question""","""controllers.Questions.save()"""),("""POST""", prefix + (if(prefix.endsWith("/")) "" else "/") + """admin/editQuestion""","""controllers.Questions.editQuestion()"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """admin/questions""","""controllers.Questions.view()"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """admin/questions/view_by_category/""","""controllers.Questions.view_by_category()"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """admin/questions/search""","""controllers.Questions.search()"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """admin/users_questions""","""controllers.User_questions.view()"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """admin/users_questions/insert/$id<[^/]+>""","""controllers.User_questions.insert(id:Long)"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """admin/users_questions/delete/$id<[^/]+>""","""controllers.User_questions.delete(id:Long)"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """admin/questions/edit/$id<[^/]+>""","""controllers.Questions.edit(id:Long)"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """admin/questions/delete/$id<[^/]+>""","""controllers.Questions.delete(id:Long)"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """game""","""controllers.Games.index()"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """game/join""","""controllers.Games.join()"""),("""GET""", prefix + (if(prefix.endsWith("/")) "" else "/") + """assets/$file<.+>""","""controllers.Assets.at(path:String = "/public", file:String)""")).foldLeft(List.empty[(String,String,String)]) { (s,e) => e match {
   case r @ (_,_,_) => s :+ r.asInstanceOf[(String,String,String)]
   case l => s ++ l.asInstanceOf[List[(String,String,String)]] 
 }}
@@ -248,63 +256,79 @@ case controllers_Questions_view14(params) => {
         
 
 // @LINE:29
-case controllers_User_questions_view15(params) => {
+case controllers_Questions_view_by_category15(params) => {
+   call { 
+        invokeHandler(controllers.Questions.view_by_category(), HandlerDef(this, "controllers.Questions", "view_by_category", Nil,"GET", """""", Routes.prefix + """admin/questions/view_by_category/"""))
+   }
+}
+        
+
+// @LINE:30
+case controllers_Questions_search16(params) => {
+   call { 
+        invokeHandler(controllers.Questions.search(), HandlerDef(this, "controllers.Questions", "search", Nil,"GET", """""", Routes.prefix + """admin/questions/search"""))
+   }
+}
+        
+
+// @LINE:32
+case controllers_User_questions_view17(params) => {
    call { 
         invokeHandler(controllers.User_questions.view(), HandlerDef(this, "controllers.User_questions", "view", Nil,"GET", """""", Routes.prefix + """admin/users_questions"""))
    }
 }
         
 
-// @LINE:30
-case controllers_User_questions_insert16(params) => {
+// @LINE:33
+case controllers_User_questions_insert18(params) => {
    call(params.fromPath[Long]("id", None)) { (id) =>
         invokeHandler(controllers.User_questions.insert(id), HandlerDef(this, "controllers.User_questions", "insert", Seq(classOf[Long]),"GET", """""", Routes.prefix + """admin/users_questions/insert/$id<[^/]+>"""))
    }
 }
         
 
-// @LINE:31
-case controllers_User_questions_delete17(params) => {
+// @LINE:34
+case controllers_User_questions_delete19(params) => {
    call(params.fromPath[Long]("id", None)) { (id) =>
         invokeHandler(controllers.User_questions.delete(id), HandlerDef(this, "controllers.User_questions", "delete", Seq(classOf[Long]),"GET", """""", Routes.prefix + """admin/users_questions/delete/$id<[^/]+>"""))
    }
 }
         
 
-// @LINE:32
-case controllers_Questions_edit18(params) => {
+// @LINE:35
+case controllers_Questions_edit20(params) => {
    call(params.fromPath[Long]("id", None)) { (id) =>
         invokeHandler(controllers.Questions.edit(id), HandlerDef(this, "controllers.Questions", "edit", Seq(classOf[Long]),"GET", """""", Routes.prefix + """admin/questions/edit/$id<[^/]+>"""))
    }
 }
         
 
-// @LINE:33
-case controllers_Questions_delete19(params) => {
+// @LINE:36
+case controllers_Questions_delete21(params) => {
    call(params.fromPath[Long]("id", None)) { (id) =>
         invokeHandler(controllers.Questions.delete(id), HandlerDef(this, "controllers.Questions", "delete", Seq(classOf[Long]),"GET", """""", Routes.prefix + """admin/questions/delete/$id<[^/]+>"""))
    }
 }
         
 
-// @LINE:35
-case controllers_Games_index20(params) => {
+// @LINE:38
+case controllers_Games_index22(params) => {
    call { 
         invokeHandler(controllers.Games.index(), HandlerDef(this, "controllers.Games", "index", Nil,"GET", """""", Routes.prefix + """game"""))
    }
 }
         
 
-// @LINE:36
-case controllers_Games_join21(params) => {
+// @LINE:39
+case controllers_Games_join23(params) => {
    call { 
         invokeHandler(controllers.Games.join(), HandlerDef(this, "controllers.Games", "join", Nil,"GET", """""", Routes.prefix + """game/join"""))
    }
 }
         
 
-// @LINE:40
-case controllers_Assets_at22(params) => {
+// @LINE:43
+case controllers_Assets_at24(params) => {
    call(Param[String]("path", Right("/public")), params.fromPath[String]("file", None)) { (path, file) =>
         invokeHandler(controllers.Assets.at(path, file), HandlerDef(this, "controllers.Assets", "at", Seq(classOf[String], classOf[String]),"GET", """ Map static resources from the /public folder to the /assets URL path""", Routes.prefix + """assets/$file<.+>"""))
    }

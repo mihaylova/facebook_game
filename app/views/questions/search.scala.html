@@ -1,0 +1,39 @@
+@()
+
+@main_admin("Questions") {
+	
+	
+   
+	<div id="exit"> <p> <a class="btn btn-primary" href="/logout"> Изход</a> </p> </div>
+<ul class="nav nav-tabs">
+      <li>
+       <a href="/admin">Home</a> 
+      </li>
+     <li><a href="/admin/question/add">Добави въпрос</a></li>
+	<li > <a href="/admin/users_questions"> Преглед на потребоителски въпроси</a></li>
+	<li > <a href="/admin/questions"> Преглед на въпроси</a></li>
+	<li class="active"> <a href="/admin/questions/search"> Търсене</a></li>
+		       
+    </ul>
+@helper.form(action = routes.Questions.view_by_category) {
+          
+              <span class="help">Категория</span>
+              <select name="category">
+                
+                <option value="1">История</option>
+                <option value="2">Природни науки</option>
+                <option value="3">Изкуство</option>
+                <option value="4">Литература</option>
+                <option value="5">Спорт</option>
+                <option value="6">География</option>
+                <option value="7">Астронимия</option>
+                <option value="8">Технологии</option>
+                <option value="9">Кино и телевизия</option>
+              </select> 
+              <div class="form-actions">
+              <button type="submit" class="btn btn-primary">Търси</button>
+           </div>
+       }
+
+
+}

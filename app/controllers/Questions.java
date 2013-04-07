@@ -3,6 +3,7 @@ package controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.avaje.ebean.ExpressionList;
 import com.avaje.ebean.common.BeanList;
 
 import models.Question;
@@ -75,10 +76,30 @@ public class Questions extends Application {
 		
 		else return redirect(routes.Admins.login());
 	}
+		
+		public static Result search(){
+			return ok(search.render());
+		}
 	
 	public static Result view() {
 		if(session("admin")!=null){	
 			List<Question> questions =  (List<Question> )Question.find.all();
+			//DynamicForm form = form().bindFromRequest();
+			//int category = Integer.parseInt(form.data().get("category"));
+			//List<Question> questions =   Question.find.where().eq("category", category).findList();
+			
+			return ok(view.render(questions, Question.categories));
+			
+		}
+		else return redirect(routes.Admins.login());
+	}
+	
+	public static Result view_by_category() {
+		if(session("admin")!=null){	
+			//List<Question> questions =  (List<Question> )Question.find.all();
+			DynamicForm form = form().bindFromRequest();
+			int category = Integer.parseInt(form.data().get("category"));
+			List<Question> questions =   Question.find.where().eq("category", category).findList();
 			
 			return ok(view.render(questions, Question.categories));
 			

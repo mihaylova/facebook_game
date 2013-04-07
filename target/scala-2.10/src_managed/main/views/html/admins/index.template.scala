@@ -42,6 +42,7 @@ Seq[Any](format.raw/*1.19*/("""
      <li><a href="/admin/question/add">Добави въпрос</a></li>
 	<li> <a href="/admin/users_questions"> Преглед на потребоителски въпроси</a></li>
 	<li> <a href="/admin/questions"> Преглед на въпроси</a></li>
+	<li> <a href="/admin/questions/search"> Търсене</a></li>
 		       
     </ul>
    
@@ -60,9 +61,9 @@ Seq[Any](format.raw/*1.19*/("""
 }
                 /*
                     -- GENERATED --
-                    DATE: Tue Apr 02 20:33:21 EEST 2013
+                    DATE: Sun Apr 07 21:29:22 EEST 2013
                     SOURCE: /home/r/work/FbPokerQuiz/app/views/admins/index.scala.html
-                    HASH: 59e6414baa52d2499bc32200bd92dd68f77c29da
+                    HASH: 92bd1bf461818da32e6c65f9dd4c229fc80886c9
                     MATRIX: 730->1|824->18|861->21|888->40|927->42
                     LINES: 26->1|29->1|31->3|31->3|31->3
                     -- GENERATED --
