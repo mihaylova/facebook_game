@@ -65,7 +65,10 @@ public class Questions extends Application {
 			        question.setAnswer1(filledForm.data().get("answer1"));
 			        question.setAnswer2(filledForm.data().get("answer2"));
 			        question.setAnswer3(filledForm.data().get("answer3"));
+			        question.setCategory(Integer.parseInt(filledForm.data().get("category")));
+			        
 			        question.save();
+			        session().remove("edit");
 			        flash("success", "Въпроса беше променен!!!");
 			        return redirect("/admin/questions");
 			              

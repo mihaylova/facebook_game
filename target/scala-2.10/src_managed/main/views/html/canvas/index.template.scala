@@ -54,7 +54,7 @@ border-right-width: 0px;" class="alert alert-error">"""),_display_(Seq[Any](/*11
 }
                 /*
                     -- GENERATED --
-                    DATE: Sun Apr 07 21:29:22 EEST 2013
+                    DATE: Sun Apr 07 22:05:46 EEST 2013
                     SOURCE: /home/r/work/FbPokerQuiz/app/views/canvas/index.scala.html
                     HASH: 928f0a308d355568e7b4b93406adf61272a9a568
                     MATRIX: 737->1|845->32|882->35|913->58|952->60|1009->82|1034->86|1366->382|1395->389
