@@ -89,7 +89,7 @@ public class GameRoom extends UntypedActor {
             	   
             		   else if(kind.equals("raise")){
 	                	   
-	                	   if(gamestate.user_on_turn.uid==user.uid && gamestate.poker_algorithm  && gamestate.MaxBet>= event.get("bet").asInt()){
+	                	   if(gamestate.user_on_turn.uid==user.uid && gamestate.poker_algorithm  && (gamestate.MaxBet + gamestate.user_on_turn.UnCallBet)>= event.get("bet").asInt() && gamestate.user_on_turn.points >= event.get("bet").asInt()){
 	                		   
 	                		   game_room.tell(new Raise(event.get("bet").asInt(), member, game.id, gamestate), game_room);
 	                	   }

@@ -246,11 +246,12 @@
     };
 
     Game.prototype.betting = function(data) {
-      var current_player, max_bet, slot, uncall_bet;
+      var current_player, max_bet, slot, uncall_bet, points;
       console.log('betting');
       current_player = parseInt(data.user_on_turn);
       max_bet = parseInt(data.max_bet);
       uncall_bet = parseInt(data.user_uncall_bet);
+      points = parseInt(data.points);
       slot = data.slot;
       $("#timer" + slot).show();
       $("#timer" + slot).pietimer('start');
@@ -266,12 +267,31 @@
       });
       $('.betting').removeClass('betting');
       $("#member-" + current_player).addClass('betting');
+      $('output.range').text(uncall_bet+1)
+      $('output.range').css({"left": "-7px", "margin-left": "-7%"})
       $('input[name=raise]').attr("min", uncall_bet + 1);
       $('input[name=raise]').attr("value", uncall_bet + 1);
-      $('input[name=raise]').attr("max", max_bet);
+      if(points === max_bet){
+    	  $('input[name=raise]').attr("max", max_bet);  
+      }
+      else{
+    	  var min = Math.min(points, max_bet+uncall_bet )
+    	  $('input[name=raise]').attr("max", min);
+      }
+      
       $('span.bet').text(uncall_bet);
       if (current_player === this.user_id) {
-        return this.selectors.bet_btn.show();
+        this.selectors.bet_btn.show();
+        if((max_bet <= 0) || (uncall_bet >= points)){
+        	$('span.range').hide();
+        	
+        	$('#raise').attr('style', 'display:none !important');
+        	
+        }
+        else{
+        	$('span.range').show();
+        	$('#raise').show();
+        }
       } else {
         return this.selectors.bet_btn.hide();
       }

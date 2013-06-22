@@ -6,23 +6,13 @@ import models.Fb_user;
 import models.Question;
 import models.User_question;
 import play.data.Form;
-import play.db.DB;
 import play.mvc.Result;
 import views.html.canvas.redirect;
-import views.html.game.index;
 import views.html.questions.view_from_user;
 import views.html.user_questions.*;
 
-import play.data.*;
 import static play.data.Form.*;
 
-import com.restfb.DefaultFacebookClient;
-import com.restfb.FacebookClient;
-//import com.restfb.AccessToken;
-import com.restfb.types.User;
-import com.restfb.types.Photo;
-import com.restfb.types.FacebookType;
-import com.restfb.Parameter;
 import com.typesafe.config.ConfigFactory;
 
 

@@ -44,7 +44,7 @@ Seq[Any](format.raw/*1.15*/("""
 }
                 /*
                     -- GENERATED --
-                    DATE: Sun Apr 07 22:05:46 EEST 2013
+                    DATE: Sat Jun 22 17:22:39 EEST 2013
                     SOURCE: /home/r/work/FbPokerQuiz/app/views/canvas/redirect.scala.html
                     HASH: 122cda19a447ec56cf30c43b0b452c42bced0630
                     MATRIX: 733->1|823->14|860->17|893->42|932->44|1004->81|1034->90

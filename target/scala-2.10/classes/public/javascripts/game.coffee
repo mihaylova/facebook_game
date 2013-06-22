@@ -202,6 +202,9 @@ class Game
      
      $('.betting').removeClass('betting')
      $("#member-#{current_player}").addClass('betting')
+    
+     $('output.range').text('uncall_bet+1')
+     $('output.range').css({left: -7px, margin-left: -7%})
      $('input[name=raise]').attr("min", uncall_bet+1)
      $('input[name=raise]').attr("value", uncall_bet+1)
      $('input[name=raise]').attr("max", max_bet)

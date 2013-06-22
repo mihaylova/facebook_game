@@ -104,6 +104,7 @@ public class GameState {
     }
 	
 	public void SetMaxBet(){
+		this.MaxBet = 9999;
 		for(Member member: this.members){
 			if(!member.fold && !member.wait && !member.out_of_points){
 				this.MaxBet=Math.min(this.MaxBet, member.points);

@@ -66,6 +66,7 @@ public class Notify {
             event.put("slot", member_on_turn.slot);
             event.put("max_bet", Integer.toString(gamestate.MaxBet));
             event.put("user_uncall_bet", Integer.toString(member_on_turn.UnCallBet));
+            event.put("points",Integer.toString(member_on_turn.points));
             for(Member member: gamestate.members){
             	WebSocket.Out<JsonNode> channel = member.channel;
     			channel.write(event);
